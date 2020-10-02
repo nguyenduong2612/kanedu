@@ -1,0 +1,7 @@
+{
+  "name": "kanedu",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
