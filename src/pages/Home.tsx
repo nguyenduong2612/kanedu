@@ -1,29 +1,36 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem } from '@ionic/react';
-import React from 'react';
-import ExploreContainer from '../components/ExploreContainer';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenu, IonList, IonApp, IonMenuButton, IonSplitPane } from '@ionic/react';
+import React, { useState } from 'react';
 import './Home.css';
+import SideMenu from '../components/sidemenu/SideMenu';
 
-const Home: React.FC = () => {
+const Home: React.FC = (props) => {
+  const [user, setUser] = useState<any>(props)
+
+  //console.log(user.email)
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Dashboard</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
+    <IonSplitPane contentId="main">
+      <SideMenu {...user} />
+      <IonPage id='main'>
+        <IonHeader>
           <IonToolbar>
-            <IonTitle size="large">Dashboard</IonTitle>
+            <IonMenuButton className='menu-btn' color='dark'></IonMenuButton>
           </IonToolbar>
         </IonHeader>
-      
-        <IonItem lines='none'>
-          <p></p>
-        </IonItem>
-      </IonContent>
-    </IonPage>
+        <IonContent fullscreen>
+          <IonHeader collapse="condense">
+            <IonToolbar>
+              <IonTitle size="large">Dashboard</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+        
+          <IonItem lines='none'>
+            <p>{user.email}</p>
+          </IonItem>
+
+        </IonContent>
+      </IonPage>
+    </IonSplitPane>
   );
 };
 
-export default Home;
+export default Home

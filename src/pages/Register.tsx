@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonItem, IonInput, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonLabel } from '@ionic/react';
+import { IonContent, IonText, IonItem, IonInput, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, IonLoading } from '@ionic/react';
 import React, { useState } from 'react';
 //import './Register.css';
 import { Plugins } from '@capacitor/core';
@@ -7,6 +7,7 @@ import { signupUser } from '../config/firebaseConfig';
 import { toast } from '../utils/toast';
 
 const Register: React.FC = () => {
+  const [busy, setBusy] = useState<boolean>(false)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
@@ -17,18 +18,18 @@ const Register: React.FC = () => {
     }
 
     if (password == confirmPassword) {
+      setBusy(true)
       const res = await signupUser(email, password)
 
       if (res) {
-        return toast('Register success')
+        toast('Register success')
       } else { 
         console.log('Register failed') 
       }
+      setBusy(false)
     } else {
-      return toast('Passwords do not match')
+      toast('Passwords do not match')
     }
-    
-
   }
 
   return (
@@ -38,6 +39,7 @@ const Register: React.FC = () => {
           <IonTitle>Register</IonTitle>
         </IonToolbar>
       </IonHeader>
+      <IonLoading message='Please wait' duration={0} isOpen={busy}/>
       <IonContent fullscreen>
         <IonItem>
           <IonLabel position="floating">Email</IonLabel>
