@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonItem, IonInput, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, IonLoading } from '@ionic/react';
+import { IonContent, IonText, IonItem, IonInput, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonLabel, IonLoading, IonDatetime } from '@ionic/react';
 import React, { useState } from 'react';
 //import './Register.css';
 import { Plugins } from '@capacitor/core';
@@ -8,6 +8,8 @@ import { toast } from '../utils/toast';
 
 const Register: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false)
+  const [name, setName] = useState<string>('')
+  const [birthday, setBirthday] = useState<string>(new Date().toISOString().substr(0,10))
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
@@ -19,7 +21,7 @@ const Register: React.FC = () => {
 
     if (password == confirmPassword) {
       setBusy(true)
-      const res = await signupUser(email, password)
+      const res = await signupUser(name, birthday, email, password)
 
       if (res) {
         toast('Register success')
@@ -42,8 +44,31 @@ const Register: React.FC = () => {
       <IonLoading message='Please wait' duration={0} isOpen={busy}/>
       <IonContent fullscreen>
         <IonItem>
+          <IonLabel position="floating">Full Name</IonLabel>
+          <IonInput
+            required
+            type='text'
+            value={name} 
+            onIonChange={(e: any) => setName(e.target.value)}
+          ></IonInput>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="floating">Day of Birth</IonLabel>
+          <IonDatetime 
+            displayFormat="MMM D, YYYY" 
+            min="1930" 
+            max="2020" 
+            placeholder="Select Date" 
+            value={birthday.substr(0,10)} 
+            onIonChange={(e: any) => setBirthday(e.target.value)}
+          ></IonDatetime>
+        </IonItem>
+
+        <IonItem>
           <IonLabel position="floating">Email</IonLabel>
-          <IonInput 
+          <IonInput
+            required
             type='email'
             value={email} 
             onIonChange={(e: any) => setEmail(e.target.value)}
@@ -53,6 +78,7 @@ const Register: React.FC = () => {
         <IonItem>
           <IonLabel position="floating">Password</IonLabel>
           <IonInput 
+            required
             type='password'
             value={password} 
             onIonChange={(e: any) => setPassword(e.target.value)}
@@ -62,6 +88,7 @@ const Register: React.FC = () => {
         <IonItem>
           <IonLabel position="floating">Confirm Password</IonLabel>
           <IonInput 
+            required
             type='password'
             value={confirmPassword} 
             onIonChange={(e: any) => setConfirmPassword(e.target.value)}

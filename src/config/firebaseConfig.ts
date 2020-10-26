@@ -1,4 +1,5 @@
 import * as firebase from 'firebase'
+import 'firebase/firestore'
 import { toast } from '../utils/toast'
 
 const config = {
@@ -13,6 +14,8 @@ const config = {
 }
 
 firebase.initializeApp(config)
+
+export const database = firebase.firestore()
 
 export function getCurrentUser() {
   return new Promise((resolve) => {
@@ -44,9 +47,17 @@ export async function signoutUser() {
   window.location.replace('/')
 }
 
-export async function signupUser(email: string, password: string) {
+export async function signupUser(name: string, birthday: string, email: string, password: string) {
   try {
     const res = await firebase.auth().createUserWithEmailAndPassword(email, password)
+    const user = {
+      email: res.user?.email,
+      uid: res.user?.uid,
+      name,
+      birthday
+    }
+    const userRes = await database.collection('users').add(user)
+    //console.log(user)
     return true
 
   } catch(error) {

@@ -27,6 +27,7 @@ const Login: React.FC = () => {
       toast('Login success')
     } else {
       toast('Password does not match')
+      setPassword('')
     }
 
     setBusy(false)

@@ -13,15 +13,11 @@ const Home: React.FC = (props) => {
       <IonPage id='main'>
         <IonHeader>
           <IonToolbar>
-            <IonMenuButton className='menu-btn' color='dark'></IonMenuButton>
+            <IonMenuButton slot="start" className='menu-btn' color='dark'></IonMenuButton>
+            <IonTitle>Dashboard</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large">Dashboard</IonTitle>
-            </IonToolbar>
-          </IonHeader>
         
           <IonItem lines='none'>
             <p>{user.email}</p>

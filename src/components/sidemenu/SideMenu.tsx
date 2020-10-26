@@ -12,10 +12,12 @@ import {
 
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { logOutOutline, logOutSharp, homeOutline, homeSharp, personOutline, personSharp } from 'ionicons/icons';
+import { logOutOutline, logOutSharp, homeOutline, homeSharp, personOutline, personSharp, settingsOutline, settingsSharp } from 'ionicons/icons';
 import './SideMenu.css';
 import { signoutUser } from '../../config/firebaseConfig';
 
+
+interface ContainerProps { }
 interface AppPage {
   url: string;
   iosIcon: string;
@@ -26,7 +28,7 @@ interface AppPage {
 const appPages: AppPage[] = [
   {
     title: 'Dashboard',
-    url: '/',
+    url: '/home',
     iosIcon: homeOutline,
     mdIcon: homeSharp
   },
@@ -35,11 +37,17 @@ const appPages: AppPage[] = [
     url: '/profile',
     iosIcon: personOutline,
     mdIcon: personSharp
+  },
+  {
+    title: 'Settings',
+    url: '/settings',
+    iosIcon: settingsOutline,
+    mdIcon: settingsSharp
   }
 ];
 
 
-const SideMenu: React.FC = (props) => {
+const SideMenu: React.FC<ContainerProps> = (props) => {
   const location = useLocation();
   const [user, setUser] = useState<any>(props)
 

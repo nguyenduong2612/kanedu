@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSpinner } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSpinner, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -25,6 +27,22 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { getCurrentUser } from './config/firebaseConfig';
+import { ellipse, personOutline, personSharp, homeOutline, homeSharp } from 'ionicons/icons';
+
+const Routing: React.FC = (props) => {
+  const [user, setUser] = useState<any>(props)
+
+  return (
+    <IonRouterOutlet>
+      <Route path="/" render={() => <Redirect to="/home" />} exact={true} />            
+      <Route path="/login" component={Login} exact />
+      <Route path="/register" component={Register} exact />
+      <Route path="/settings" component={Settings} exact />
+      <Route path='/profile' render={() => (<Profile {...user} />)} exact />
+      <Route path='/home' render={() => (<Home {...user} />)} exact />
+    </IonRouterOutlet>
+  )
+}
 
 const App: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(true)
@@ -47,21 +65,27 @@ const App: React.FC = () => {
     <IonApp>
       {busy ? <IonSpinner /> :
         <IonReactRouter>
-          <IonRouterOutlet>
-            
-            <Route path="/login" component={Login} exact />
-            <Route path="/register" component={Register} exact />
-            <Route 
-              path='/' 
-              render={() => (
-                <Home 
-                  {...user}
-                />
-              )}
-              exact
-            />
-            
-          </IonRouterOutlet>
+          {user ?
+            <IonTabs>
+              <IonRouterOutlet>              
+                <Routing {...user} />
+              </IonRouterOutlet>
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="home" href="/home">
+                  <IonIcon ios={homeOutline} md={homeSharp}/>
+                  <IonLabel>Dashboard</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="tab2" href="/tab2">
+                  <IonIcon icon={ellipse} />
+                  <IonLabel>Tab 2</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="profile" href="/profile">
+                  <IonIcon ios={personOutline} md={personSharp} />
+                  <IonLabel>Profile</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs> : <Routing {...user} />
+          }
         </IonReactRouter>
       }
     </IonApp>
