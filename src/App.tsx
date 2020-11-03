@@ -27,7 +27,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import { getCurrentUser } from './config/firebaseConfig';
-import { ellipse, personOutline, personSharp, homeOutline, homeSharp } from 'ionicons/icons';
+import { peopleOutline, peopleSharp, personOutline, personSharp, homeOutline, homeSharp, searchOutline, searchSharp } from 'ionicons/icons';
 
 const Routing: React.FC = (props) => {
   const [user, setUser] = useState<any>(props)
@@ -75,9 +75,13 @@ const App: React.FC = () => {
                   <IonIcon ios={homeOutline} md={homeSharp}/>
                   <IonLabel>Dashboard</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="tab2" href="/tab2">
-                  <IonIcon icon={ellipse} />
-                  <IonLabel>Tab 2</IonLabel>
+                <IonTabButton tab="search" href="/search">
+                  <IonIcon ios={searchOutline} md={searchSharp} />
+                  <IonLabel>Search</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="community" href="/community">
+                  <IonIcon ios={peopleOutline} md={peopleSharp} />
+                  <IonLabel>Community</IonLabel>
                 </IonTabButton>
                 <IonTabButton tab="profile" href="/profile">
                   <IonIcon ios={personOutline} md={personSharp} />
