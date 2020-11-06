@@ -1,8 +1,8 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenuButton, IonIcon, IonBackButton, IonButtons, IonSplitPane, IonList, IonLabel, IonToggle, IonItemDivider, IonItemGroup, IonLoading } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenuButton, IonIcon, IonBackButton, IonButtons, IonSplitPane, IonList, IonLabel, IonToggle, IonItemDivider, IonItemGroup, IonLoading, IonText } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
-import { database } from '../config/firebaseConfig';
-import { userInfo } from 'os';
+import { database, verifyEmail } from '../config/firebaseConfig';
+import { toast } from '../utils/toast';
 
 interface ContainerProps { }
 
@@ -12,7 +12,6 @@ const Profile: React.FC<ContainerProps> = (props) => {
   const [username, setUsername] = useState<string>('')
   const [birthday, setBirthday] = useState<string>('')
   useEffect(() => {
-
     async function getInfo() {
       setBusy(true)
       const cityRef = database.collection('users').where('uid', '==', user.uid).limit(1)
@@ -31,6 +30,19 @@ const Profile: React.FC<ContainerProps> = (props) => {
     
     getInfo()
   }, [])
+
+  async function verifyUser() {
+    setBusy(true)
+    const res = await verifyEmail()
+
+    if (res) {
+      toast('Email sent')
+    } else {
+      toast('An error happened')
+    }
+
+    setBusy(false)
+  }
 
   return (
       <IonPage id='main'>
@@ -66,6 +78,23 @@ const Profile: React.FC<ContainerProps> = (props) => {
               </IonItem>
               <IonItemDivider />
             </IonItemGroup>
+
+            <IonItemGroup>
+            {user.emailVerified 
+              ? (<IonItem lines='none'>
+                  <IonLabel>Email Verification</IonLabel>
+                  <IonText color="success">Verified</IonText> 
+                </IonItem>)
+
+              : (<IonItem lines='none'>
+                  <IonLabel>Email Verification</IonLabel>
+                  <IonText color="danger">Not Verified</IonText>
+                  <IonButton slot="end" color="primary" onClick={verifyUser}>Verify</IonButton>
+                </IonItem>)
+            }
+              <IonItemDivider />
+            </IonItemGroup>
+
           </IonList>
         </IonContent>
       </IonPage>

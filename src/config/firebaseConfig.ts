@@ -66,3 +66,16 @@ export async function signupUser(name: string, birthday: string, email: string, 
     return false
   }
 }
+
+export async function verifyEmail() {
+  var user = firebase.auth().currentUser;
+  
+  var res = user?.sendEmailVerification().then(function() {
+    return true
+  }).catch(function(error) {
+    console.log(error)
+    return false
+  })
+
+  return res
+}
