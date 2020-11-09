@@ -11,9 +11,11 @@ const Profile: React.FC<ContainerProps> = (props) => {
   const [user, setUser] = useState<any>(props)
   const [username, setUsername] = useState<string>('')
   const [birthday, setBirthday] = useState<string>('')
+  const [profileURL, setProfileURL] = useState<string>('')
   const [verified, setVerified] = useState<boolean>(user.emailVerified)
 
   useEffect(() => {
+    console.log(user)
     async function getInfo() {
       setBusy(true)
       const ref = database.collection('users').where('uid', '==', user.uid).limit(1)
@@ -24,6 +26,7 @@ const Profile: React.FC<ContainerProps> = (props) => {
         docs.forEach(doc => {
           setUsername(doc.data().name)
           setBirthday(doc.data().birthday)
+          setProfileURL(doc.data().profileURL)
         })
       }
 
@@ -62,7 +65,7 @@ const Profile: React.FC<ContainerProps> = (props) => {
           <IonList>
             <IonItemGroup>
               <IonItem lines='none'>
-                <img className='profile-img' src="https://manskkp.lv/assets/images/users/default-user.png" width="100" height="100" />
+                <img className='profile-img' src={profileURL} width="100" height="100" />
               </IonItem>
               <IonItem lines='none'>
                 <b className='username'>{username}</b>

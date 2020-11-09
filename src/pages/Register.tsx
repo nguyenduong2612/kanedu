@@ -21,7 +21,8 @@ const Register: React.FC = () => {
 
     if (password == confirmPassword) {
       setBusy(true)
-      const res = await signupUser(name, birthday, email, password)
+      const profileURL: string = 'https://manskkp.lv/assets/images/users/default-user.png'
+      const res = await signupUser(name, birthday, email, password, profileURL)
 
       if (res) {
         toast('Register success')

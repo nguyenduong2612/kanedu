@@ -30,13 +30,39 @@ export function getCurrentUser() {
   })
 }
 
-export async function loginUser(email: string, password: string) {
+export async function loginUser(email: string, password: string ) {
   try {
-    const res = await firebase.auth().signInWithEmailAndPassword(email, password)
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    await firebase.auth().signInWithEmailAndPassword(email, password)
     window.location.replace('/')
     return true
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+}
 
-  } catch(error) {
+export async function loginWithFacebook() {
+  try {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    var provider = new firebase.auth.FacebookAuthProvider();
+    //provider.addScope('user_birthday');
+    firebase.auth().signInWithPopup(provider).then(async function(data: any) {
+      const user = {
+        birthday: '',
+        email: data.user.email,
+        uid: data.user.uid,
+        name: data.user.displayName,
+        profileURL: data.user.photoURL
+      };
+      const ref = database.collection('users').where('uid', '==', data.user.uid).limit(1)
+      const docs = await ref.get()
+      if (docs.empty) {
+        await database.collection('users').add(user)
+      }
+    })
+    return true
+  } catch (error) {
     console.log(error)
     return false
   }
@@ -47,17 +73,18 @@ export async function signoutUser() {
   window.location.replace('/')
 }
 
-export async function signupUser(name: string, birthday: string, email: string, password: string) {
+export async function signupUser(name: string, birthday: string, email: string, password: string, profileURL: string) {
   try {
     const res = await firebase.auth().createUserWithEmailAndPassword(email, password)
     const user = {
       email: res.user?.email,
       uid: res.user?.uid,
       name,
-      birthday
+      birthday,
+      profileURL
     }
     const userRes = await database.collection('users').add(user)
-    //console.log(user)
+    window.location.replace('/')
     return true
 
   } catch(error) {

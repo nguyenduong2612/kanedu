@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { Plugins } from '@capacitor/core';
 import { Link } from 'react-router-dom';
-import { loginUser } from '../config/firebaseConfig';
+import { loginUser, loginWithFacebook } from '../config/firebaseConfig';
 import { toast } from '../utils/toast';
+import firebase from 'firebase';
 
 const Login: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false)
@@ -31,6 +32,11 @@ const Login: React.FC = () => {
     }
 
     setBusy(false)
+  }
+
+  async function loginFacebook() {
+    await loginWithFacebook()
+    window.history.replaceState({}, '', '/')
   }
 
   return (
@@ -66,6 +72,12 @@ const Login: React.FC = () => {
           expand="block"
           onClick={login}
         >LOGIN</IonButton>
+
+        <IonButton 
+          className='ion-margin'
+          expand="block"
+          onClick={loginFacebook}
+        >LOGIN WITH FACEBOOK</IonButton>
 
         <IonItem lines="none">
           <p>New here? <Link to='/register'>Register</Link></p>

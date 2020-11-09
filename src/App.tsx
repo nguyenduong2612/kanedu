@@ -37,8 +37,8 @@ const Routing: React.FC = (props) => {
 
   return (
     <IonRouterOutlet>
-      <Route path="/" render={() => <Redirect to="/home" />} exact={true} />            
-      <Route path="/login" component={Login} exact />
+      <Route path="/" render={() => <Redirect to="/home" />} exact={true} />  
+      <Route path="/login" component={Login} exact />    
       <Route path="/courses/:id" component={Course} exact />
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />

@@ -15,7 +15,6 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
 
   useEffect(() => {
     async function getInfo() {
-      setBusy(true)
       const ref = database.collection('courses').where('id', '==', Number(match.params.id)).limit(1)
       const docs = await ref.get()
       if (docs.empty) {
@@ -25,8 +24,6 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
           setName(doc.data().name)
         })
       }
-
-      setBusy(false)
     }
     
     getInfo()
