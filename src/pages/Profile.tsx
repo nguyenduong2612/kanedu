@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenuButton, IonIcon, IonBackButton, IonButtons, IonSplitPane, IonList, IonLabel, IonToggle, IonItemDivider, IonItemGroup, IonLoading, IonText } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenuButton, IonIcon, IonBackButton, IonButtons, IonSplitPane, IonList, IonLabel, IonToggle, IonItemDivider, IonItemGroup, IonLoading, IonText, IonRefresher, IonRefresherContent } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import { database, verifyEmail } from '../config/firebaseConfig';
@@ -11,11 +11,13 @@ const Profile: React.FC<ContainerProps> = (props) => {
   const [user, setUser] = useState<any>(props)
   const [username, setUsername] = useState<string>('')
   const [birthday, setBirthday] = useState<string>('')
+  const [verified, setVerified] = useState<boolean>(user.emailVerified)
+
   useEffect(() => {
     async function getInfo() {
       setBusy(true)
-      const cityRef = database.collection('users').where('uid', '==', user.uid).limit(1)
-      const docs = await cityRef.get()
+      const ref = database.collection('users').where('uid', '==', user.uid).limit(1)
+      const docs = await ref.get()
       if (docs.empty) {
         console.log('No such document!')
       } else {
@@ -55,6 +57,7 @@ const Profile: React.FC<ContainerProps> = (props) => {
           </IonToolbar>
         </IonHeader>
         <IonLoading message='Please wait' duration={0} isOpen={busy}/>
+
         <IonContent fullscreen>
           <IonList>
             <IonItemGroup>
@@ -80,21 +83,20 @@ const Profile: React.FC<ContainerProps> = (props) => {
             </IonItemGroup>
 
             <IonItemGroup>
-            {user.emailVerified 
-              ? (<IonItem lines='none'>
-                  <IonLabel>Email Verification</IonLabel>
-                  <IonText color="success">Verified</IonText> 
-                </IonItem>)
+              {verified 
+                ? (<IonItem lines='none'>
+                    <IonLabel>Email Verification</IonLabel>
+                    <IonText color="success">Verified</IonText> 
+                  </IonItem>)
 
-              : (<IonItem lines='none'>
-                  <IonLabel>Email Verification</IonLabel>
-                  <IonText color="danger">Not Verified</IonText>
-                  <IonButton slot="end" color="primary" onClick={verifyUser}>Verify</IonButton>
-                </IonItem>)
-            }
+                : (<IonItem lines='none'>
+                    <IonLabel>Email Verification</IonLabel>
+                    <IonText color="danger">Not Verified</IonText>
+                    <IonButton slot="end" color="primary" onClick={verifyUser}>Verify</IonButton>
+                  </IonItem>)
+              }
               <IonItemDivider />
             </IonItemGroup>
-
           </IonList>
         </IonContent>
       </IonPage>

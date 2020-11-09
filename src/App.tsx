@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSpinner, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSpinner, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent, IonRefresher, IonRefresherContent, IonLoading } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { RefresherEventDetail } from '@ionic/core';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import Course from './pages/Course';
+import Community from './pages/Community';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,8 +43,15 @@ const Routing: React.FC = (props) => {
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path='/profile' render={() => (<Profile {...user} />)} exact />
+      <Route path='/community' render={() => (<Community {...user} />)} exact />
       <Route path='/home' render={() => (<Home {...user} />)} exact />
     </IonRouterOutlet>
+  )
+}
+
+const Loading: React.FC = () => {
+  return (
+    <IonLoading message='Please wait' duration={0} isOpen={true}/>
   )
 }
 
@@ -61,36 +70,48 @@ const App: React.FC = () => {
       }
       setBusy(false)
     })
-  })
+  }, [])
+
+  async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
+    window.location.reload()
+    event.detail.complete()
+  }
 
   return (
     <IonApp>
-      {busy ? <IonSpinner /> :
+      {busy ? <Loading /> :
         <IonReactRouter>
-          {user ?
-            <IonTabs>
-              <IonRouterOutlet>              
-                <Routing {...user} />
-              </IonRouterOutlet>
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="home" href="/home">
-                  <IonIcon ios={homeOutline} md={homeSharp}/>
-                  <IonLabel>Dashboard</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="search" href="/search">
-                  <IonIcon ios={searchOutline} md={searchSharp} />
-                  <IonLabel>Search</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="community" href="/community">
-                  <IonIcon ios={peopleOutline} md={peopleSharp} />
-                  <IonLabel>Community</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="profile" href="/profile">
-                  <IonIcon ios={personOutline} md={personSharp} />
-                  <IonLabel>Profile</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs> : <Routing {...user} />
+          {user
+            ? <IonContent fullscreen>
+                <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
+                  <IonRefresherContent></IonRefresherContent>
+                </IonRefresher>
+
+                <IonTabs>
+                  <IonRouterOutlet>              
+                    <Routing {...user} />
+                  </IonRouterOutlet>
+                  <IonTabBar slot="bottom">
+                    <IonTabButton tab="home" href="/home">
+                      <IonIcon ios={homeOutline} md={homeSharp}/>
+                      <IonLabel>Dashboard</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="search" href="/search">
+                      <IonIcon ios={searchOutline} md={searchSharp} />
+                      <IonLabel>Search</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="community" href="/community">
+                      <IonIcon ios={peopleOutline} md={peopleSharp} />
+                      <IonLabel>Community</IonLabel>
+                    </IonTabButton>
+                    <IonTabButton tab="profile" href="/profile">
+                      <IonIcon ios={personOutline} md={personSharp} />
+                      <IonLabel>Profile</IonLabel>
+                    </IonTabButton>
+                  </IonTabBar>
+                </IonTabs>
+              </IonContent>
+            : <Routing {...user} />
           }
         </IonReactRouter>
       }
