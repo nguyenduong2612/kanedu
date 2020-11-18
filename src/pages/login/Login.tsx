@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { Plugins } from '@capacitor/core';
 import { Link } from 'react-router-dom';
-import { loginUser, loginWithFacebook } from '../config/firebaseConfig';
-import { toast } from '../utils/toast';
+import { loginUser, loginWithFacebook } from '../../config/firebaseConfig';
+import { toast } from '../../utils/toast';
 import firebase from 'firebase';
 
 const Login: React.FC = () => {

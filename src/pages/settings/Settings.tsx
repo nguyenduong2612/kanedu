@@ -1,6 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenuButton, IonIcon, IonBackButton, IonButtons, IonSplitPane, IonList, IonLabel, IonToggle } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
-import SideMenu from '../components/sidemenu/SideMenu';
 
 interface ContainerProps { }
 

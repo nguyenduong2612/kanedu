@@ -3,13 +3,15 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSpinner, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent, IonRefresher, IonRefresherContent, IonLoading } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { RefresherEventDetail } from '@ionic/core';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Settings from './pages/Settings';
-import Profile from './pages/Profile';
-import Course from './pages/Course';
-import Community from './pages/Community';
+import { getPlatforms } from '@ionic/react';
+import Home from './pages/home/Home';
+import Login from './pages/login/Login';
+import Register from './pages/register/Register';
+import Settings from './pages/settings/Settings';
+import Profile from './pages/profile/Profile';
+import Course from './pages/course/Course';
+import Lesson from './pages/lesson/Lesson';
+import Community from './pages/community/Community';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -40,6 +42,7 @@ const Routing: React.FC = (props) => {
       <Route path="/" render={() => <Redirect to="/home" />} exact={true} />  
       <Route path="/login" component={Login} exact />    
       <Route path="/courses/:id" component={Course} exact />
+      <Route path="/courses/:course_id/:lesson_id" component={Lesson} exact />
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path='/profile' render={() => (<Profile {...user} />)} exact />
@@ -60,6 +63,7 @@ const App: React.FC = () => {
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
+    console.log(getPlatforms())
     getCurrentUser().then(user => {
       //console.log(user)
       if (user) {

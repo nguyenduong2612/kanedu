@@ -1,9 +1,9 @@
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
-import { database } from '../config/firebaseConfig';
+import { database } from '../../config/firebaseConfig';
 
 interface ContainerProps {
-  id: number
+  id: string
 }
 
 const CourseContainer: React.FC<ContainerProps> = ({ id }: ContainerProps) => {
@@ -11,14 +11,12 @@ const CourseContainer: React.FC<ContainerProps> = ({ id }: ContainerProps) => {
 
   useEffect(() => {
     async function getInfo() {
-      const ref = database.collection('courses').where('id', '==', id).limit(1)
-      const docs = await ref.get()
-      if (docs.empty) {
+      const ref: any = database.collection('courses').doc(id)
+      const doc: any = await ref.get()
+      if (!doc.exists) {
         console.log('No such document!')
       } else {
-        docs.forEach(doc => {
-          setName(doc.data().name)
-        })
+        setName(doc.data().name)
       }
     }
     
@@ -29,7 +27,6 @@ const CourseContainer: React.FC<ContainerProps> = ({ id }: ContainerProps) => {
     <IonItem lines='none' href={`/courses/${id}`}>
       <IonCard>
           <IonCardHeader>
-            <IonCardSubtitle>{id}</IonCardSubtitle>
             <IonCardTitle>{name}</IonCardTitle>
           </IonCardHeader>
         </IonCard>

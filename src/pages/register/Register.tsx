@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 //import './Register.css';
 import { Plugins } from '@capacitor/core';
 import { Link } from 'react-router-dom';
-import { signupUser } from '../config/firebaseConfig';
-import { toast } from '../utils/toast';
+import { signupUser } from '../../config/firebaseConfig';
+import { toast } from '../../utils/toast';
 
 const Register: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false)

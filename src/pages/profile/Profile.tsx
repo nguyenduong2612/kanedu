@@ -1,8 +1,8 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenuButton, IonIcon, IonBackButton, IonButtons, IonSplitPane, IonList, IonLabel, IonToggle, IonItemDivider, IonItemGroup, IonLoading, IonText, IonRefresher, IonRefresherContent } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
-import { database, verifyEmail } from '../config/firebaseConfig';
-import { toast } from '../utils/toast';
+import { database, verifyEmail } from '../../config/firebaseConfig';
+import { toast } from '../../utils/toast';
 
 interface ContainerProps { }
 
@@ -15,7 +15,6 @@ const Profile: React.FC<ContainerProps> = (props) => {
   const [verified, setVerified] = useState<boolean>(user.emailVerified)
 
   useEffect(() => {
-    console.log(user)
     async function getInfo() {
       setBusy(true)
       const ref = database.collection('users').where('uid', '==', user.uid).limit(1)

@@ -1,6 +1,6 @@
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
-import '../theme/app.css'
+import '../../theme/app.css'
 
 interface ContainerProps { }
 

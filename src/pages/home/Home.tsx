@@ -1,8 +1,8 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenu, IonList, IonApp, IonMenuButton, IonSplitPane } from '@ionic/react';
 import React, { useState } from 'react';
 import './Home.css';
-import SideMenu from '../components/sidemenu/SideMenu';
-import CourseContainer from '../components/CourseContainer';
+import SideMenu from '../../components/sidemenu/SideMenu';
+import CourseContainer from '../../components/course/CourseContainer';
 
 const Home: React.FC = (props) => {
   const [user, setUser] = useState<any>(props)
@@ -24,7 +24,7 @@ const Home: React.FC = (props) => {
             <p>{user.email}</p>
           </IonItem>
 
-          <CourseContainer id={1} />
+          <CourseContainer id={'7Rs1TV3r2jPqKH7cJQYR'} />
 
         </IonContent>
       </IonPage>
