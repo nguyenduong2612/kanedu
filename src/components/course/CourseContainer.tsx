@@ -24,8 +24,8 @@ const CourseContainer: React.FC<ContainerProps> = ({ id }: ContainerProps) => {
   }, [])
   
   return (
-    <IonItem lines='none' href={`/courses/${id}`}>
-      <IonCard>
+    <IonItem lines='none' routerLink={`/courses/${id}`}>
+      <IonCard style={{ width: '100%' }}>
           <IonCardHeader>
             <IonCardTitle>{name}</IonCardTitle>
           </IonCardHeader>

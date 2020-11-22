@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSpinner, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent, IonRefresher, IonRefresherContent, IonLoading } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent, IonRefresher, IonRefresherContent, IonLoading, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { RefresherEventDetail } from '@ionic/core';
 import { getPlatforms } from '@ionic/react';
@@ -33,6 +33,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import { getCurrentUser } from './config/firebaseConfig';
 import { peopleOutline, peopleSharp, personOutline, personSharp, homeOutline, homeSharp, searchOutline, searchSharp } from 'ionicons/icons';
+import SideMenu from './components/sidemenu/SideMenu';
 
 const Routing: React.FC = (props) => {
   const [user, setUser] = useState<any>(props)
@@ -85,8 +86,11 @@ const App: React.FC = () => {
     <IonApp>
       {busy ? <Loading /> :
         <IonReactRouter>
-          {user
-            ? <IonContent fullscreen>
+          {user ? 
+            <IonSplitPane contentId='main'>
+              <SideMenu {...user} />
+              
+              <IonContent fullscreen id='main'>
                 <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
                   <IonRefresherContent></IonRefresherContent>
                 </IonRefresher>
@@ -115,6 +119,8 @@ const App: React.FC = () => {
                   </IonTabBar>
                 </IonTabs>
               </IonContent>
+
+            </IonSplitPane>
             : <Routing {...user} />
           }
         </IonReactRouter>

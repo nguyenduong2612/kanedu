@@ -1,7 +1,7 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonButton, IonMenuButton, IonIcon, IonBackButton, IonButtons, IonSplitPane, IonList, IonLabel, IonToggle, IonLoading } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonBackButton, IonButtons, IonLoading } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
-import LessonList from '../../components/lesson/LessonList';
+import CardList from '../../components/cards/CardList';
 import { database } from '../../config/firebaseConfig';
 
 interface MatchParams {
@@ -42,7 +42,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
       <IonLoading message='Please wait' duration={0} isOpen={busy}/>
       <IonContent fullscreen>
         
-        {/* <LessonList courseId={match.params.id}/> */}
+        <CardList courseId={match.params.course_id} lessonId={match.params.lesson_id} />
       </IonContent>
     </IonPage>
   );

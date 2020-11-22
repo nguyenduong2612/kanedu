@@ -27,17 +27,17 @@ const LessonList: React.FC<ContainerProps> = ({ courseId }: ContainerProps) => {
   }, [])
   
   return (
-    <>
+    <div style={{ paddingTop: 30 }}>
       {lessonList.map((lesson: any, index: number) => {
-        return <IonItem lines='none' key={index} href={`/courses/${courseId}/${lesson.id}`}>
-                <IonCard>
+        return <IonItem lines='none' key={index} routerLink={`/courses/${courseId}/${lesson.id}`}>
+                <IonCard style={{ width: '100%' }}>
                   <IonCardHeader>
                     <IonCardTitle>{lesson.data().title}</IonCardTitle>
                   </IonCardHeader>
                 </IonCard>
               </IonItem>
       })}
-    </>
+    </div>
   );
 };
 
