@@ -41,7 +41,7 @@ const CardList: React.FC<ContainerProps> = ({ courseId, lessonId }: ContainerPro
           { cardList.map((card: any, index: number) => {
             return <IonSlide key={index} >
                     <div className={flipped ? 'flip-container flipped': 'flip-container'}>
-                      <div className="flipper" onClick={() => setFlipped(!flipped)}>
+                      <div className="flipper">
                         <IonCard className='front card'>
                           <IonCardHeader className='keyword-wrapper'>
                             <IonCardTitle className='keyword'>{card.data().keyword}</IonCardTitle>
