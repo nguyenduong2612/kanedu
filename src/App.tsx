@@ -12,6 +12,7 @@ import Profile from './pages/profile/Profile';
 import Course from './pages/course/Course';
 import Lesson from './pages/lesson/Lesson';
 import Community from './pages/community/Community';
+import Search from './pages/search/Search';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -46,6 +47,7 @@ const Routing: React.FC = (props) => {
       <Route path="/courses/:course_id/:lesson_id" component={Lesson} exact />
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
+      <Route path="/search" component={Search} exact />
       <Route path='/profile' render={() => (<Profile {...user} />)} exact />
       <Route path='/community' render={() => (<Community {...user} />)} exact />
       <Route path='/home' render={() => (<Home {...user} />)} exact />
