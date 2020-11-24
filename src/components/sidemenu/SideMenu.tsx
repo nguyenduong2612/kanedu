@@ -8,16 +8,24 @@ import {
   IonMenu,
   IonMenuToggle,
   IonNote,
-} from '@ionic/react';
+} from "@ionic/react";
 
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { logOutOutline, logOutSharp, homeOutline, homeSharp, personOutline, personSharp, settingsOutline, settingsSharp } from 'ionicons/icons';
-import './SideMenu.css';
-import { signoutUser } from '../../config/firebaseConfig';
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import {
+  logOutOutline,
+  logOutSharp,
+  homeOutline,
+  homeSharp,
+  personOutline,
+  personSharp,
+  settingsOutline,
+  settingsSharp,
+} from "ionicons/icons";
+import "./SideMenu.css";
+import { signoutUser } from "../../config/firebaseConfig";
 
-
-interface ContainerProps { }
+interface ContainerProps {}
 interface AppPage {
   url: string;
   iosIcon: string;
@@ -27,29 +35,28 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: 'Dashboard',
-    url: '/home',
+    title: "Dashboard",
+    url: "/home",
     iosIcon: homeOutline,
-    mdIcon: homeSharp
+    mdIcon: homeSharp,
   },
   {
-    title: 'Profile',
-    url: '/profile',
+    title: "Profile",
+    url: "/profile",
     iosIcon: personOutline,
-    mdIcon: personSharp
+    mdIcon: personSharp,
   },
   {
-    title: 'Settings',
-    url: '/settings',
+    title: "Settings",
+    url: "/settings",
     iosIcon: settingsOutline,
-    mdIcon: settingsSharp
-  }
+    mdIcon: settingsSharp,
+  },
 ];
-
 
 const SideMenu: React.FC<ContainerProps> = (props) => {
   const location = useLocation();
-  const [user, setUser] = useState<any>(props)
+  const [user, setUser] = useState<any>(props);
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -60,8 +67,20 @@ const SideMenu: React.FC<ContainerProps> = (props) => {
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                <IonItem
+                  className={
+                    location.pathname === appPage.url ? "selected" : ""
+                  }
+                  routerLink={appPage.url}
+                  routerDirection="none"
+                  lines="none"
+                  detail={false}
+                >
+                  <IonIcon
+                    slot="start"
+                    ios={appPage.iosIcon}
+                    md={appPage.mdIcon}
+                  />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
@@ -69,8 +88,18 @@ const SideMenu: React.FC<ContainerProps> = (props) => {
           })}
           <IonMenuToggle autoHide={false}>
             <IonItem />
-            <IonItem onClick={signoutUser} routerDirection="none" lines="none" detail={false}>
-              <IonIcon color="danger" slot="start" ios={logOutOutline} md={logOutSharp} />
+            <IonItem
+              onClick={signoutUser}
+              routerDirection="none"
+              lines="none"
+              detail={false}
+            >
+              <IonIcon
+                color="danger"
+                slot="start"
+                ios={logOutOutline}
+                md={logOutSharp}
+              />
               <IonLabel color="danger">Logout</IonLabel>
             </IonItem>
           </IonMenuToggle>

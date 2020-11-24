@@ -1,41 +1,56 @@
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonItem } from '@ionic/react';
-import React, { useEffect, useState } from 'react';
-import { database } from '../../config/firebaseConfig';
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonItem,
+} from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import { database } from "../../config/firebaseConfig";
 
 interface ContainerProps {
-  courseId: string
+  courseId: string;
 }
 
 const LessonList: React.FC<ContainerProps> = ({ courseId }: ContainerProps) => {
-  const [name, setName] = useState<string>('')
-  const [lessonList, setLessonList] = useState<any[]>([])
+  const [name, setName] = useState<string>("");
+  const [lessonList, setLessonList] = useState<any[]>([]);
 
   useEffect(() => {
     async function getAllLesson() {
-      const ref = database.collection('courses').doc(courseId).collection('lessons')
-      const docs = await ref.get()
+      const ref = database
+        .collection("courses")
+        .doc(courseId)
+        .collection("lessons");
+      const docs = await ref.get();
       if (docs.empty) {
-        console.log('No such document!')
+        console.log("No such document!");
       } else {
-        docs.forEach(doc => {
-          setLessonList(lessonList => [...lessonList, doc])
-        })
+        docs.forEach((doc) => {
+          setLessonList((lessonList) => [...lessonList, doc]);
+        });
       }
     }
-  
-    getAllLesson()
-  }, [])
-  
+
+    getAllLesson();
+  }, []);
+
   return (
     <div style={{ paddingTop: 30 }}>
       {lessonList.map((lesson: any, index: number) => {
-        return <IonItem lines='none' key={index} routerLink={`/courses/${courseId}/${lesson.id}`}>
-                <IonCard style={{ width: '100%' }}>
-                  <IonCardHeader>
-                    <IonCardTitle>{lesson.data().title}</IonCardTitle>
-                  </IonCardHeader>
-                </IonCard>
-              </IonItem>
+        return (
+          <IonItem
+            lines="none"
+            key={index}
+            routerLink={`/courses/${courseId}/${lesson.id}`}
+          >
+            <IonCard style={{ width: "100%" }}>
+              <IonCardHeader>
+                <IonCardTitle>{lesson.data().title}</IonCardTitle>
+              </IonCardHeader>
+            </IonCard>
+          </IonItem>
+        );
       })}
     </div>
   );
