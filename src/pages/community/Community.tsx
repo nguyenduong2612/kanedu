@@ -6,6 +6,7 @@ import {
   IonBackButton,
   IonTitle,
   IonContent,
+  IonMenuButton,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import "../../theme/app.css";
@@ -15,7 +16,7 @@ interface ContainerProps {}
 const VerifyRequest: React.FC = () => {
   return (
     <div className="container">
-      <strong>Please verify your email</strong>
+      <strong>Vui lòng xác nhận email của bạn</strong>
     </div>
   );
 };
@@ -28,10 +29,12 @@ const Community: React.FC<ContainerProps> = (props) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
-          </IonButtons>
-          <IonTitle>Community</IonTitle>
+          <IonMenuButton
+            slot="start"
+            className="menu-btn"
+            color="dark"
+          ></IonMenuButton>
+          <IonTitle>Cộng đồng</IonTitle>
         </IonToolbar>
       </IonHeader>
       {verified ? <IonContent fullscreen></IonContent> : <VerifyRequest />}

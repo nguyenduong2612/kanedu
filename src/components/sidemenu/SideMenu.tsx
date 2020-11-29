@@ -21,6 +21,8 @@ import {
   personSharp,
   settingsOutline,
   settingsSharp,
+  peopleOutline,
+  peopleSharp,
 } from "ionicons/icons";
 import "./SideMenu.css";
 import { signoutUser } from "../../config/firebaseConfig";
@@ -35,19 +37,25 @@ interface AppPage {
 
 const appPages: AppPage[] = [
   {
-    title: "Dashboard",
+    title: "Trang chủ",
     url: "/home",
     iosIcon: homeOutline,
     mdIcon: homeSharp,
   },
   {
-    title: "Profile",
+    title: "Tài khoản",
     url: "/profile",
     iosIcon: personOutline,
     mdIcon: personSharp,
   },
   {
-    title: "Settings",
+    title: "Cộng đồng",
+    url: "/community",
+    iosIcon: peopleOutline,
+    mdIcon: peopleSharp,
+  },
+  {
+    title: "Cài đặt",
     url: "/settings",
     iosIcon: settingsOutline,
     mdIcon: settingsSharp,
@@ -62,7 +70,7 @@ const SideMenu: React.FC<ContainerProps> = (props) => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Hello</IonListHeader>
+          <IonListHeader>Xin chào</IonListHeader>
           <IonNote>{user.email}</IonNote>
           {appPages.map((appPage, index) => {
             return (
@@ -100,7 +108,7 @@ const SideMenu: React.FC<ContainerProps> = (props) => {
                 ios={logOutOutline}
                 md={logOutSharp}
               />
-              <IonLabel color="danger">Logout</IonLabel>
+              <IonLabel color="danger">Đăng xuất</IonLabel>
             </IonItem>
           </IonMenuToggle>
         </IonList>

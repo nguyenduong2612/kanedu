@@ -15,10 +15,7 @@ import React, { useState, useEffect } from "react";
 
 interface ContainerProps {}
 
-const Settings: React.FC<ContainerProps> = () => {
-  function setDarkMode(event: any) {
-    document.body.classList.toggle("dark", event.detail.checked);
-  }
+const Testing: React.FC<ContainerProps> = () => {
 
   return (
     <IonPage>
@@ -27,19 +24,14 @@ const Settings: React.FC<ContainerProps> = () => {
           <IonButtons slot="start">
             <IonBackButton color="dark" defaultHref="/" />
           </IonButtons>
-          <IonTitle>Cài đặt</IonTitle>
+          <IonTitle>Làm bài kiểm tra</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
-          <IonItem>
-            <IonLabel>Dark Mode</IonLabel>
-            <IonToggle onIonChange={(e: any) => setDarkMode(e)} />
-          </IonItem>
-        </IonList>
+        
       </IonContent>
     </IonPage>
   );
 };
 
-export default Settings;
+export default Testing;

@@ -32,16 +32,16 @@ const Login: React.FC = () => {
 
   async function login() {
     if (email.trim() === "" || password.trim() === "") {
-      return toast("Email and password are required");
+      return toast("Hãy nhập email và mật khẩu");
     }
 
     setBusy(true);
     const res = await loginUser(email, password);
 
     if (res) {
-      toast("Login success");
+      toast("Đăng nhập thành công");
     } else {
-      toast("Password does not match");
+      toast("Mật khẩu không chính xác");
       setPassword("");
     }
 
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Login</IonTitle>
+          <IonTitle>Đăng nhập</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonLoading message="Please wait" duration={0} isOpen={busy} />
@@ -72,7 +72,7 @@ const Login: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <IonLabel position="floating">Password</IonLabel>
+          <IonLabel position="floating">Mật khẩu</IonLabel>
           <IonInput
             type="password"
             value={password}
@@ -81,7 +81,7 @@ const Login: React.FC = () => {
         </IonItem>
 
         <IonButton className="ion-margin" expand="block" onClick={login}>
-          LOGIN
+          ĐĂNG NHẬP
         </IonButton>
 
         <IonButton
@@ -89,12 +89,12 @@ const Login: React.FC = () => {
           expand="block"
           onClick={loginFacebook}
         >
-          LOGIN WITH FACEBOOK
+          ĐĂNG NHẬP VỚI FACEBOOK
         </IonButton>
 
         <IonItem lines="none">
           <p>
-            New here? <Link to="/register">Register</Link>
+            Chưa có tài khoản? <Link to="/register">Đăng ký</Link>
           </p>
         </IonItem>
       </IonContent>

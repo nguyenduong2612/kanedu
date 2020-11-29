@@ -14,6 +14,7 @@ import {
   IonItemGroup,
   IonLoading,
   IonText,
+  IonMenuButton,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import "./Profile.css";
@@ -71,10 +72,12 @@ const Profile: React.FC<ContainerProps> = (props) => {
     <IonPage id="main">
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
-          </IonButtons>
-          <IonTitle>Profile</IonTitle>
+          <IonMenuButton
+            slot="start"
+            className="menu-btn"
+            color="dark"
+          ></IonMenuButton>
+          <IonTitle>Tài khoản</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonLoading message="Please wait" duration={0} isOpen={busy} />
@@ -102,7 +105,7 @@ const Profile: React.FC<ContainerProps> = (props) => {
               <p style={{ color: "#aaa" }}>{user.email}</p>
             </IonItem>
             <IonItem lines="none">
-              <IonLabel>Day of Birth</IonLabel>
+              <IonLabel>Ngày sinh</IonLabel>
               <p style={{ color: "#aaa" }}>{birthday}</p>
             </IonItem>
             <IonItemDivider />
@@ -111,15 +114,15 @@ const Profile: React.FC<ContainerProps> = (props) => {
           <IonItemGroup>
             {verified ? (
               <IonItem lines="none">
-                <IonLabel>Email Verification</IonLabel>
-                <IonText color="success">Verified</IonText>
+                <IonLabel>Xác thực email</IonLabel>
+                <IonText color="success">Đã xác thực</IonText>
               </IonItem>
             ) : (
               <IonItem lines="none">
-                <IonLabel>Email Verification</IonLabel>
-                <IonText color="danger">Not Verified</IonText>
+                <IonLabel>Xác thực email</IonLabel>
+                <IonText color="danger">Chưa xác thực</IonText>
                 <IonButton slot="end" color="primary" onClick={verifyUser}>
-                  Verify
+                  Xác thực
                 </IonButton>
               </IonItem>
             )}

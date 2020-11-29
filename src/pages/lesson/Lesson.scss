@@ -1,0 +1,27 @@
+.cards-preview {
+  height: 40%;
+}
+
+.main-menu {
+  height: 60%;
+  .menu-button {
+    width: 85%;
+    margin: auto;
+    border-bottom: solid 5px mediumspringgreen;
+    .menu-icon {
+      text-align: center;
+      font-size: 30px;
+      padding: 12px 0 0;
+    }
+    .menu-title {
+      text-align: center;
+      padding-bottom: 15px;
+      margin: 0;
+    }
+  }
+}
+
+.padding-x {
+  padding-left: 5%;
+  padding-right: 5%;
+}

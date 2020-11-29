@@ -29,7 +29,7 @@ const Register: React.FC = () => {
 
   async function signup() {
     if (email.trim() === "" || password.trim() === "") {
-      return toast("Email and password are required");
+      return toast("Hãy nhập email và mật khẩu");
     }
 
     if (password == confirmPassword) {
@@ -39,13 +39,13 @@ const Register: React.FC = () => {
       const res = await signupUser(name, birthday, email, password, profileURL);
 
       if (res) {
-        toast("Register success");
+        toast("Đăng ký thành công");
       } else {
         console.log("Register failed");
       }
       setBusy(false);
     } else {
-      toast("Passwords do not match");
+      toast("Mật khẩu xác nhận không khớp");
     }
   }
 
@@ -53,13 +53,13 @@ const Register: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Register</IonTitle>
+          <IonTitle>Đăng ký</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonLoading message="Please wait" duration={0} isOpen={busy} />
       <IonContent fullscreen>
         <IonItem>
-          <IonLabel position="floating">Full Name</IonLabel>
+          <IonLabel position="floating">Họ tên</IonLabel>
           <IonInput
             required
             type="text"
@@ -69,7 +69,7 @@ const Register: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <IonLabel position="floating">Day of Birth</IonLabel>
+          <IonLabel position="floating">Ngày sinh</IonLabel>
           <IonDatetime
             displayFormat="MMM D, YYYY"
             min="1930"
@@ -91,7 +91,7 @@ const Register: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <IonLabel position="floating">Password</IonLabel>
+          <IonLabel position="floating">Mật khẩu</IonLabel>
           <IonInput
             required
             type="password"
@@ -101,7 +101,7 @@ const Register: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <IonLabel position="floating">Confirm Password</IonLabel>
+          <IonLabel position="floating">Xác nhận mật khẩu</IonLabel>
           <IonInput
             required
             type="password"
@@ -111,12 +111,12 @@ const Register: React.FC = () => {
         </IonItem>
 
         <IonButton className="ion-margin" expand="block" onClick={signup}>
-          REGISTER
+          ĐĂNG KÝ
         </IonButton>
 
         <IonItem lines="none">
           <p>
-            Already have an account? <Link to="/login">Login</Link>
+            Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
           </p>
         </IonItem>
       </IonContent>

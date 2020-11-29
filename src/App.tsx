@@ -28,6 +28,8 @@ import Settings from "./pages/settings/Settings";
 import Profile from "./pages/profile/Profile";
 import Course from "./pages/course/Course";
 import Lesson from "./pages/lesson/Lesson";
+import Learning from "./pages/lesson/Learning";
+import Testing from "./pages/lesson/Testing";
 import Community from "./pages/community/Community";
 import Search from "./pages/search/Search";
 
@@ -73,6 +75,8 @@ const Routing: React.FC = (props) => {
       <Route path="/login" component={Login} exact />
       <Route path="/courses/:id" component={Course} exact />
       <Route path="/courses/:course_id/:lesson_id" component={Lesson} exact />
+      <Route path="/courses/:course_id/:lesson_id/study" component={Learning} exact />
+      <Route path="/courses/:course_id/:lesson_id/test" component={Testing} exact />
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />
@@ -129,22 +133,22 @@ const App: React.FC = () => {
                   <IonRouterOutlet>
                     <Routing {...user} />
                   </IonRouterOutlet>
-                  <IonTabBar slot="bottom">
+                  <IonTabBar slot="bottom" id="appTabBar">
                     <IonTabButton tab="home" href="/home">
                       <IonIcon ios={homeOutline} md={homeSharp} />
-                      <IonLabel>Dashboard</IonLabel>
+                      <IonLabel>Trang chủ</IonLabel>
                     </IonTabButton>
                     <IonTabButton tab="search" href="/search">
                       <IonIcon ios={searchOutline} md={searchSharp} />
-                      <IonLabel>Search</IonLabel>
+                      <IonLabel>Tìm kiếm</IonLabel>
                     </IonTabButton>
                     <IonTabButton tab="community" href="/community">
                       <IonIcon ios={peopleOutline} md={peopleSharp} />
-                      <IonLabel>Community</IonLabel>
+                      <IonLabel>Cộng đồng</IonLabel>
                     </IonTabButton>
                     <IonTabButton tab="profile" href="/profile">
                       <IonIcon ios={personOutline} md={personSharp} />
-                      <IonLabel>Profile</IonLabel>
+                      <IonLabel>Tài khoản</IonLabel>
                     </IonTabButton>
                   </IonTabBar>
                 </IonTabs>

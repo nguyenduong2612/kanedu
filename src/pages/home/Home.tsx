@@ -24,7 +24,7 @@ const Home: React.FC = (props) => {
             className="menu-btn"
             color="dark"
           ></IonMenuButton>
-          <IonTitle>Dashboard</IonTitle>
+          <IonTitle>Trang chủ</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

@@ -9,6 +9,7 @@ import {
   IonList,
   IonSearchbar,
   IonItem,
+  IonMenuButton,
 } from "@ionic/react";
 import algoliasearch from "algoliasearch";
 import React, { useState, useEffect } from "react";
@@ -58,10 +59,12 @@ const Search: React.FC<ContainerProps> = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
-          </IonButtons>
-          <IonTitle>Search</IonTitle>
+          <IonMenuButton
+            slot="start"
+            className="menu-btn"
+            color="dark"
+          ></IonMenuButton>
+          <IonTitle>Tìm kiếm</IonTitle>
         </IonToolbar>
       </IonHeader>
 
