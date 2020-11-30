@@ -27,6 +27,7 @@ interface ContainerProps {}
 
 interface PostListProps {
   postList: any[];
+  username: string;
 }
 
 const VerifyRequest: React.FC = () => {
@@ -37,11 +38,11 @@ const VerifyRequest: React.FC = () => {
   );
 };
 
-const PostList: React.FC<PostListProps> = ({ postList }) => {
+const PostList: React.FC<PostListProps> = ({ postList, username }) => {
   return (
     <div style={{ paddingTop: 10 }}>
       {postList.map((post: any, index: number) => {
-        return <Post key={index} post={post} />;
+        return <Post key={index} post={post} username={username} />;
       })}
     </div>
   );
@@ -83,7 +84,7 @@ const Community: React.FC<ContainerProps> = (props) => {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
-          setPostList((postList) => [...postList, doc.data()]);
+          setPostList((postList) => [...postList, {data: doc.data(), id: doc.id}]);
         });
       }
     }
@@ -101,8 +102,9 @@ const Community: React.FC<ContainerProps> = (props) => {
       created_at: Date.now(),
     };
 
-    setPostList((postList) => [post, ...postList]);
-    await database.collection("posts").add(post);
+    const res = await database.collection("posts").add(post);
+    
+    setPostList((postList) => [{data: post, id: res.id}, ...postList]);
     toast("Đăng thành công");
     setShowPopover(false);
   }
@@ -181,7 +183,7 @@ const Community: React.FC<ContainerProps> = (props) => {
             </IonRow>
           </IonGrid>
 
-          <PostList postList={postList} />
+          <PostList postList={postList} username={username} />
         </IonContent>
       ) : (
         <VerifyRequest />
