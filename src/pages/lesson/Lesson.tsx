@@ -6,12 +6,10 @@ import {
   IonToolbar,
   IonBackButton,
   IonButtons,
-  IonLoading,
   IonGrid,
   IonCol,
   IonRow,
   IonCard,
-  IonCardTitle,
   IonCardHeader,
   IonIcon,
   IonCardSubtitle,
@@ -22,12 +20,12 @@ import {
   pencilOutline,
   pencilSharp,
 } from "ionicons/icons";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { RouteComponentProps } from "react-router";
-import CardPreview from "../../components/cards/CardPreview";
 import { database } from "../../config/firebaseConfig";
 import "./Lesson.scss";
 
+const CardPreview = lazy(() => import("../../components/cards/CardPreview"));
 interface MatchParams {
   course_id: string;
   lesson_id: string;
@@ -36,7 +34,6 @@ interface MatchParams {
 interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const Lesson: React.FC<ContainerProps> = ({ match }) => {
-  const [busy, setBusy] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [numberOfCards, setNumberOfCards] = useState<number>();
 
@@ -66,7 +63,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
     }
 
     getInfo();
-  }, []);
+  }, [match]);
 
   return (
     <IonPage>
@@ -81,7 +78,6 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonLoading message="Please wait" duration={0} isOpen={busy} />
 
       <IonContent fullscreen>
         <div className="cards-preview">

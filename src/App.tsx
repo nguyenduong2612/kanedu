@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -18,20 +18,6 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import { RefresherEventDetail } from "@ionic/core";
 import { getPlatforms } from "@ionic/react";
-
-/* Pages and components */
-import SideMenu from "./components/sidemenu/SideMenu";
-import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/Register";
-import Settings from "./pages/settings/Settings";
-import Profile from "./pages/profile/Profile";
-import Course from "./pages/course/Course";
-import Lesson from "./pages/lesson/Lesson";
-import Learning from "./pages/lesson/Learning";
-import Testing from "./pages/lesson/Testing";
-import Community from "./pages/community/Community";
-import Search from "./pages/search/Search";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -66,8 +52,22 @@ import {
 
 import { getCurrentUser } from "./config/firebaseConfig";
 
+/* Pages and components */
+const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
+const Home = lazy(() => import("./pages/home/Home"));
+const Login = lazy(() => import("./pages/login/Login"));
+const Register = lazy(() => import("./pages/register/Register"));
+const Settings = lazy(() => import("./pages/settings/Settings"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
+const Course = lazy(() => import("./pages/course/Course"));
+const Lesson = lazy(() => import("./pages/lesson/Lesson"));
+const Learning = lazy(() => import("./pages/lesson/Learning"));
+const Testing = lazy(() => import("./pages/lesson/Testing"));
+const Community = lazy(() => import("./pages/community/Community"));
+const Search = lazy(() => import("./pages/search/Search"));
+
 const Routing: React.FC = (props) => {
-  const [user, setUser] = useState<any>(props);
+  const user: any = props;
 
   return (
     <IonRouterOutlet>
@@ -75,8 +75,16 @@ const Routing: React.FC = (props) => {
       <Route path="/login" component={Login} exact />
       <Route path="/courses/:id" component={Course} exact />
       <Route path="/courses/:course_id/:lesson_id" component={Lesson} exact />
-      <Route path="/courses/:course_id/:lesson_id/study" component={Learning} exact />
-      <Route path="/courses/:course_id/:lesson_id/test" component={Testing} exact />
+      <Route
+        path="/courses/:course_id/:lesson_id/study"
+        component={Learning}
+        exact
+      />
+      <Route
+        path="/courses/:course_id/:lesson_id/test"
+        component={Testing}
+        exact
+      />
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />
@@ -115,51 +123,53 @@ const App: React.FC = () => {
   }
 
   return (
-    <IonApp>
-      {busy ? (
-        <Loading />
-      ) : (
-        <IonReactRouter>
-          {user ? (
-            <IonSplitPane contentId="main">
-              <SideMenu {...user} />
+    <Suspense fallback={<Loading />}>
+      <IonApp>
+        {busy ? (
+          <Loading />
+        ) : (
+          <IonReactRouter>
+            {user ? (
+              <IonSplitPane contentId="main">
+                <SideMenu {...user} />
 
-              <IonContent fullscreen id="main">
-                <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
-                  <IonRefresherContent></IonRefresherContent>
-                </IonRefresher>
+                <IonContent fullscreen id="main">
+                  <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
+                    <IonRefresherContent></IonRefresherContent>
+                  </IonRefresher>
 
-                <IonTabs>
-                  <IonRouterOutlet>
-                    <Routing {...user} />
-                  </IonRouterOutlet>
-                  <IonTabBar slot="bottom" id="appTabBar">
-                    <IonTabButton tab="home" href="/home">
-                      <IonIcon ios={homeOutline} md={homeSharp} />
-                      <IonLabel>Trang chủ</IonLabel>
-                    </IonTabButton>
-                    <IonTabButton tab="search" href="/search">
-                      <IonIcon ios={searchOutline} md={searchSharp} />
-                      <IonLabel>Tìm kiếm</IonLabel>
-                    </IonTabButton>
-                    <IonTabButton tab="community" href="/community">
-                      <IonIcon ios={peopleOutline} md={peopleSharp} />
-                      <IonLabel>Cộng đồng</IonLabel>
-                    </IonTabButton>
-                    <IonTabButton tab="profile" href="/profile">
-                      <IonIcon ios={personOutline} md={personSharp} />
-                      <IonLabel>Tài khoản</IonLabel>
-                    </IonTabButton>
-                  </IonTabBar>
-                </IonTabs>
-              </IonContent>
-            </IonSplitPane>
-          ) : (
-            <Routing {...user} />
-          )}
-        </IonReactRouter>
-      )}
-    </IonApp>
+                  <IonTabs>
+                    <IonRouterOutlet>
+                      <Routing {...user} />
+                    </IonRouterOutlet>
+                    <IonTabBar slot="bottom" id="appTabBar">
+                      <IonTabButton tab="home" href="/home">
+                        <IonIcon ios={homeOutline} md={homeSharp} />
+                        <IonLabel>Trang chủ</IonLabel>
+                      </IonTabButton>
+                      <IonTabButton tab="search" href="/search">
+                        <IonIcon ios={searchOutline} md={searchSharp} />
+                        <IonLabel>Tìm kiếm</IonLabel>
+                      </IonTabButton>
+                      <IonTabButton tab="community" href="/community">
+                        <IonIcon ios={peopleOutline} md={peopleSharp} />
+                        <IonLabel>Cộng đồng</IonLabel>
+                      </IonTabButton>
+                      <IonTabButton tab="profile" href="/profile">
+                        <IonIcon ios={personOutline} md={personSharp} />
+                        <IonLabel>Tài khoản</IonLabel>
+                      </IonTabButton>
+                    </IonTabBar>
+                  </IonTabs>
+                </IonContent>
+              </IonSplitPane>
+            ) : (
+              <Routing {...user} />
+            )}
+          </IonReactRouter>
+        )}
+      </IonApp>
+    </Suspense>
   );
 };
 

@@ -10,21 +10,24 @@ import {
   IonRow,
   IonGrid,
   IonInput,
-  IonLabel,
   IonPopover,
   IonTextarea,
   IonButton,
-  IonLoading,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import PostList from "../../components/community/PostList";
+import React, { useEffect, useState, lazy } from "react";
 import { database } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 
 import "../../theme/app.css";
 import "./Community.scss";
 
+const Post = lazy(() => import("../../components/community/Post"));
+
 interface ContainerProps {}
+
+interface PostListProps {
+  postList: any[];
+}
 
 const VerifyRequest: React.FC = () => {
   return (
@@ -34,20 +37,30 @@ const VerifyRequest: React.FC = () => {
   );
 };
 
+const PostList: React.FC<PostListProps> = ({ postList }) => {
+  return (
+    <div style={{ paddingTop: 10 }}>
+      {postList.map((post: any, index: number) => {
+        return <Post key={index} post={post} />;
+      })}
+    </div>
+  );
+};
+
 const Community: React.FC<ContainerProps> = (props) => {
-  const [busy, setBusy] = useState<boolean>(false);
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const [titleInput, setTitleInput] = useState<string>("");
   const [contentInput, setContentInput] = useState<string>("");
 
-  const [user, setUser] = useState<any>(props);
   const [username, setUsername] = useState<string>("");
   const [profileURL, setProfileURL] = useState<string>("");
-  const [verified, setVerified] = useState<boolean>(user.emailVerified);
+  const [postList, setPostList] = useState<any[]>([]);
+
+  const user: any = props;
+  const verified: boolean = user.emailVerified;
 
   useEffect(() => {
     async function getInfo() {
-      setBusy(true);
       const ref = database
         .collection("users")
         .where("uid", "==", user.uid)
@@ -61,12 +74,23 @@ const Community: React.FC<ContainerProps> = (props) => {
           setProfileURL(doc.data().profileURL);
         });
       }
+    }
 
-      setBusy(false);
+    async function getAllPost() {
+      const ref = database.collection("posts");
+      const docs = await ref.orderBy("created_at", "desc").get();
+      if (docs.empty) {
+        console.log("No such document!");
+      } else {
+        docs.forEach((doc) => {
+          setPostList((postList) => [...postList, doc.data()]);
+        });
+      }
     }
 
     getInfo();
-  }, []);
+    getAllPost();
+  }, [user.uid]);
 
   async function handleSendQuestion() {
     let post = {
@@ -77,6 +101,7 @@ const Community: React.FC<ContainerProps> = (props) => {
       created_at: Date.now(),
     };
 
+    setPostList((postList) => [post, ...postList]);
     await database.collection("posts").add(post);
     toast("Đăng thành công");
     setShowPopover(false);
@@ -94,7 +119,6 @@ const Community: React.FC<ContainerProps> = (props) => {
           <IonTitle>Cộng đồng</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonLoading message="Please wait" duration={0} isOpen={busy} />
 
       {verified ? (
         <IonContent fullscreen>
@@ -102,7 +126,11 @@ const Community: React.FC<ContainerProps> = (props) => {
             <IonRow className="row">
               <IonCol size="2" className="col">
                 <div className="image-wrapper">
-                  <img id="community-avatar" src={profileURL} />
+                  <img
+                    alt="user-avatar"
+                    id="community-avatar"
+                    src={profileURL}
+                  />
                 </div>
               </IonCol>
               <IonCol size="10" className="col">
@@ -153,7 +181,7 @@ const Community: React.FC<ContainerProps> = (props) => {
             </IonRow>
           </IonGrid>
 
-          <PostList />
+          <PostList postList={postList} />
         </IonContent>
       ) : (
         <VerifyRequest />

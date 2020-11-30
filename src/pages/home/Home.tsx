@@ -7,12 +7,15 @@ import {
   IonItem,
   IonMenuButton,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { lazy } from "react";
 import "./Home.css";
-import CourseContainer from "../../components/course/CourseContainer";
+
+const CourseContainer = lazy(
+  () => import("../../components/course/CourseContainer")
+);
 
 const Home: React.FC = (props) => {
-  const [user, setUser] = useState<any>(props);
+  const user: any = props;
 
   //console.log(user.email)
   return (

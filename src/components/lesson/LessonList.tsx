@@ -1,7 +1,6 @@
 import {
   IonCard,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonItem,
 } from "@ionic/react";
@@ -13,7 +12,6 @@ interface ContainerProps {
 }
 
 const LessonList: React.FC<ContainerProps> = ({ courseId }: ContainerProps) => {
-  const [name, setName] = useState<string>("");
   const [lessonList, setLessonList] = useState<any[]>([]);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ const LessonList: React.FC<ContainerProps> = ({ courseId }: ContainerProps) => {
     }
 
     getAllLesson();
-  }, []);
+  }, [courseId]);
 
   return (
     <div style={{ paddingTop: 30 }}>

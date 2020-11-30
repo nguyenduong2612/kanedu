@@ -1,7 +1,6 @@
 import {
   IonCard,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonItem,
 } from "@ionic/react";
@@ -27,7 +26,7 @@ const CourseContainer: React.FC<ContainerProps> = ({ id }: ContainerProps) => {
     }
 
     getInfo();
-  }, []);
+  }, [id]);
 
   return (
     <IonItem lines="none" routerLink={`/courses/${id}`}>

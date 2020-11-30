@@ -1,5 +1,6 @@
-import * as firebase from "firebase";
+import * as firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
 import { toast } from "../utils/toast";
 
 const config = {
@@ -97,7 +98,7 @@ export async function signupUser(
       birthday,
       profileURL,
     };
-    const userRes = await database.collection("users").add(user);
+    await database.collection("users").add(user);
     window.location.replace("/");
     return true;
   } catch (error) {

@@ -6,13 +6,10 @@ import {
   IonToolbar,
   IonItem,
   IonButton,
-  IonBackButton,
-  IonButtons,
   IonList,
   IonLabel,
   IonItemDivider,
   IonItemGroup,
-  IonLoading,
   IonText,
   IonMenuButton,
 } from "@ionic/react";
@@ -24,16 +21,15 @@ import { toast } from "../../utils/toast";
 interface ContainerProps {}
 
 const Profile: React.FC<ContainerProps> = (props) => {
-  const [busy, setBusy] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(props);
   const [username, setUsername] = useState<string>("");
   const [birthday, setBirthday] = useState<string>("");
   const [profileURL, setProfileURL] = useState<string>("");
-  const [verified, setVerified] = useState<boolean>(user.emailVerified);
+  
+  const user: any = props;
+  const verified: boolean = user.emailVerified;
 
   useEffect(() => {
     async function getInfo() {
-      setBusy(true);
       const ref = database
         .collection("users")
         .where("uid", "==", user.uid)
@@ -49,14 +45,12 @@ const Profile: React.FC<ContainerProps> = (props) => {
         });
       }
 
-      setBusy(false);
     }
 
     getInfo();
-  }, []);
+  }, [user]);
 
   async function verifyUser() {
-    setBusy(true);
     const res = await verifyEmail();
 
     if (res) {
@@ -65,7 +59,6 @@ const Profile: React.FC<ContainerProps> = (props) => {
       toast("An error happened");
     }
 
-    setBusy(false);
   }
 
   return (
@@ -80,13 +73,13 @@ const Profile: React.FC<ContainerProps> = (props) => {
           <IonTitle>Tài khoản</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonLoading message="Please wait" duration={0} isOpen={busy} />
 
       <IonContent fullscreen>
         <IonList>
           <IonItemGroup>
             <IonItem lines="none">
               <img
+                alt="avatar"
                 className="profile-img"
                 src={profileURL}
                 width="100"

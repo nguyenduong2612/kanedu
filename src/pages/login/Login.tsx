@@ -3,23 +3,18 @@ import {
   IonItem,
   IonLabel,
   IonInput,
-  IonList,
   IonHeader,
   IonPage,
   IonTitle,
   IonToolbar,
   IonButton,
-  IonImg,
-  IonText,
   IonLoading,
 } from "@ionic/react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Login.css";
-import { Plugins } from "@capacitor/core";
 import { Link } from "react-router-dom";
 import { loginUser, loginWithFacebook } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
-import firebase from "firebase";
 
 const Login: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false);

@@ -10,7 +10,7 @@ import {
   IonNote,
 } from "@ionic/react";
 
-import React, { useState } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import {
   logOutOutline,
@@ -64,7 +64,7 @@ const appPages: AppPage[] = [
 
 const SideMenu: React.FC<ContainerProps> = (props) => {
   const location = useLocation();
-  const [user, setUser] = useState<any>(props);
+  const user: any = props;
 
   return (
     <IonMenu contentId="main" type="overlay">

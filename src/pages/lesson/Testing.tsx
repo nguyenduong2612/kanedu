@@ -4,14 +4,10 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonItem,
   IonBackButton,
   IonButtons,
-  IonList,
-  IonLabel,
-  IonToggle,
 } from "@ionic/react";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 interface ContainerProps {}
 

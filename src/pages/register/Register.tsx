@@ -1,6 +1,5 @@
 import {
   IonContent,
-  IonText,
   IonItem,
   IonInput,
   IonHeader,
@@ -32,7 +31,7 @@ const Register: React.FC = () => {
       return toast("Hãy nhập email và mật khẩu");
     }
 
-    if (password == confirmPassword) {
+    if (password === confirmPassword) {
       setBusy(true);
       const profileURL: string =
         "https://manskkp.lv/assets/images/users/default-user.png";

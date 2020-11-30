@@ -2,18 +2,14 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
-  IonItem,
   IonBackButton,
   IonButtons,
-  IonList,
-  IonLabel,
-  IonToggle,
 } from "@ionic/react";
-import React, { useState, useEffect } from "react";
+import React, { lazy } from "react";
 import { RouteComponentProps } from "react-router";
-import CardList from "../../components/cards/CardList";
+
+const CardList = lazy(() => import("../../components/cards/CardList"));
 
 interface MatchParams {
   course_id: string;

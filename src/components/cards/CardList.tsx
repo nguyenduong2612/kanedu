@@ -2,7 +2,6 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonItem,
   IonSlide,
@@ -28,7 +27,7 @@ const CardList: React.FC<ContainerProps> = ({
   lessonId,
 }: ContainerProps) => {
   const [cardList, setCardList] = useState<any[]>([]);
-  const [flipped, setFlipped] = useState<boolean>(false);
+  const flipped: boolean = false;
 
   useEffect(() => {
     async function getAllLesson() {
@@ -49,7 +48,7 @@ const CardList: React.FC<ContainerProps> = ({
     }
 
     getAllLesson();
-  }, []);
+  }, [courseId, lessonId]);
 
   return (
     <>

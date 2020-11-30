@@ -29,25 +29,26 @@ const Post: React.FC<ContainerProps> = ({ post }) => {
       <IonCard style={{ width: "100%" }}>
         <IonCardHeader>
           <IonText style={{ fontSize: 20, color: "black" }}>
-            {post.data().title}
+            {post.title}
           </IonText>
         </IonCardHeader>
         <IonCardContent>
           <IonRow>
             <div>
               <img
+                alt="avatar"
                 style={{ borderRadius: "50%", width: "95%", maxWidth: 50 }}
-                src={post.data().profileURL}
+                src={post.profileURL}
               />
             </div>
             <div style={{ paddingLeft: 10 }}>
-              <p>{post.data().author}</p>
-              <p>{moment(post.data().created_at).locale("vi").fromNow()}</p>
+              <p>{post.author}</p>
+              <p>{moment(post.created_at).locale("vi").fromNow()}</p>
             </div>
           </IonRow>
 
           <IonRow>
-            <p style={{ paddingTop: 5 }}>{post.data().content}</p>
+            <p style={{ paddingTop: 5 }}>{post.content}</p>
           </IonRow>
         </IonCardContent>
 

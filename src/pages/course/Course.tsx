@@ -6,12 +6,12 @@ import {
   IonToolbar,
   IonBackButton,
   IonButtons,
-  IonLoading,
 } from "@ionic/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy } from "react";
 import { RouteComponentProps } from "react-router";
-import LessonList from "../../components/lesson/LessonList";
 import { database } from "../../config/firebaseConfig";
+
+const LessonList = lazy(() => import("../../components/lesson/LessonList"));
 
 interface MatchParams {
   id: string;
@@ -20,7 +20,6 @@ interface MatchParams {
 interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const Course: React.FC<ContainerProps> = ({ match }) => {
-  const [busy, setBusy] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
 
   useEffect(() => {
@@ -35,7 +34,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
     }
 
     getInfo();
-  }, []);
+  }, [match]);
 
   return (
     <IonPage>
@@ -47,7 +46,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonLoading message="Please wait" duration={0} isOpen={busy} />
+
       <IonContent fullscreen>
         <LessonList courseId={match.params.id} />
       </IonContent>

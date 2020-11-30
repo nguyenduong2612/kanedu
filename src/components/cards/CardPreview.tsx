@@ -2,7 +2,6 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonItem,
   IonSlide,
@@ -19,7 +18,7 @@ interface ContainerProps {
 
 const slideOpts = {
   initialSlide: 1,
-  speed: 400
+  speed: 400,
 };
 
 const CardPreview: React.FC<ContainerProps> = ({
@@ -27,7 +26,7 @@ const CardPreview: React.FC<ContainerProps> = ({
   lessonId,
 }: ContainerProps) => {
   const [cardPreview, setCardPreview] = useState<any[]>([]);
-  const [flipped, setFlipped] = useState<boolean>(false);
+  const flipped: boolean = false;
 
   useEffect(() => {
     async function getAllLesson() {
@@ -37,7 +36,7 @@ const CardPreview: React.FC<ContainerProps> = ({
         .collection("lessons")
         .doc(lessonId)
         .collection("cards")
-        .limit(3)
+        .limit(3);
       const docs = await ref.get();
       if (docs.empty) {
         console.log("No such document!");
@@ -49,7 +48,7 @@ const CardPreview: React.FC<ContainerProps> = ({
     }
 
     getAllLesson();
-  }, []);
+  }, [courseId, lessonId]);
 
   return (
     <>
@@ -84,7 +83,6 @@ const CardPreview: React.FC<ContainerProps> = ({
                         >
                           {card.data().detail}
                         </IonItem>
-
                       </IonCardContent>
                     </IonCard>
                   </div>
@@ -92,9 +90,7 @@ const CardPreview: React.FC<ContainerProps> = ({
               </IonSlide>
             );
           })}
-          <IonSlide>
-            Bắt đầu bài học để xem thêm
-          </IonSlide>
+          <IonSlide>Bắt đầu bài học để xem thêm</IonSlide>
         </IonSlides>
       )}
     </>
