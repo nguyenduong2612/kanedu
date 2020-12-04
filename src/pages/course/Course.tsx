@@ -21,6 +21,7 @@ interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const Course: React.FC<ContainerProps> = ({ match }) => {
   const [name, setName] = useState<string>("");
+  const [author, setAuthor] = useState<string>("");
 
   useEffect(() => {
     async function getInfo() {
@@ -30,6 +31,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         console.log("No such document!");
       } else {
         setName(doc.data().name);
+        setAuthor(doc.data().author);
       }
     }
 
@@ -48,7 +50,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <LessonList courseId={match.params.id} />
+        <LessonList author={author} courseId={match.params.id} />
       </IonContent>
     </IonPage>
   );

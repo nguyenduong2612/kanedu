@@ -9,9 +9,10 @@ import { database } from "../../config/firebaseConfig";
 
 interface ContainerProps {
   courseId: string;
+  author: string;
 }
 
-const LessonList: React.FC<ContainerProps> = ({ courseId }: ContainerProps) => {
+const LessonList: React.FC<ContainerProps> = ({ author, courseId }: ContainerProps) => {
   const [lessonList, setLessonList] = useState<any[]>([]);
 
   useEffect(() => {

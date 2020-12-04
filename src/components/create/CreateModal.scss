@@ -1,0 +1,8 @@
+.create-modal {
+  --height: 20%;
+  --border-radius: 10px 10px 0 0;
+  .modal-wrapper {
+    position: absolute;
+    bottom: 0 !important;
+  }
+}
