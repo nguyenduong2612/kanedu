@@ -15,6 +15,7 @@ import {
   IonButton,
 } from "@ionic/react";
 import React, { useEffect, useState, lazy } from "react";
+import { useSelector } from 'react-redux'
 import { database } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 
@@ -24,6 +25,9 @@ import "./Community.scss";
 const Post = lazy(() => import("../../components/community/Post"));
 
 interface ContainerProps {}
+interface RootState {
+  user: any
+}
 
 interface PostListProps {
   postList: any[];
@@ -48,35 +52,16 @@ const PostList: React.FC<PostListProps> = ({ postList, username }) => {
   );
 };
 
-const Community: React.FC<ContainerProps> = (props) => {
+const Community: React.FC<ContainerProps> = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const [titleInput, setTitleInput] = useState<string>("");
   const [contentInput, setContentInput] = useState<string>("");
 
-  const [username, setUsername] = useState<string>("");
-  const [profileURL, setProfileURL] = useState<string>("");
   const [postList, setPostList] = useState<any[]>([]);
 
-  const user: any = props;
-  const verified: boolean = user.emailVerified;
+  const currentUser = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    async function getInfo() {
-      const ref = database
-        .collection("users")
-        .where("uid", "==", user.uid)
-        .limit(1);
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          setUsername(doc.data().name);
-          setProfileURL(doc.data().profileURL);
-        });
-      }
-    }
-
     async function getAllPost() {
       const ref = database.collection("posts");
       const docs = await ref.orderBy("created_at", "desc").get();
@@ -89,14 +74,13 @@ const Community: React.FC<ContainerProps> = (props) => {
       }
     }
 
-    getInfo();
     getAllPost();
-  }, [user.uid]);
+  }, []);
 
   async function handleSendQuestion() {
     let post = {
-      author: username,
-      profileURL: profileURL,
+      author: currentUser.user.name,
+      profileURL: currentUser.user.profileURL,
       title: titleInput,
       content: contentInput,
       created_at: Date.now(),
@@ -122,7 +106,7 @@ const Community: React.FC<ContainerProps> = (props) => {
         </IonToolbar>
       </IonHeader>
 
-      {verified ? (
+      {currentUser.user.verified ? (
         <IonContent fullscreen>
           <IonGrid className="input-wrapper">
             <IonRow className="row">
@@ -131,7 +115,7 @@ const Community: React.FC<ContainerProps> = (props) => {
                   <img
                     alt="user-avatar"
                     id="community-avatar"
-                    src={profileURL}
+                    src={currentUser.user.profileURL}
                   />
                 </div>
               </IonCol>
@@ -183,7 +167,7 @@ const Community: React.FC<ContainerProps> = (props) => {
             </IonRow>
           </IonGrid>
 
-          <PostList postList={postList} username={username} />
+          <PostList postList={postList} username={currentUser.user.name} />
         </IonContent>
       ) : (
         <VerifyRequest />

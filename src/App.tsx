@@ -1,5 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import { Redirect, Route } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   IonApp,
   IonRouterOutlet,
@@ -53,7 +54,8 @@ import {
   add,
 } from "ionicons/icons";
 
-import { getCurrentUser } from "./config/firebaseConfig";
+import { database, getCurrentUser } from "./config/firebaseConfig";
+import { setCurrentUser } from "./redux/reducers/userReducer";
 
 /* Pages and components */
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
@@ -72,9 +74,7 @@ const Testing = lazy(() => import("./pages/lesson/Testing"));
 const Community = lazy(() => import("./pages/community/Community"));
 const Search = lazy(() => import("./pages/search/Search"));
 
-const Routing: React.FC = (props) => {
-  const user: any = props;
-
+const Routing: React.FC = () => {
   return (
     <IonRouterOutlet>
       <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
@@ -96,9 +96,9 @@ const Routing: React.FC = (props) => {
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />
-      <Route path="/profile" render={() => <Profile {...user} />} exact />
-      <Route path="/community" render={() => <Community {...user} />} exact />
-      <Route path="/home" render={() => <Home {...user} />} exact />
+      <Route path="/profile" render={() => <Profile />} exact />
+      <Route path="/community" render={() => <Community />} exact />
+      <Route path="/home" render={() => <Home />} exact />
     </IonRouterOutlet>
   );
 };
@@ -107,24 +107,50 @@ const Loading: React.FC = () => {
   return <IonLoading message="Please wait" duration={0} isOpen={true} />;
 };
 
+interface RootState {
+  user: any;
+  logged_in: boolean;
+}
+
 const App: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(true);
-  const [user, setUser] = useState<any>(null);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+
+  const currentUser = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(getPlatforms());
-    getCurrentUser().then((user) => {
+    getCurrentUser().then(async (user: any) => {
       //console.log(user)
       if (user) {
-        setUser(user);
         //window.history.replaceState({}, '', '/')
+        const ref = database
+          .collection("users")
+          .where("uid", "==", user.uid)
+          .limit(1);
+        const docs = await ref.get();
+        if (docs.empty) {
+          console.log("No such document!");
+        } else {
+          docs.forEach((doc) => {
+            let currentUser = {
+              uid: user.uid,
+              email: user.email,
+              name: doc.data().name,
+              birthday: doc.data().birthday,
+              profileURL: doc.data().profileURL,
+              verified: user.emailVerified,
+            };
+            dispatch(setCurrentUser(currentUser));
+          });
+        }
       } else {
         window.history.replaceState({}, "", "/login");
       }
       setBusy(false);
     });
-  }, []);
+  }, [dispatch]);
 
   async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
     window.location.reload();
@@ -146,9 +172,9 @@ const App: React.FC = () => {
           <Loading />
         ) : (
           <IonReactRouter>
-            {user ? (
+            {currentUser.logged_in ? (
               <IonSplitPane contentId="main">
-                <SideMenu {...user} />
+                <SideMenu />
 
                 <IonContent fullscreen id="main">
                   <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
@@ -166,7 +192,7 @@ const App: React.FC = () => {
 
                   <IonTabs>
                     <IonRouterOutlet>
-                      <Routing {...user} />
+                      <Routing />
                     </IonRouterOutlet>
                     <IonTabBar slot="bottom" id="appTabBar">
                       <IonTabButton tab="home" href="/home">
@@ -191,7 +217,7 @@ const App: React.FC = () => {
                 </IonContent>
               </IonSplitPane>
             ) : (
-              <Routing {...user} />
+              <Routing />
             )}
           </IonReactRouter>
         )}

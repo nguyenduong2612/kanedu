@@ -13,42 +13,19 @@ import {
   IonText,
   IonMenuButton,
 } from "@ionic/react";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useSelector } from 'react-redux'
 import "./Profile.css";
-import { database, verifyEmail } from "../../config/firebaseConfig";
+import { verifyEmail } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 
 interface ContainerProps {}
+interface RootState {
+  user: any
+}
 
-const Profile: React.FC<ContainerProps> = (props) => {
-  const [username, setUsername] = useState<string>("");
-  const [birthday, setBirthday] = useState<string>("");
-  const [profileURL, setProfileURL] = useState<string>("");
-  
-  const user: any = props;
-  const verified: boolean = user.emailVerified;
-
-  useEffect(() => {
-    async function getInfo() {
-      const ref = database
-        .collection("users")
-        .where("uid", "==", user.uid)
-        .limit(1);
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          setUsername(doc.data().name);
-          setBirthday(doc.data().birthday);
-          setProfileURL(doc.data().profileURL);
-        });
-      }
-
-    }
-
-    getInfo();
-  }, [user]);
+const Profile: React.FC<ContainerProps> = () => {
+  const currentUser = useSelector((state: RootState) => state.user);
 
   async function verifyUser() {
     const res = await verifyEmail();
@@ -81,13 +58,13 @@ const Profile: React.FC<ContainerProps> = (props) => {
               <img
                 alt="avatar"
                 className="profile-img"
-                src={profileURL}
+                src={currentUser.user.profileURL}
                 width="100"
                 height="100"
               />
             </IonItem>
             <IonItem lines="none">
-              <b className="username">{username}</b>
+              <b className="username">{currentUser.user.name}</b>
             </IonItem>
             <IonItemDivider />
           </IonItemGroup>
@@ -95,17 +72,17 @@ const Profile: React.FC<ContainerProps> = (props) => {
           <IonItemGroup>
             <IonItem lines="none">
               <IonLabel>Email</IonLabel>
-              <p style={{ color: "#aaa" }}>{user.email}</p>
+              <p style={{ color: "#aaa" }}>{currentUser.user.email}</p>
             </IonItem>
             <IonItem lines="none">
               <IonLabel>Ngày sinh</IonLabel>
-              <p style={{ color: "#aaa" }}>{birthday}</p>
+              <p style={{ color: "#aaa" }}>{currentUser.user.birthday}</p>
             </IonItem>
             <IonItemDivider />
           </IonItemGroup>
 
           <IonItemGroup>
-            {verified ? (
+            {currentUser.user.verified ? (
               <IonItem lines="none">
                 <IonLabel>Xác thực email</IonLabel>
                 <IonText color="success">Đã xác thực</IonText>

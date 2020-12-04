@@ -11,6 +11,7 @@ import {
 } from "@ionic/react";
 
 import React from "react";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
   logOutOutline,
@@ -28,6 +29,10 @@ import "./SideMenu.css";
 import { signoutUser } from "../../config/firebaseConfig";
 
 interface ContainerProps {}
+
+interface RootState {
+  user: any;
+}
 interface AppPage {
   url: string;
   iosIcon: string;
@@ -62,16 +67,16 @@ const appPages: AppPage[] = [
   },
 ];
 
-const SideMenu: React.FC<ContainerProps> = (props) => {
+const SideMenu: React.FC<ContainerProps> = () => {
   const location = useLocation();
-  const user: any = props;
+  const currentUser = useSelector((state: RootState) => state.user);
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Xin chào</IonListHeader>
-          <IonNote>{user.email}</IonNote>
+          <IonListHeader>Xin chào, {currentUser.user.name}</IonListHeader>
+          <IonNote>{currentUser.user.email}</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
