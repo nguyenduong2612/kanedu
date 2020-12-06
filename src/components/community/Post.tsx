@@ -37,23 +37,25 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
   const [commentList, setCommentList] = useState<any[]>([]);
 
   const handleSendComment = async () => {
-    let comment = {
-      author: username,
-      content: commentInput,
-      created_at: Date.now(),
-    };
+    if (commentInput.trim() !== "") {
+      let comment = {
+        author: username,
+        content: commentInput,
+        created_at: Date.now(),
+      };
 
-    const res = await database
-      .collection("posts")
-      .doc(post.id)
-      .collection("comments")
-      .add(comment);
+      const res = await database
+        .collection("posts")
+        .doc(post.id)
+        .collection("comments")
+        .add(comment);
 
-    setCommentInput("");
-    setCommentList((commentList) => [
-      ...commentList,
-      { data: comment, id: res.id },
-    ]);
+      setCommentInput("");
+      setCommentList((commentList) => [
+        ...commentList,
+        { data: comment, id: res.id },
+      ]);
+    }
   };
 
   const handleShowModal = () => {
@@ -139,7 +141,9 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
                   return (
                     <div className="comment-wrapper" key={index}>
                       <b>{`${comment.data.author} | 
-                          ${moment(comment.data.created_at).locale("vi").fromNow()}`}</b>
+                          ${moment(comment.data.created_at)
+                            .locale("vi")
+                            .fromNow()}`}</b>
                       <p>{comment.data.content}</p>
                     </div>
                   );

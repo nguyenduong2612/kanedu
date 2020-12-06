@@ -21,8 +21,10 @@ import {
   pencilSharp,
 } from "ionicons/icons";
 import React, { useState, useEffect, lazy } from "react";
+import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { database } from "../../config/firebaseConfig";
+import { coursesReducer } from "../../redux/reducers/coursesReducer";
 import "./Lesson.scss";
 
 const CardPreview = lazy(() => import("../../components/cards/CardPreview"));
@@ -31,11 +33,20 @@ interface MatchParams {
   lesson_id: string;
 }
 
+interface RootState {
+  courses: any;
+}
+
 interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const Lesson: React.FC<ContainerProps> = ({ match }) => {
   const [name, setName] = useState<string>("");
   const [numberOfCards, setNumberOfCards] = useState<number>();
+
+  const courseList = useSelector((state: RootState) => state.courses);
+  const course = courseList.courses.find(
+    (course: any) => course.id === match.params.course_id
+  );
 
   useEffect(() => {
     async function getInfo() {
@@ -92,7 +103,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
               <h1>{name}</h1>
             </IonRow>
             <IonRow className="padding-x">
-              <p>umih4ra | {numberOfCards} thẻ</p>
+              <p>{course.author} | {numberOfCards} thẻ</p>
             </IonRow>
             <IonRow>
               <IonCol>

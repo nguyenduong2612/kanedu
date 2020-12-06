@@ -15,7 +15,7 @@ import {
   IonButton,
 } from "@ionic/react";
 import React, { useEffect, useState, lazy } from "react";
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 import { database } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 
@@ -26,7 +26,7 @@ const Post = lazy(() => import("../../components/community/Post"));
 
 interface ContainerProps {}
 interface RootState {
-  user: any
+  user: any;
 }
 
 interface PostListProps {
@@ -69,7 +69,10 @@ const Community: React.FC<ContainerProps> = () => {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
-          setPostList((postList) => [...postList, {data: doc.data(), id: doc.id}]);
+          setPostList((postList) => [
+            ...postList,
+            { data: doc.data(), id: doc.id },
+          ]);
         });
       }
     }
@@ -78,19 +81,23 @@ const Community: React.FC<ContainerProps> = () => {
   }, []);
 
   async function handleSendQuestion() {
-    let post = {
-      author: currentUser.user.name,
-      profileURL: currentUser.user.profileURL,
-      title: titleInput,
-      content: contentInput,
-      created_at: Date.now(),
-    };
+    if (titleInput.trim() === "" || contentInput.trim() === "") {
+      toast("Hãy nhập tiêu đề và nội dung câu hỏi");
+    } else {
+      let post = {
+        author: currentUser.user.name,
+        profileURL: currentUser.user.profileURL,
+        title: titleInput,
+        content: contentInput,
+        created_at: Date.now(),
+      };
 
-    const res = await database.collection("posts").add(post);
-    
-    setPostList((postList) => [{data: post, id: res.id}, ...postList]);
-    toast("Đăng thành công");
-    setShowPopover(false);
+      const res = await database.collection("posts").add(post);
+
+      setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
+      toast("Đăng thành công");
+      setShowPopover(false);
+    }
   }
 
   return (
