@@ -84,16 +84,17 @@ const CardList: React.FC<ContainerProps> = ({
                           {card.data().detail}
                         </IonItem>
 
-                        {card
-                          .data()
-                          .examples.map((example: any, index: number) => {
-                            return (
-                              <IonItem lines="none" key={index}>
-                                {example.word} ({example.detail}):{" "}
-                                {example.mean}
-                              </IonItem>
-                            );
-                          })}
+                        {card.data().examples &&
+                          card
+                            .data()
+                            .examples.map((example: any, index: number) => {
+                              return (
+                                <IonItem lines="none" key={index}>
+                                  {example.word} ({example.detail}):{" "}
+                                  {example.mean}
+                                </IonItem>
+                              );
+                            })}
                       </IonCardContent>
                     </IonCard>
                   </div>
