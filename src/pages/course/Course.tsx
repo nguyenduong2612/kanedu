@@ -8,13 +8,10 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
-  IonLabel,
 } from "@ionic/react";
 import {
   addOutline,
   addSharp,
-  checkmarkOutline,
-  checkmarkSharp,
   closeOutline,
   closeSharp,
 } from "ionicons/icons";

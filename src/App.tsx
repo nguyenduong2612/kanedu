@@ -69,6 +69,7 @@ const Course = lazy(() => import("./pages/course/Course"));
 const Lesson = lazy(() => import("./pages/lesson/Lesson"));
 const CreateCourse = lazy(() => import("./pages/create/CreateCourse"));
 const CreateLesson = lazy(() => import("./pages/create/CreateLesson"));
+const CreateCard = lazy(() => import("./pages/create/CreateCard"));
 const Learning = lazy(() => import("./pages/lesson/Learning"));
 const Testing = lazy(() => import("./pages/lesson/Testing"));
 const Community = lazy(() => import("./pages/community/Community"));
@@ -91,8 +92,9 @@ const Routing: React.FC = () => {
         component={Testing}
         exact
       />
-      <Route path="/create/course" component={CreateCourse} exact />
-      <Route path="/create/lesson" component={CreateLesson} exact />
+      <Route path="/course/create" component={CreateCourse} exact />
+      <Route path="/lesson/create" component={CreateLesson} exact />
+      <Route path="/lesson/create/:course_id" component={CreateCard} exact />
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />

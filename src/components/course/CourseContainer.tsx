@@ -5,7 +5,6 @@ import {
   IonItem,
 } from "@ionic/react";
 import React from "react";
-import { database } from "../../config/firebaseConfig";
 
 interface ContainerProps {
   id: string;

@@ -36,7 +36,7 @@ const CreateModal: React.FC<ContainerProps> = ({
           <IonItem
             lines="none"
             detail={false}
-            routerLink="/create/course"
+            routerLink="/course/create"
             onClick={() => handleCloseModal()}
           >
             <IonIcon slot="start" ios={libraryOutline} md={librarySharp} />
@@ -45,7 +45,7 @@ const CreateModal: React.FC<ContainerProps> = ({
           <IonItem
             lines="none"
             detail={false}
-            routerLink="/create/lesson"
+            routerLink="/lesson/create"
             onClick={() => handleCloseModal()}
           >
             <IonIcon slot="start" ios={bookOutline} md={bookSharp} />
