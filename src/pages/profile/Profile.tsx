@@ -66,7 +66,7 @@ const Profile: React.FC<ContainerProps> = () => {
             <IonItem lines="none">
               <b className="username">{currentUser.user.name}</b>
             </IonItem>
-            <IonItemDivider />
+            <IonItemDivider mode="md" />
           </IonItemGroup>
 
           <IonItemGroup>
@@ -78,7 +78,7 @@ const Profile: React.FC<ContainerProps> = () => {
               <IonLabel>Ngày sinh</IonLabel>
               <p style={{ color: "#aaa" }}>{currentUser.user.birthday}</p>
             </IonItem>
-            <IonItemDivider />
+            <IonItemDivider mode="md" />
           </IonItemGroup>
 
           <IonItemGroup>
@@ -96,7 +96,7 @@ const Profile: React.FC<ContainerProps> = () => {
                 </IonButton>
               </IonItem>
             )}
-            <IonItemDivider />
+            <IonItemDivider mode="md" />
           </IonItemGroup>
         </IonList>
       </IonContent>

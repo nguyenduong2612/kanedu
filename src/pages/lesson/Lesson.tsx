@@ -21,10 +21,8 @@ import {
   pencilSharp,
 } from "ionicons/icons";
 import React, { useState, useEffect, lazy } from "react";
-import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { database } from "../../config/firebaseConfig";
-import { coursesReducer } from "../../redux/reducers/coursesReducer";
 import "./Lesson.scss";
 
 const CardPreview = lazy(() => import("../../components/cards/CardPreview"));
@@ -33,43 +31,38 @@ interface MatchParams {
   lesson_id: string;
 }
 
-interface RootState {
-  courses: any;
-}
-
 interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const Lesson: React.FC<ContainerProps> = ({ match }) => {
   const [name, setName] = useState<string>("");
+  const [author, setAuthor] = useState<string>("");
   const [numberOfCards, setNumberOfCards] = useState<number>();
-
-  const courseList = useSelector((state: RootState) => state.courses);
-  const course = courseList.courses.find(
-    (course: any) => course.id === match.params.course_id
-  );
 
   useEffect(() => {
     async function getInfo() {
-      let ref = database
+      const course_ref = database
         .collection("courses")
-        .doc(match.params.course_id)
-        .collection("lessons")
-        .doc(match.params.lesson_id);
-      let doc: any = await ref.get();
-      if (!doc.exists) {
+        .doc(match.params.course_id);
+      const course_doc: any = await course_ref.get();
+      if (!course_doc.exists) {
         console.log("No such document!");
       } else {
-        setName(doc.data().title);
-        database
-          .collection("courses")
-          .doc(match.params.course_id)
+        setAuthor(course_doc.data().author);
+        const lesson_ref = course_ref
           .collection("lessons")
-          .doc(match.params.lesson_id)
-          .collection("cards")
-          .get()
-          .then((snap) => {
-            setNumberOfCards(snap.size);
-          });
+          .doc(match.params.lesson_id);
+        const lesson_doc: any = await lesson_ref.get();
+        if (!lesson_doc.exists) {
+          console.log("No such document!");
+        } else {
+          setName(lesson_doc.data().title);
+          lesson_ref
+            .collection("cards")
+            .get()
+            .then((snap) => {
+              setNumberOfCards(snap.size);
+            });
+        }
       }
     }
 
@@ -103,7 +96,9 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
               <h1>{name}</h1>
             </IonRow>
             <IonRow className="padding-x">
-              <p>{course.author} | {numberOfCards} thẻ</p>
+              <p>
+                {author} | {numberOfCards} thẻ
+              </p>
             </IonRow>
             <IonRow>
               <IonCol>

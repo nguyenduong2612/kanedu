@@ -17,7 +17,7 @@ import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { database } from "../../config/firebaseConfig";
-import { setCourse } from "../../redux/reducers/coursesReducer";
+import { setMyCourses } from "../../redux/reducers/coursesReducer";
 import { toast } from "../../utils/toast";
 
 interface ContainerProps {}
@@ -43,7 +43,7 @@ const CreateCourse: React.FC<ContainerProps> = () => {
 
       const res = await database.collection("courses").add(course);
       
-      dispatch(setCourse({
+      dispatch(setMyCourses({
         id: res.id,
         author: course.author,
         author_id: course.author_id,

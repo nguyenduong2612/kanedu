@@ -4,29 +4,15 @@ import {
   IonCardTitle,
   IonItem,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { database } from "../../config/firebaseConfig";
 
 interface ContainerProps {
   id: string;
+  name: string;
 }
 
-const CourseContainer: React.FC<ContainerProps> = ({ id }: ContainerProps) => {
-  const [name, setName] = useState<string>("");
-
-  useEffect(() => {
-    async function getInfo() {
-      const ref: any = database.collection("courses").doc(id);
-      const doc: any = await ref.get();
-      if (!doc.exists) {
-        console.log("No such document!");
-      } else {
-        setName(doc.data().name);
-      }
-    }
-
-    getInfo();
-  }, [id]);
+const CourseContainer: React.FC<ContainerProps> = ({ id, name }: ContainerProps) => {
 
   return (
     <IonItem lines="none" routerLink={`/courses/${id}`}>
