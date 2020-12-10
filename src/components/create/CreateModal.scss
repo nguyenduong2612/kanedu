@@ -1,8 +1,11 @@
 .create-modal {
-  --height: 20%;
+  --height: 30%;
   --border-radius: 10px 10px 0 0;
-  .modal-wrapper {
+  .modal-wrapper, .modal-shadow {
     position: absolute;
     bottom: 0 !important;
+  }
+  .create-modal-item {
+    padding: 5px;
   }
 }

@@ -135,6 +135,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
               isOpen={showCommentModal}
               cssClass="comment-modal"
               onDidDismiss={handleCloseModal}
+              mode="ios"
             >
               <div className="comment-list-wrapper">
                 {commentList.map((comment: any, index: number) => {

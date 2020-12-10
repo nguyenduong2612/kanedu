@@ -1,11 +1,4 @@
-import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonModal,
-} from "@ionic/react";
+import { IonIcon, IonItem, IonLabel, IonModal } from "@ionic/react";
 import {
   bookOutline,
   bookSharp,
@@ -29,30 +22,34 @@ const CreateModal: React.FC<ContainerProps> = ({
       swipeToClose={true}
       isOpen={isOpen}
       cssClass="create-modal"
-      onDidDismiss={() => handleCloseModal()}
+      onDidDismiss={handleCloseModal}
+      mode="ios"
     >
-      <IonContent>
-        <IonList>
-          <IonItem
-            lines="none"
-            detail={false}
-            routerLink="/course/create"
-            onClick={() => handleCloseModal()}
-          >
-            <IonIcon slot="start" ios={libraryOutline} md={librarySharp} />
-            <IonLabel>Tạo khóa học</IonLabel>
-          </IonItem>
-          <IonItem
-            lines="none"
-            detail={false}
-            routerLink="/lesson/create"
-            onClick={() => handleCloseModal()}
-          >
-            <IonIcon slot="start" ios={bookOutline} md={bookSharp} />
-            <IonLabel>Tạo bài học</IonLabel>
-          </IonItem>
-        </IonList>
-      </IonContent>
+      <div className="create-modal-wrapper">
+        <IonItem className="create-modal-item" lines="none">
+          Tạo
+        </IonItem>
+        <IonItem
+          className="create-modal-item"
+          lines="none"
+          detail={false}
+          routerLink="/course/create"
+          onClick={() => handleCloseModal()}
+        >
+          <IonIcon slot="start" ios={libraryOutline} md={librarySharp} />
+          <IonLabel>Tạo khóa học</IonLabel>
+        </IonItem>
+        <IonItem
+          className="create-modal-item"
+          lines="none"
+          detail={false}
+          routerLink="/lesson/create"
+          onClick={() => handleCloseModal()}
+        >
+          <IonIcon slot="start" ios={bookOutline} md={bookSharp} />
+          <IonLabel>Tạo bài học</IonLabel>
+        </IonItem>
+      </div>
     </IonModal>
   );
 };
