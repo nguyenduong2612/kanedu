@@ -1,0 +1,14 @@
+.main-wrapper {
+  padding: 15px;
+  height: 100%;
+  .question-wrapper {
+    height: 50%;
+  }
+  .answers-wrapper {
+    height: 45%;
+    .answer-btn {
+      height: 19%;
+      margin-bottom: 2.5%;
+    }
+  }
+}
