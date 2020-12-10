@@ -71,7 +71,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
     }
 
     getInfo();
-  }, [match]);
+  }, [courseList.courses, match]);
 
   const handleFollow = () => {
     let course = {

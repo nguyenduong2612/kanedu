@@ -77,7 +77,7 @@ const Home: React.FC = () => {
 
     getFollowingCourses();
     getMyCourses();
-  }, [dispatch]);
+  }, [currentUser.user.uid, dispatch]);
 
   return (
     <IonPage>
