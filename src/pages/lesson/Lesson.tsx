@@ -67,7 +67,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
     }
 
     getInfo();
-  }, [match]);
+  }, [match.params.course_id, match.params.lesson_id]);
 
   return (
     <IonPage>

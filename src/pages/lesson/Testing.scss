@@ -1,14 +1,22 @@
+.test-result {
+  padding-right: 10px;
+}
+
 .main-wrapper {
   padding: 15px;
   height: 100%;
   .question-wrapper {
     height: 50%;
+    padding-top: 10%;
   }
   .answers-wrapper {
     height: 45%;
     .answer-btn {
       height: 19%;
       margin-bottom: 2.5%;
+      &.disabled {
+        pointer-events: none;
+      }
     }
   }
 }
