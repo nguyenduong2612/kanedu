@@ -71,7 +71,6 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
   ) => {
     if (questionId === answerId) {
       console.log("Correct!");
-      console.log(questions)
       setAnsweredCounter(answeredCounter + 1);
       setCorrectAnsCounter(correctAnsCounter + 1);
 

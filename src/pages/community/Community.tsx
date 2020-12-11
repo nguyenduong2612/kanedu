@@ -21,6 +21,7 @@ import { toast } from "../../utils/toast";
 
 import "../../theme/app.css";
 import "./Community.scss";
+import { algoliaUpdatePost } from "../../config/algoliaConfig";
 
 const Post = lazy(() => import("../../components/community/Post"));
 
@@ -93,6 +94,8 @@ const Community: React.FC<ContainerProps> = () => {
       };
 
       const res = await database.collection("posts").add(post);
+
+      if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok")
 
       setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
       toast("Đăng thành công");

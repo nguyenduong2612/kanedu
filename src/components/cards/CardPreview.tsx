@@ -3,7 +3,9 @@ import {
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
+  IonGrid,
   IonItem,
+  IonRow,
   IonSlide,
   IonSlides,
 } from "@ionic/react";
@@ -81,7 +83,14 @@ const CardPreview: React.FC<ContainerProps> = ({
                           lines="none"
                           style={{ paddingBottom: 20, fontSize: 18 }}
                         >
-                          {card.data().detail}
+                          <IonGrid>
+                            <IonRow>
+                              <p>{card.data().detail}</p>
+                            </IonRow>
+                            <IonRow>
+                              <p>{card.data().meaning}</p>
+                            </IonRow>
+                          </IonGrid>
                         </IonItem>
                       </IonCardContent>
                     </IonCard>

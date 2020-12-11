@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+    padding: 15px 15px 10px;
     .keyword {
       font-size: 55px;
       height: 50%;
@@ -48,4 +49,7 @@
 
 .back {
   transform: rotateY(180deg);
+  .back-wrapper {
+    padding: 15px 15px 10px;
+  }
 }

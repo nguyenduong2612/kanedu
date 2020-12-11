@@ -16,6 +16,7 @@ import {
 import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { algoliaUpdateCourse } from "../../config/algoliaConfig";
 import { database } from "../../config/firebaseConfig";
 import { setMyCourses } from "../../redux/reducers/coursesReducer";
 import { toast } from "../../utils/toast";
@@ -42,6 +43,8 @@ const CreateCourse: React.FC<ContainerProps> = () => {
       };
 
       const res = await database.collection("courses").add(course);
+
+      if (algoliaUpdateCourse(course, res.id)) console.log("add algolia ok")
       
       dispatch(setMyCourses({
         id: res.id,
