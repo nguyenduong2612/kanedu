@@ -14,6 +14,7 @@ import {
 } from "@ionic/react";
 import algoliasearch from "algoliasearch";
 import React, { useState, useEffect } from "react";
+import ErrorPage from "../../components/ErrorPage";
 
 const client = algoliasearch(
   String(process.env.REACT_APP_ALGOLIA_APP_ID),
@@ -22,13 +23,13 @@ const client = algoliasearch(
 
 const placeholderSelect = (searchIndex: string) => {
   if (searchIndex === "courses") {
-    return "Tên khóa học, người đăng"
+    return "Tên khóa học, người đăng";
   } else if (searchIndex === "posts") {
-    return "Từ khóa, nội dung câu hỏi, người đăng"
+    return "Từ khóa, nội dung câu hỏi, người đăng";
   } else {
-    return "Tên người dùng, email"
+    return "Tên người dùng, email";
   }
-}
+};
 
 interface ContainerProps {}
 
@@ -46,21 +47,31 @@ const SearchResult: React.FC<SearchResultProps> = ({
   return (
     <>
       {searchTerm.trim() !== "" ? (
-        <IonList lines="none">
-          {searchResult.length !== 0 ? (searchResult.map((item: any, index: number) => {
-            if (searchIndex === "courses") {
-              return <IonItem routerLink={`/courses/${item.objectID}`} key={index}>{item.name}</IonItem>;
-            } else if (searchIndex === "posts") {
-              return <IonItem routerLink={`/community`} key={index}>{item.title}</IonItem>; //TODO
-            } else {
-              return <IonItem key={index}>{item.name}</IonItem>; //TODO
-            }
-          })) : (
-            <IonItem lines="none">Không tìm thấy</IonItem>
-          )}
-        </IonList>
+        searchResult.length !== 0 ? (
+          <IonList lines="none">
+            {searchResult.map((item: any, index: number) => {
+              if (searchIndex === "courses") {
+                return (
+                  <IonItem routerLink={`/courses/${item.objectID}`} key={index}>
+                    {item.name}
+                  </IonItem>
+                );
+              } else if (searchIndex === "posts") {
+                return (
+                  <IonItem routerLink={`/community`} key={index}>
+                    {item.title}
+                  </IonItem>
+                ); //TODO
+              } else {
+                return <IonItem key={index}>{item.name}</IonItem>; //TODO
+              }
+            })}
+          </IonList>
+        ) : (
+          <ErrorPage>Không tìm thấy kết quả phù hợp</ErrorPage>
+        )
       ) : (
-        <IonItem lines="none"></IonItem>
+        <ErrorPage>Nhập từ khóa để bắt đầu tìm kiếm</ErrorPage>
       )}
     </>
   );

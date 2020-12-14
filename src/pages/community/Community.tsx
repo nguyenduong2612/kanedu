@@ -13,6 +13,8 @@ import {
   IonPopover,
   IonTextarea,
   IonButton,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
 } from "@ionic/react";
 import React, { useEffect, useState, lazy } from "react";
 import { useSelector } from "react-redux";
@@ -22,6 +24,7 @@ import { toast } from "../../utils/toast";
 import "../../theme/app.css";
 import "./Community.scss";
 import { algoliaUpdatePost } from "../../config/algoliaConfig";
+import ErrorPage from "../../components/ErrorPage";
 
 const Post = lazy(() => import("../../components/community/Post"));
 
@@ -30,35 +33,17 @@ interface RootState {
   user: any;
 }
 
-interface PostListProps {
-  postList: any[];
-  username: string;
-}
-
-const VerifyRequest: React.FC = () => {
-  return (
-    <div className="container">
-      <strong>Vui lòng xác nhận email của bạn</strong>
-    </div>
-  );
-};
-
-const PostList: React.FC<PostListProps> = ({ postList, username }) => {
-  return (
-    <div style={{ paddingTop: 10 }}>
-      {postList.map((post: any, index: number) => {
-        return <Post key={index} post={post} username={username} />;
-      })}
-    </div>
-  );
-};
-
 const Community: React.FC<ContainerProps> = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const [titleInput, setTitleInput] = useState<string>("");
   const [contentInput, setContentInput] = useState<string>("");
 
   const [postList, setPostList] = useState<any[]>([]);
+  const [loadedPostList, setLoadedPostList] = useState<boolean>();
+  const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(
+    false
+  );
+  const [currentPostList, setCurrentPostList] = useState<any[]>([]);
 
   const currentUser = useSelector((state: RootState) => state.user);
 
@@ -75,11 +60,50 @@ const Community: React.FC<ContainerProps> = () => {
             { data: doc.data(), id: doc.id },
           ]);
         });
+        setLoadedPostList(true);
       }
     }
 
     getAllPost();
   }, []);
+
+  useEffect(() => {
+    function getCurrentPost() {
+      if (loadedPostList) {
+        for (let i = 0; i < 5; i++) {
+          setCurrentPostList((currentPostList) => [
+            ...currentPostList,
+            postList[i],
+          ]);
+        }
+      }
+    }
+    getCurrentPost();
+  }, [loadedPostList, postList]);
+
+  const pushData = () => {
+    const max = currentPostList.length + 3;
+    const min = max - 3;
+    for (let i = min; i < max; i++) {
+      setCurrentPostList((currentPostList) => [
+        ...currentPostList,
+        postList[i],
+      ]);
+    }
+  };
+
+  const loadData = ($event: CustomEvent<void>) => {
+    setTimeout(() => {
+      pushData();
+      ($event.target as HTMLIonInfiniteScrollElement).complete();
+
+      // App logic to determine if all data is loaded
+      // and disable the infinite scroll
+      if (currentPostList.length >= postList.length) {
+        setDisableInfiniteScroll(true);
+      }
+    }, 750);
+  };
 
   async function handleSendQuestion() {
     if (titleInput.trim() === "" || contentInput.trim() === "") {
@@ -95,9 +119,9 @@ const Community: React.FC<ContainerProps> = () => {
 
       const res = await database.collection("posts").add(post);
 
-      if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok")
+      if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
-      setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
+      setCurrentPostList((currentPostList) => [{ data: post, id: res.id }, ...currentPostList]);
       toast("Đăng thành công");
       setShowPopover(false);
     }
@@ -177,10 +201,29 @@ const Community: React.FC<ContainerProps> = () => {
             </IonRow>
           </IonGrid>
 
-          <PostList postList={postList} username={currentUser.user.name} />
+          <div style={{ paddingTop: 10 }}>
+            {currentPostList.filter(post => post !== undefined).map((post: any, index: number) => {
+              return (
+                <Post
+                  key={index}
+                  post={post}
+                  username={currentUser.user.name}
+                />
+              );
+
+            })}
+
+            <IonInfiniteScroll
+              threshold="100px"
+              disabled={disableInfiniteScroll}
+              onIonInfinite={(e: CustomEvent<void>) => loadData(e)}
+            >
+              <IonInfiniteScrollContent loadingText="Đang tải thêm"></IonInfiniteScrollContent>
+            </IonInfiniteScroll>
+          </div>
         </IonContent>
       ) : (
-        <VerifyRequest />
+        <ErrorPage>Vui lòng xác nhận email của bạn</ErrorPage>
       )}
     </IonPage>
   );
