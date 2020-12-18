@@ -8,20 +8,24 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
+  IonPopover,
+  IonItem,
+  IonList,
 } from "@ionic/react";
-import {
-  addOutline,
-  addSharp,
-  closeOutline,
-  closeSharp,
-} from "ionicons/icons";
+import { ellipsisVertical, ellipsisVerticalOutline } from "ionicons/icons";
 import React, { useState, useEffect, lazy } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { database } from "../../config/firebaseConfig";
 import * as firebase from "firebase/app";
-import { removeFollowingCourses, setFollowingCourses } from "../../redux/reducers/coursesReducer";
+import {
+  removeFollowingCourses,
+  setFollowingCourses,
+} from "../../redux/reducers/coursesReducer";
 import { toast } from "../../utils/toast";
+import "./Course.scss";
+import ShareModal from "../../components/modals/ShareModal";
+import { algoliaUpdatePost } from "../../config/algoliaConfig";
 
 const LessonList = lazy(() => import("../../components/lesson/LessonList"));
 
@@ -42,6 +46,8 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
   const [authorId, setAuthorId] = useState<string>("");
   const [followingCourseIndex, setFollowingCourseIndex] = useState<number>(-1);
   const [isFollowed, setIsFollowed] = useState<boolean>();
+  const [showPopover, setShowPopover] = useState<boolean>(false);
+  const [showShareModal, setShowShareModal] = useState<boolean>(false);
 
   const currentUser = useSelector((state: RootState) => state.user);
   const courseList = useSelector((state: RootState) => state.courses);
@@ -90,6 +96,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
     });
 
     setIsFollowed(true);
+    setShowPopover(false);
     toast("Thẽo dõi khóa học thành công");
   };
 
@@ -101,10 +108,38 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         currentUser.user.uid
       ),
     });
-    
+
     setFollowingCourseIndex(-1);
     setIsFollowed(false);
+    setShowPopover(false);
     toast("Đã bỏ theo dõi khóa học");
+  };
+
+  const handleShowShareModal = () => {
+    setShowShareModal(true);
+    setShowPopover(false);
+  };
+
+  const handleCloseShareModal = () => {
+    setShowShareModal(false);
+  };
+
+  const handleShare = async () => {
+    let post = {
+      author: currentUser.user.name,
+      profileURL: currentUser.user.profileURL,
+      title: name,
+      sharedLink: window.location.href,
+      content: `Tham gia khóa học ${name} này cùng mình nhé !`,
+      created_at: Date.now(),
+    };
+
+    const res = await database.collection("posts").add(post);
+
+    if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
+
+    toast("Chia sẻ khóa học thành công");
+    setShowShareModal(false);
   };
 
   return (
@@ -116,25 +151,29 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
           </IonButtons>
           <IonTitle>{name}</IonTitle>
           <IonButtons slot="end">
-            {isFollowed ? (
-              <IonButton onClick={handleUnfollow}>
-                <IonIcon
-                  color="dark"
-                  slot="icon-only"
-                  ios={closeOutline}
-                  md={closeSharp}
-                />
-              </IonButton>
-            ) : (
-              <IonButton onClick={handleFollow}>
-                <IonIcon
-                  color="dark"
-                  slot="icon-only"
-                  ios={addOutline}
-                  md={addSharp}
-                />
-              </IonButton>
-            )}
+            <IonButton onClick={() => setShowPopover(true)}>
+              <IonIcon
+                color="dark"
+                slot="icon-only"
+                ios={ellipsisVerticalOutline}
+                md={ellipsisVertical}
+              />
+            </IonButton>
+
+            <IonPopover
+              isOpen={showPopover}
+              cssClass="course-detail-popup"
+              onDidDismiss={() => setShowPopover(false)}
+            >
+              <IonList>
+                {isFollowed ? (
+                  <IonItem onClick={handleUnfollow}>Bỏ theo dõi</IonItem>
+                ) : (
+                  <IonItem onClick={handleFollow}>Theo dõi</IonItem>
+                )}
+                <IonItem onClick={handleShowShareModal}>Chia sẻ</IonItem>
+              </IonList>
+            </IonPopover>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -142,6 +181,12 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
       <IonContent fullscreen>
         <LessonList author={author} courseId={match.params.id} />
       </IonContent>
+
+      <ShareModal
+        isOpen={showShareModal}
+        handleCloseShareModal={handleCloseShareModal}
+        handleShare={handleShare}
+      />
     </IonPage>
   );
 };

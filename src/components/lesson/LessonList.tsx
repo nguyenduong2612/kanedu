@@ -38,7 +38,7 @@ const LessonList: React.FC<ContainerProps> = ({
   return (
     <>
       {isEmpty ? (
-        <ErrorPage></ErrorPage>
+        <ErrorPage>Không có bài học</ErrorPage>
       ) : (
         <div style={{ paddingTop: 30 }}>
           {lessonList.map((lesson: any, index: number) => {

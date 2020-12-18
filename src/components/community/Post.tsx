@@ -88,7 +88,9 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
 
   return (
     <IonItem lines="none">
-      <IonCard style={{ width: "100%" }}>
+      <IonCard
+        style={{ width: "100%" }} /*routerLink={`/community/${post.id}`}*/
+      >
         <IonCardHeader>
           <IonText style={{ fontSize: 20, color: "black" }}>
             {post.data.title}
@@ -110,7 +112,12 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
           </IonRow>
 
           <IonRow>
-            <p style={{ paddingTop: 5 }}>{post.data.content}</p>
+            <p className="post-content">{post.data.content}</p>
+            {post.data.sharedLink && (
+              <IonButton href={post.data.sharedLink} fill="outline">
+                Tham gia
+              </IonButton>
+            )}
           </IonRow>
         </IonCardContent>
 

@@ -73,6 +73,7 @@ const CreateCard = lazy(() => import("./pages/create/CreateCard"));
 const Learning = lazy(() => import("./pages/lesson/Learning"));
 const Testing = lazy(() => import("./pages/lesson/Testing"));
 const Community = lazy(() => import("./pages/community/Community"));
+const PostDetail = lazy(() => import("./pages/community/post/PostDetail"));
 const Search = lazy(() => import("./pages/search/Search"));
 
 const Routing: React.FC = () => {
@@ -100,6 +101,7 @@ const Routing: React.FC = () => {
       <Route path="/search" component={Search} exact />
       <Route path="/profile" render={() => <Profile />} exact />
       <Route path="/community" render={() => <Community />} exact />
+      <Route path="/community/:post_id" component={PostDetail} exact />
       <Route path="/home" render={() => <Home />} exact />
     </IonRouterOutlet>
   );
