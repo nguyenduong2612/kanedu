@@ -41,11 +41,11 @@ const Profile: React.FC<ContainerProps> = () => {
   return (
     <IonPage id="main">
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonMenuButton
             slot="start"
             className="menu-btn"
-            color="dark"
+            color="light"
           ></IonMenuButton>
           <IonTitle>Tài khoản</IonTitle>
         </IonToolbar>

@@ -130,11 +130,11 @@ const Community: React.FC<ContainerProps> = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonMenuButton
             slot="start"
             className="menu-btn"
-            color="dark"
+            color="light"
           ></IonMenuButton>
           <IonTitle>Cộng đồng</IonTitle>
         </IonToolbar>
@@ -190,7 +190,7 @@ const Community: React.FC<ContainerProps> = () => {
                   <IonButton
                     expand="block"
                     fill="outline"
-                    color="dark"
+                    color="primary"
                     size="default"
                     onClick={() => setShowPopover(true)}
                   >

@@ -8,7 +8,6 @@ import {
   IonTabBar,
   IonTabButton,
   IonIcon,
-  IonLabel,
   IonContent,
   IonRefresher,
   IonRefresherContent,
@@ -16,10 +15,13 @@ import {
   IonSplitPane,
   IonFab,
   IonFabButton,
+  IonTitle,
+  IonList,
 } from "@ionic/react";
 
 import { IonReactRouter } from "@ionic/react-router";
 import { RefresherEventDetail } from "@ionic/core";
+import { Plugins, Capacitor } from "@capacitor/core";
 import { getPlatforms } from "@ionic/react";
 
 /* Core CSS required for Ionic components to work properly */
@@ -40,6 +42,7 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import "./theme/app.css";
 
 /* Ionic icons */
 import {
@@ -56,6 +59,7 @@ import {
 
 import { database, getCurrentUser } from "./config/firebaseConfig";
 import { setCurrentUser } from "./redux/reducers/userReducer";
+import LandingPage from "./pages/LandingPage";
 
 /* Pages and components */
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
@@ -75,6 +79,8 @@ const Testing = lazy(() => import("./pages/lesson/Testing"));
 const Community = lazy(() => import("./pages/community/Community"));
 const PostDetail = lazy(() => import("./pages/community/post/PostDetail"));
 const Search = lazy(() => import("./pages/search/Search"));
+
+const { StatusBar } = Plugins;
 
 const Routing: React.FC = () => {
   return (
@@ -103,12 +109,13 @@ const Routing: React.FC = () => {
       <Route path="/community" render={() => <Community />} exact />
       <Route path="/community/:post_id" component={PostDetail} exact />
       <Route path="/home" render={() => <Home />} exact />
+      <Route path="/welcome" component={LandingPage} exact />
     </IonRouterOutlet>
   );
 };
 
 const Loading: React.FC = () => {
-  return <IonLoading message="Please wait" duration={0} isOpen={true} />;
+  return <IonLoading message="Vui lòng đợi" duration={0} isOpen={true} />;
 };
 
 interface RootState {
@@ -125,6 +132,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     console.log(getPlatforms());
+    const changeStatusBar = () => {
+      if (Capacitor.isPluginAvailable("StatusBar")) {
+        StatusBar.setBackgroundColor({
+          color: "#b589c9",
+        });
+      }
+    };
+
     getCurrentUser().then(async (user: any) => {
       //console.log(user)
       if (user) {
@@ -150,10 +165,12 @@ const App: React.FC = () => {
           });
         }
       } else {
-        window.history.replaceState({}, "", "/login");
+        window.history.replaceState({}, "", "/welcome");
       }
       setBusy(false);
     });
+
+    changeStatusBar();
   }, [dispatch]);
 
   async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
@@ -180,11 +197,11 @@ const App: React.FC = () => {
               <IonSplitPane contentId="main">
                 <SideMenu />
 
-                <IonContent fullscreen id="main">
+                <IonContent fullscreen id="main" style={{ maxWidth: 800 }}>
                   <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
                     <IonRefresherContent></IonRefresherContent>
                   </IonRefresher>
-                  <IonFab vertical="bottom" horizontal="center" slot="fixed">
+                  <IonFab vertical="bottom" horizontal="center">
                     <IonFabButton onClick={handleShowModal}>
                       <IonIcon icon={add} size="large" />
                     </IonFabButton>
@@ -201,23 +218,29 @@ const App: React.FC = () => {
                     <IonTabBar slot="bottom" id="appTabBar">
                       <IonTabButton tab="home" href="/home">
                         <IonIcon ios={homeOutline} md={homeSharp} />
-                        <IonLabel>Trang chủ</IonLabel>
+                        {/* <IonLabel>Trang chủ</IonLabel> */}
                       </IonTabButton>
                       <IonTabButton tab="search" href="/search">
                         <IonIcon ios={searchOutline} md={searchSharp} />
-                        <IonLabel>Tìm kiếm</IonLabel>
+                        {/* <IonLabel>Tìm kiếm</IonLabel> */}
                       </IonTabButton>
                       <IonTabButton disabled></IonTabButton>
                       <IonTabButton tab="community" href="/community">
                         <IonIcon ios={peopleOutline} md={peopleSharp} />
-                        <IonLabel>Cộng đồng</IonLabel>
+                        {/* <IonLabel>Cộng đồng</IonLabel> */}
                       </IonTabButton>
                       <IonTabButton tab="profile" href="/profile">
                         <IonIcon ios={personOutline} md={personSharp} />
-                        <IonLabel>Tài khoản</IonLabel>
+                        {/* <IonLabel>Tài khoản</IonLabel> */}
                       </IonTabButton>
                     </IonTabBar>
                   </IonTabs>
+                </IonContent>
+
+                <IonContent id="right-side" fullscreen>
+                  <IonList className="ads">
+                    <IonTitle>Quảng cáo</IonTitle>
+                  </IonList>
                 </IonContent>
               </IonSplitPane>
             ) : (

@@ -1,7 +1,9 @@
-import { IonIcon, IonItem, IonLabel, IonModal } from "@ionic/react";
+import { IonButton, IonIcon, IonItem, IonLabel, IonModal } from "@ionic/react";
 import {
   bookOutline,
   bookSharp,
+  closeOutline,
+  closeSharp,
   libraryOutline,
   librarySharp,
 } from "ionicons/icons";
@@ -28,7 +30,20 @@ const CreateModal: React.FC<ContainerProps> = ({
       <div className="create-modal-wrapper">
         <IonItem className="create-modal-item" lines="none">
           Tạo
+          <IonButton
+            fill="clear"
+            onClick={handleCloseModal}
+            slot="end"
+          >
+            <IonIcon
+              color="dark"
+              slot="icon-only"
+              ios={closeOutline}
+              md={closeSharp}
+            />
+          </IonButton>
         </IonItem>
+
         <IonItem
           className="create-modal-item"
           lines="none"

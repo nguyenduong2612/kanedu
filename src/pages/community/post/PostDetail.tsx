@@ -20,9 +20,9 @@ const PostDetail: React.FC<ContainerProps> = ({ match }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
+            <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonTitle>Bài đăng</IonTitle>
         </IonToolbar>

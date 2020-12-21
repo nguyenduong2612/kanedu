@@ -109,9 +109,9 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
+            <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonTitle>
             {answeredCounter} / {numberOfQuestions}
@@ -120,7 +120,7 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
             <IonRow>
               <IonCol>
                 <IonIcon
-                  color="dark"
+                  color="light"
                   ios={checkmarkOutline}
                   md={checkmarkSharp}
                   style={{ paddingRight: 5 }}
@@ -130,7 +130,7 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
               
               <IonCol>
                 <IonIcon
-                  color="dark"
+                  color="light"
                   ios={closeOutline}
                   md={closeSharp}
                   style={{ paddingRight: 5 }}

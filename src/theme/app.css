@@ -22,3 +22,22 @@
 .container a {
   text-decoration: none;
 }
+
+#main::-webkit-scrollbar  {
+  width: 0px; 
+  background: transparent;
+}
+
+ion-content#right-side {
+  order: unset;
+  border-left: solid 1px rgba(0, 0, 0, 0.13);
+}
+
+.ads {
+  padding: 35px 5px !important;
+}
+
+.toolbar {
+  --background:#b589c9;
+  color: #fff
+}

@@ -72,10 +72,11 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonButtons slot="start">
             <IonBackButton
-              color="dark"
+              color="light"
+              text=""
               defaultHref={`/courses/${match.params.course_id}`}
             />
           </IonButtons>

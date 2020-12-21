@@ -11,8 +11,17 @@ import {
   IonPopover,
   IonItem,
   IonList,
+  IonItemDivider,
+  IonLabel,
+  IonText,
 } from "@ionic/react";
-import { ellipsisVertical, ellipsisVerticalOutline } from "ionicons/icons";
+import {
+  ellipsisVertical,
+  ellipsisVerticalOutline,
+  heartOutline,
+  personCircle,
+  shareSocialOutline,
+} from "ionicons/icons";
 import React, { useState, useEffect, lazy } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -44,6 +53,8 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
   const [name, setName] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [authorId, setAuthorId] = useState<string>("");
+  const [countFollowers, setCountFollowers] = useState<number>();
+
   const [followingCourseIndex, setFollowingCourseIndex] = useState<number>(-1);
   const [isFollowed, setIsFollowed] = useState<boolean>();
   const [showPopover, setShowPopover] = useState<boolean>(false);
@@ -63,6 +74,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         setName(doc.data().name);
         setAuthor(doc.data().author);
         setAuthorId(doc.data().author_id);
+        setCountFollowers(doc.data().followed_by.length)
 
         var course_index = courseList.courses
           .map((course: any) => {
@@ -145,15 +157,15 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
+            <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonTitle>{name}</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={() => setShowPopover(true)}>
               <IonIcon
-                color="dark"
+                color="light"
                 slot="icon-only"
                 ios={ellipsisVerticalOutline}
                 md={ellipsisVertical}
@@ -179,6 +191,28 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <IonList style={{ marginTop: 10 }}>
+          <IonItem lines="none">
+            <IonIcon icon={personCircle}></IonIcon>
+            <IonText style={{ marginLeft: 10 }}>Được tạo bởi {author}</IonText>
+          </IonItem>
+          <IonItem lines="none">
+            <IonIcon icon={heartOutline}></IonIcon>
+            <IonText style={{ marginLeft: 10 }}>
+              {countFollowers} người theo dõi khóa học này
+            </IonText>
+          </IonItem>
+          <IonItem lines="none">
+            <IonIcon icon={shareSocialOutline}></IonIcon>
+            <IonText style={{ marginLeft: 10 }}>
+              123123 lượt chia sẻ
+            </IonText>
+          </IonItem>
+        </IonList>
+
+        <IonItemDivider mode="md">
+          <IonLabel color="dark">Danh sách bài học</IonLabel>
+        </IonItemDivider>
         <LessonList author={author} courseId={match.params.id} />
       </IonContent>
 

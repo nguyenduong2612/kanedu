@@ -10,11 +10,19 @@ import {
   IonLabel,
   IonLoading,
   IonDatetime,
+  IonBackButton,
+  IonButtons,
+  IonList,
+  IonCard,
+  IonCol,
+  IonRow,
+  IonIcon,
 } from "@ionic/react";
+import { logoFacebook, logoGoogle } from "ionicons/icons";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { signupUser } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
+import "./Register.scss";
 
 const Register: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false);
@@ -51,73 +59,100 @@ const Register: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
+          <IonButtons slot="start">
+            <IonBackButton color="light" text="" defaultHref="/" />
+          </IonButtons>
           <IonTitle>Đăng ký</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonLoading message="Please wait" duration={0} isOpen={busy} />
+      <IonLoading message="Vui lòng đợi" duration={0} isOpen={busy} />
       <IonContent fullscreen>
-        <IonItem>
-          <IonLabel position="floating">Họ tên</IonLabel>
-          <IonInput
-            required
-            type="text"
-            value={name}
-            onIonChange={(e: any) => setName(e.target.value)}
-          ></IonInput>
-        </IonItem>
+        <IonList className="signup-wrapper">
+          <IonLabel color="medium">Đăng nhập sử dụng tài khoản đã có</IonLabel>
+          <IonRow>
+            <IonCol size="6">
+              <IonCard className="social-login-btn" button={true} mode="md">
+                <IonIcon
+                  className="social-login-icon"
+                  icon={logoGoogle}
+                ></IonIcon>
+                <IonTitle>Google</IonTitle>
+              </IonCard>
+            </IonCol>
+            <IonCol size="6">
+              <IonCard className="social-login-btn" button={true} mode="md">
+                <IonIcon
+                  className="social-login-icon"
+                  icon={logoFacebook}
+                ></IonIcon>
+                <IonTitle>Facebook</IonTitle>
+              </IonCard>
+            </IonCol>
+          </IonRow>
 
-        <IonItem>
-          <IonLabel position="floating">Ngày sinh</IonLabel>
-          <IonDatetime
-            displayFormat="MMM D, YYYY"
-            min="1930"
-            max="2020"
-            placeholder="Select Date"
-            value={birthday.substr(0, 10)}
-            onIonChange={(e: any) => setBirthday(e.target.value)}
-          ></IonDatetime>
-        </IonItem>
+          <IonLabel color="medium">Hoặc đăng ký tài khoản mới</IonLabel>
+          <IonItem>
+            <IonLabel position="floating">Họ tên</IonLabel>
+            <IonInput
+              required
+              type="text"
+              value={name}
+              onIonChange={(e: any) => setName(e.target.value)}
+            ></IonInput>
+          </IonItem>
 
-        <IonItem>
-          <IonLabel position="floating">Email</IonLabel>
-          <IonInput
-            required
-            type="email"
-            value={email}
-            onIonChange={(e: any) => setEmail(e.target.value)}
-          ></IonInput>
-        </IonItem>
+          <IonItem>
+            <IonLabel position="floating">Ngày sinh</IonLabel>
+            <IonDatetime
+              displayFormat="MMM D, YYYY"
+              min="1930"
+              max="2020"
+              placeholder="Select Date"
+              value={birthday.substr(0, 10)}
+              onIonChange={(e: any) => setBirthday(e.target.value)}
+            ></IonDatetime>
+          </IonItem>
 
-        <IonItem>
-          <IonLabel position="floating">Mật khẩu</IonLabel>
-          <IonInput
-            required
-            type="password"
-            value={password}
-            onIonChange={(e: any) => setPassword(e.target.value)}
-          ></IonInput>
-        </IonItem>
+          <IonItem>
+            <IonLabel position="floating">Email</IonLabel>
+            <IonInput
+              required
+              type="email"
+              value={email}
+              onIonChange={(e: any) => setEmail(e.target.value)}
+            ></IonInput>
+          </IonItem>
 
-        <IonItem>
-          <IonLabel position="floating">Xác nhận mật khẩu</IonLabel>
-          <IonInput
-            required
-            type="password"
-            value={confirmPassword}
-            onIonChange={(e: any) => setConfirmPassword(e.target.value)}
-          ></IonInput>
-        </IonItem>
+          <IonItem>
+            <IonLabel position="floating">Mật khẩu</IonLabel>
+            <IonInput
+              required
+              type="password"
+              value={password}
+              onIonChange={(e: any) => setPassword(e.target.value)}
+            ></IonInput>
+          </IonItem>
 
-        <IonButton className="ion-margin" expand="block" onClick={signup}>
-          ĐĂNG KÝ
-        </IonButton>
-
-        <IonItem lines="none">
-          <p>
-            Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
-          </p>
-        </IonItem>
+          <IonItem>
+            <IonLabel position="floating">Xác nhận mật khẩu</IonLabel>
+            <IonInput
+              required
+              type="password"
+              value={confirmPassword}
+              onIonChange={(e: any) => setConfirmPassword(e.target.value)}
+            ></IonInput>
+          </IonItem>
+          <IonButton
+            style={{ marginTop: 35 }}
+            size="large"
+            expand="block"
+            mode="ios"
+            onClick={signup}
+          >
+            ĐĂNG KÝ
+          </IonButton>
+        </IonList>
       </IonContent>
     </IonPage>
   );

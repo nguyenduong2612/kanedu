@@ -2,7 +2,6 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
   IonList,
   IonSearchbar,
@@ -101,25 +100,28 @@ const Search: React.FC<ContainerProps> = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonMenuButton
             slot="start"
             className="menu-btn"
-            color="dark"
+            color="light"
+            style={{marginTop: 14}}
           ></IonMenuButton>
-          <IonTitle>Tìm kiếm</IonTitle>
+          <IonSearchbar
+            value={searchTerm}
+            onIonChange={(e: any) => setSearchTerm(e.detail.value!)}
+            placeholder={placeholderSelect(searchIndex)}
+            mode="ios"
+            style={{marginTop: 10, paddingBottom: 5}}
+            color="light"
+          />
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonSearchbar
-          value={searchTerm}
-          onIonChange={(e: any) => setSearchTerm(e.detail.value!)}
-          placeholder={placeholderSelect(searchIndex)}
-        />
-
         <IonSegment
           value={searchIndex}
+          color="primary"
           onIonChange={(e: any) => setSearchIndex(e.detail.value!)}
         >
           <IonSegmentButton value="courses">

@@ -26,9 +26,9 @@ const CreateLesson: React.FC<ContainerProps> = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
+            <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
 
           <IonTitle>Chọn khóa học</IonTitle>

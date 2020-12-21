@@ -14,6 +14,8 @@ import {
 } from "@ionic/react";
 import {
   chatboxOutline,
+  closeOutline,
+  closeSharp,
   heartOutline,
   sendOutline,
   sendSharp,
@@ -137,6 +139,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
           </IonCol>
 
           <IonCol size="6">
+            {/* comment modal */}
             <IonModal
               swipeToClose={true}
               isOpen={showCommentModal}
@@ -145,6 +148,17 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
               mode="ios"
             >
               <div className="comment-list-wrapper">
+                <IonItem lines="none">
+                  Bình luận
+                  <IonButton fill="clear" onClick={handleCloseModal} slot="end">
+                    <IonIcon
+                      color="dark"
+                      slot="icon-only"
+                      ios={closeOutline}
+                      md={closeSharp}
+                    />
+                  </IonButton>
+                </IonItem>
                 {commentList.map((comment: any, index: number) => {
                   return (
                     <div className="comment-wrapper" key={index}>

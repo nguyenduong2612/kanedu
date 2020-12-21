@@ -40,7 +40,7 @@ const LessonList: React.FC<ContainerProps> = ({
       {isEmpty ? (
         <ErrorPage>Không có bài học</ErrorPage>
       ) : (
-        <div style={{ paddingTop: 30 }}>
+        <div style={{ paddingTop: 10 }}>
           {lessonList.map((lesson: any, index: number) => {
             return (
               <IonItem

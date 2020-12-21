@@ -82,11 +82,11 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonMenuButton
             slot="start"
             className="menu-btn"
-            color="dark"
+            color="light"
           ></IonMenuButton>
           <IonTitle>Trang chủ</IonTitle>
         </IonToolbar>

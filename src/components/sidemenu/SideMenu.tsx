@@ -25,7 +25,7 @@ import {
   peopleOutline,
   peopleSharp,
 } from "ionicons/icons";
-import "./SideMenu.css";
+import "./SideMenu.scss";
 import { signoutUser } from "../../config/firebaseConfig";
 
 interface ContainerProps {}
@@ -108,12 +108,12 @@ const SideMenu: React.FC<ContainerProps> = () => {
               detail={false}
             >
               <IonIcon
-                color="danger"
+                color="light"
                 slot="start"
                 ios={logOutOutline}
                 md={logOutSharp}
               />
-              <IonLabel color="danger">Đăng xuất</IonLabel>
+              <IonLabel color="light">Đăng xuất</IonLabel>
             </IonItem>
           </IonMenuToggle>
         </IonList>

@@ -142,14 +142,14 @@ const CreateCard: React.FC<ContainerProps> = ({ match }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="toolbar">
           <IonButtons slot="start">
-            <IonBackButton color="dark" defaultHref="/" />
+            <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonButtons slot="end">
             <IonButton onClick={handleSaveCards}>
               <IonIcon
-                color="dark"
+                color="light"
                 slot="icon-only"
                 ios={checkmarkOutline}
                 md={checkmarkSharp}
