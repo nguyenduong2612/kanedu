@@ -1,0 +1,35 @@
+.logo-wrapper {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  height: 0;
+
+  .logo {
+    font-family: "Comfortaa", "Roboto", "sans-serif";
+    color: #9b79ab;
+    margin-top: 3vh;
+    margin-bottom: 0;
+    font-size: 4vh;
+  }
+}
+
+.lp-slides {
+  height: 75%;
+  .slide-wrapper {
+    width: 80%;
+    margin: auto;
+    max-width: 45vh;
+    .lp-title {
+      margin-top: 30px;
+    }
+  }
+}
+
+.lp-btn {
+  width: 85%;
+  margin: 5px auto 0;
+  font-size: 14px;
+  .btn-text {
+    font-size: 18px;
+  }
+}

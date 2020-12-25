@@ -5,13 +5,9 @@ import {
   IonTitle,
   IonContent,
   IonMenuButton,
-  IonItem,
   IonCol,
   IonRow,
   IonGrid,
-  IonInput,
-  IonPopover,
-  IonTextarea,
   IonButton,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
@@ -27,6 +23,7 @@ import { algoliaUpdatePost } from "../../config/algoliaConfig";
 import ErrorPage from "../../components/ErrorPage";
 
 const Post = lazy(() => import("../../components/community/Post"));
+const SendQuestionModal = lazy(() => import("../../components/modals/SendQuestionModal"));
 
 interface ContainerProps {}
 interface RootState {
@@ -35,8 +32,6 @@ interface RootState {
 
 const Community: React.FC<ContainerProps> = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
-  const [titleInput, setTitleInput] = useState<string>("");
-  const [contentInput, setContentInput] = useState<string>("");
 
   const [postList, setPostList] = useState<any[]>([]);
   const [loadedPostList, setLoadedPostList] = useState<boolean>();
@@ -105,15 +100,15 @@ const Community: React.FC<ContainerProps> = () => {
     }, 750);
   };
 
-  async function handleSendQuestion() {
-    if (titleInput.trim() === "" || contentInput.trim() === "") {
+  async function handleSendQuestion(title: string, content: string) {
+    if (title.trim() === "" || content.trim() === "") {
       toast("Hãy nhập tiêu đề và nội dung câu hỏi");
     } else {
       let post = {
         author: currentUser.user.name,
         profileURL: currentUser.user.profileURL,
-        title: titleInput,
-        content: contentInput,
+        title: title,
+        content: content,
         created_at: Date.now(),
       };
 
@@ -121,7 +116,10 @@ const Community: React.FC<ContainerProps> = () => {
 
       if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
-      setCurrentPostList((currentPostList) => [{ data: post, id: res.id }, ...currentPostList]);
+      setCurrentPostList((currentPostList) => [
+        { data: post, id: res.id },
+        ...currentPostList,
+      ]);
       toast("Đăng thành công");
       setShowPopover(false);
     }
@@ -155,38 +153,6 @@ const Community: React.FC<ContainerProps> = () => {
               </IonCol>
               <IonCol size="10" className="col">
                 <IonContent>
-                  <IonPopover
-                    isOpen={showPopover}
-                    cssClass="input-modal"
-                    onDidDismiss={(e) => setShowPopover(false)}
-                  >
-                    <IonItem>
-                      <IonInput
-                        value={titleInput}
-                        placeholder="Tiêu đề"
-                        onIonChange={(e) => setTitleInput(e.detail.value!)}
-                      ></IonInput>
-                    </IonItem>
-                    <IonItem lines="none">
-                      <IonTextarea
-                        rows={6}
-                        value={contentInput}
-                        placeholder="Nội dung câu hỏi"
-                        onIonChange={(e) => setContentInput(e.detail.value!)}
-                      ></IonTextarea>
-                    </IonItem>
-                    <IonItem lines="none">
-                      <IonButton
-                        size="default"
-                        style={{ width: "100%" }}
-                        expand="block"
-                        color="primary"
-                        onClick={handleSendQuestion}
-                      >
-                        Đăng
-                      </IonButton>
-                    </IonItem>
-                  </IonPopover>
                   <IonButton
                     expand="block"
                     fill="outline"
@@ -196,22 +162,29 @@ const Community: React.FC<ContainerProps> = () => {
                   >
                     <p>Đặt câu hỏi</p>
                   </IonButton>
+
+                  <SendQuestionModal
+                    isOpen={showPopover}
+                    handleCloseModal={() => setShowPopover(false)}
+                    handleSendQuestion={handleSendQuestion}
+                  />
                 </IonContent>
               </IonCol>
             </IonRow>
           </IonGrid>
 
           <div style={{ paddingTop: 10 }}>
-            {currentPostList.filter(post => post !== undefined).map((post: any, index: number) => {
-              return (
-                <Post
-                  key={index}
-                  post={post}
-                  username={currentUser.user.name}
-                />
-              );
-
-            })}
+            {currentPostList
+              .filter((post) => post !== undefined)
+              .map((post: any, index: number) => {
+                return (
+                  <Post
+                    key={index}
+                    post={post}
+                    username={currentUser.user.name}
+                  />
+                );
+              })}
 
             <IonInfiniteScroll
               threshold="100px"

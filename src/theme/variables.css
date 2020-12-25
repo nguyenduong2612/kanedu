@@ -9,6 +9,11 @@ ion-item-divider {
   font-family: "OpenSans";
   src: url("../assets/fonts/OpenSans/OpenSans-Regular.ttf");
 }
+
+@font-face {
+  font-family: "Comfortaa";
+  src: url("../assets/fonts/Comfortaa/Comfortaa-Bold.ttf");
+}
 :root {
   /** primary **/
   /* --ion-color-primary: #3880ff;

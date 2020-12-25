@@ -47,20 +47,19 @@ import "./theme/app.css";
 /* Ionic icons */
 import {
   peopleOutline,
-  peopleSharp,
   personOutline,
-  personSharp,
   homeOutline,
-  homeSharp,
   searchOutline,
-  searchSharp,
   add,
+  home,
+  people,
+  person,
+  search,
 } from "ionicons/icons";
 
 import { database, getCurrentUser } from "./config/firebaseConfig";
 import { setCurrentUser } from "./redux/reducers/userReducer";
 import LandingPage from "./pages/LandingPage";
-
 
 /* Pages and components */
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
@@ -81,6 +80,8 @@ const Testing = lazy(() => import("./pages/lesson/Testing"));
 const Community = lazy(() => import("./pages/community/Community"));
 const PostDetail = lazy(() => import("./pages/community/post/PostDetail"));
 const Search = lazy(() => import("./pages/search/Search"));
+const Dict = lazy(() => import("./pages/dict/Dict"));
+const Test = lazy(() => import("./pages/test/Test"));
 
 const { StatusBar } = Plugins;
 
@@ -111,6 +112,8 @@ const Routing: React.FC = () => {
       <Route path="/profile/change-password" component={ChangePassword} exact />
       <Route path="/community" render={() => <Community />} exact />
       <Route path="/community/:post_id" component={PostDetail} exact />
+      <Route path="/dict" component={Dict} exact />
+      <Route path="/test" component={Test} exact />
       <Route path="/home" render={() => <Home />} exact />
       <Route path="/welcome" component={LandingPage} exact />
     </IonRouterOutlet>
@@ -220,20 +223,20 @@ const App: React.FC = () => {
                     </IonRouterOutlet>
                     <IonTabBar slot="bottom" id="appTabBar">
                       <IonTabButton tab="home" href="/home">
-                        <IonIcon ios={homeOutline} md={homeSharp} />
+                        <IonIcon ios={homeOutline} md={home} />
                         {/* <IonLabel>Trang chủ</IonLabel> */}
                       </IonTabButton>
                       <IonTabButton tab="search" href="/search">
-                        <IonIcon ios={searchOutline} md={searchSharp} />
+                        <IonIcon ios={searchOutline} md={search} />
                         {/* <IonLabel>Tìm kiếm</IonLabel> */}
                       </IonTabButton>
                       <IonTabButton disabled></IonTabButton>
                       <IonTabButton tab="community" href="/community">
-                        <IonIcon ios={peopleOutline} md={peopleSharp} />
+                        <IonIcon ios={peopleOutline} md={people} />
                         {/* <IonLabel>Cộng đồng</IonLabel> */}
                       </IonTabButton>
                       <IonTabButton tab="profile" href="/profile">
-                        <IonIcon ios={personOutline} md={personSharp} />
+                        <IonIcon ios={personOutline} md={person} />
                         {/* <IonLabel>Tài khoản</IonLabel> */}
                       </IonTabButton>
                     </IonTabBar>

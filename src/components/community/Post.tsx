@@ -37,6 +37,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
   const [commentInput, setCommentInput] = useState<string>("");
 
   const [commentList, setCommentList] = useState<any[]>([]);
+  const [commentCount, setCommentCount] = useState<number>();
 
   const handleSendComment = async () => {
     if (commentInput.trim() !== "") {
@@ -84,6 +85,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
           ...commentList,
           { data: doc.data(), id: doc.id },
         ]);
+        setCommentCount(docs.size);
       });
     }
   }
@@ -149,7 +151,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
             >
               <div className="comment-list-wrapper">
                 <IonItem lines="none">
-                  Bình luận
+                  ({commentCount ? commentCount : 0}) Bình luận
                   <IonButton fill="clear" onClick={handleCloseModal} slot="end">
                     <IonIcon
                       color="dark"

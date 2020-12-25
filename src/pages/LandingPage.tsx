@@ -5,50 +5,77 @@ import {
   IonSlides,
   IonSlide,
   IonButton,
+  IonImg,
+  IonTitle,
 } from "@ionic/react";
 import React from "react";
+import "./LandingPage.scss";
 
 interface ContainerProps {}
 
 const slideOpts = {
   initialSlide: 0,
   speed: 400,
+  loop: true,
 };
 
 const LandingPage: React.FC<ContainerProps> = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonSlides style={{ height: "75%" }} pager={true} options={slideOpts}>
+        <div className="logo-wrapper">
+          <h1 className="logo">Kanedu</h1>
+        </div>
+
+        <IonSlides className="lp-slides" pager={true} options={slideOpts}>
           <IonSlide>
-            <h1>Slide 1</h1>
+            <div className="slide-wrapper">
+              <img src="../assets/images/slide5.png" />
+              <h4 className="lp-title">
+                Ứng dụng học tiếng Nhật của riêng bạn
+              </h4>
+            </div>
           </IonSlide>
           <IonSlide>
-            <h1>Slide 2</h1>
+            <div className="slide-wrapper">
+              <img src="../assets/images/slide2.png" />
+              <h4 className="lp-title">
+                Học mọi lúc, mọi nơi, trên mọi thiết bị
+              </h4>
+            </div>
           </IonSlide>
           <IonSlide>
-            <h1>Slide 3</h1>
+            <div className="slide-wrapper">
+              <img src="../assets/images/slide4.png" />
+              <h4 className="lp-title">Kết nối cộng đồng học tiếng Nhật</h4>
+            </div>
+          </IonSlide>
+          <IonSlide>
+            <div className="slide-wrapper">
+              <img src="../assets/images/slide1.png" />
+              <h4 className="lp-title">Tự rèn luyện khả năng ngôn ngữ</h4>
+            </div>
           </IonSlide>
         </IonSlides>
 
-        <IonList style={{ width: "85%", margin: "5px auto 0" }}>
+        <IonList className="lp-btn">
           <IonButton
             size="large"
             expand="block"
             mode="ios"
             routerLink="/register"
           >
-            ĐĂNG KÝ MIỄN PHÍ
+            <p className="btn-text">ĐĂNG KÝ MIỄN PHÍ</p>
           </IonButton>
           <IonButton
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 5 }}
             size="large"
             expand="block"
             mode="ios"
             fill="clear"
             routerLink="/login"
           >
-            ĐĂNG NHẬP
+            <p className="btn-text">ĐĂNG NHẬP</p>
           </IonButton>
         </IonList>
       </IonContent>

@@ -43,6 +43,7 @@ ion-menu.md ion-item {
   border-radius: 4px;
   --background: var(--ion-color-primary, var(--ion-color-primary, #fff));
   color: #fff;
+  --border-color: #fff;
 }
 
 ion-menu.md ion-item.selected {
@@ -87,6 +88,7 @@ ion-menu.ios ion-item {
   --min-height: 50px;
   --background: var(--ion-color-primary, var(--ion-color-primary, #fff));
   color: #fff;
+  --border-color: #fff;
 }
 
 ion-menu.ios ion-item ion-icon {

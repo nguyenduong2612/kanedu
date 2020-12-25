@@ -1,0 +1,16 @@
+.send-question-modal {
+  --width: 90%;
+  .popover-content {
+    padding: 5px 0 15px;
+    position: absolute;
+    top: 130px !important;
+    left: unset !important;
+    right: 5% !important;
+  }
+  .modal-footer {
+    margin-top: 15px;
+    .send-btn {
+      margin-left: 15px;
+    }
+  }
+}

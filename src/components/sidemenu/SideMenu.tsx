@@ -15,15 +15,19 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
   logOutOutline,
-  logOutSharp,
   homeOutline,
-  homeSharp,
   personOutline,
-  personSharp,
   settingsOutline,
-  settingsSharp,
   peopleOutline,
-  peopleSharp,
+  home,
+  barbell,
+  barbellOutline,
+  people,
+  person,
+  settings,
+  logOut,
+  language,
+  languageOutline,
 } from "ionicons/icons";
 import "./SideMenu.scss";
 import { signoutUser } from "../../config/firebaseConfig";
@@ -45,25 +49,37 @@ const appPages: AppPage[] = [
     title: "Trang chủ",
     url: "/home",
     iosIcon: homeOutline,
-    mdIcon: homeSharp,
+    mdIcon: home,
   },
   {
     title: "Tài khoản",
     url: "/profile",
     iosIcon: personOutline,
-    mdIcon: personSharp,
+    mdIcon: person,
+  },
+  {
+    title: "Kiểm tra",
+    url: "/test",
+    iosIcon: barbellOutline,
+    mdIcon: barbell,
+  },
+  {
+    title: "Từ điển",
+    url: "/dict",
+    iosIcon: languageOutline,
+    mdIcon: language,
   },
   {
     title: "Cộng đồng",
     url: "/community",
     iosIcon: peopleOutline,
-    mdIcon: peopleSharp,
+    mdIcon: people,
   },
   {
     title: "Cài đặt",
     url: "/settings",
     iosIcon: settingsOutline,
-    mdIcon: settingsSharp,
+    mdIcon: settings,
   },
 ];
 
@@ -111,7 +127,7 @@ const SideMenu: React.FC<ContainerProps> = () => {
                 color="light"
                 slot="start"
                 ios={logOutOutline}
-                md={logOutSharp}
+                md={logOut}
               />
               <IonLabel color="light">Đăng xuất</IonLabel>
             </IonItem>
