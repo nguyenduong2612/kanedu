@@ -19,14 +19,20 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./Login.scss";
-import { loginUser, loginWithFacebook } from "../../config/firebaseConfig";
+import {
+  forgotPassword,
+  loginUser,
+  loginWithFacebook,
+} from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 import { logoFacebook, logoGoogle } from "ionicons/icons";
+import ForgotPasswordModal from "../../components/modals/ForgotPasswordModal";
 
 const Login: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // useEffect(() => {
   //   console.log(email, password)
@@ -54,6 +60,12 @@ const Login: React.FC = () => {
     await loginWithFacebook();
     window.history.replaceState({}, "", "/");
   }
+
+  const handleSendResetPasswordEmail = async (email: string) => {
+    if (await forgotPassword(email)) {
+      setIsModalOpen(false);
+    }
+  };
 
   return (
     <IonPage>
@@ -123,6 +135,23 @@ const Login: React.FC = () => {
           >
             ĐĂNG NHẬP
           </IonButton>
+
+          <IonButton
+            style={{ marginTop: 15 }}
+            size="small"
+            fill="clear"
+            expand="block"
+            mode="ios"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Quên mật khẩu?
+          </IonButton>
+
+          <ForgotPasswordModal
+            isOpen={isModalOpen}
+            handleCloseModal={() => setIsModalOpen(false)}
+            handleSendEmail={handleSendResetPasswordEmail}
+          />
         </IonList>
       </IonContent>
     </IonPage>

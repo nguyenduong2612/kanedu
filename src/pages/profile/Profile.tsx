@@ -14,14 +14,14 @@ import {
   IonMenuButton,
 } from "@ionic/react";
 import React from "react";
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 import "./Profile.css";
 import { verifyEmail } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 
 interface ContainerProps {}
 interface RootState {
-  user: any
+  user: any;
 }
 
 const Profile: React.FC<ContainerProps> = () => {
@@ -35,7 +35,6 @@ const Profile: React.FC<ContainerProps> = () => {
     } else {
       toast("An error happened");
     }
-
   }
 
   return (
@@ -77,6 +76,9 @@ const Profile: React.FC<ContainerProps> = () => {
             <IonItem lines="none">
               <IonLabel>Ngày sinh</IonLabel>
               <p style={{ color: "#aaa" }}>{currentUser.user.birthday}</p>
+            </IonItem>
+            <IonItem lines="none" routerLink="/profile/change-password">
+              <IonLabel>Thay đổi mật khẩu</IonLabel>
             </IonItem>
             <IonItemDivider mode="md" />
           </IonItemGroup>

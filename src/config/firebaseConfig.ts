@@ -50,7 +50,7 @@ export async function loginWithFacebook() {
     //provider.addScope('user_birthday');
     firebase
       .auth()
-      .signInWithPopup(provider)
+      .signInWithRedirect(provider)
       .then(async function (data: any) {
         const user = {
           birthday: "",
@@ -118,6 +118,66 @@ export async function verifyEmail() {
     })
     .catch(function (error) {
       console.log(error);
+      return false;
+    });
+
+  return res;
+}
+
+export async function forgotPassword(email: string) {
+  firebase.auth().useDeviceLanguage();
+  var res = firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(function () {
+      toast("Vui lòng kiểm tra email của bạn");
+      return true;
+    })
+    .catch(function (error) {
+      console.log(error);
+      if (error.code === "auth/invalid-email") {
+        toast("Vui lòng nhập email đúng định dạng");
+      } else if (error.code === "auth/user-not-found") {
+        toast("Địa chỉ email không tồn tại");
+      } else {
+        toast("Có lỗi xảy ra");
+      }
+
+      return false;
+    });
+
+  return res;
+}
+
+export async function reauthenticate(email: string, password: string) {
+  var user = firebase.auth().currentUser;
+  var credential = firebase.auth.EmailAuthProvider.credential(email, password);
+
+  var res = user
+    ?.reauthenticateWithCredential(credential)
+    .then(function () {
+      return true;
+    })
+    .catch(function (error) {
+      console.log(error);
+      return false;
+    });
+
+  return res;
+}
+
+export async function changePassword(password: string) {
+  var user = firebase.auth().currentUser;
+
+  var res = user
+    ?.updatePassword(password)
+    .then(function () {
+      toast("Thay đổi mật khẩu thành công");
+      return true;
+    })
+    .catch(function (error) {
+      console.log(error);
+      toast("Có lỗi xảy ra");
       return false;
     });
 

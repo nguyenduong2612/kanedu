@@ -61,6 +61,7 @@ import { database, getCurrentUser } from "./config/firebaseConfig";
 import { setCurrentUser } from "./redux/reducers/userReducer";
 import LandingPage from "./pages/LandingPage";
 
+
 /* Pages and components */
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
 const CreateModal = lazy(() => import("./components/create/CreateModal"));
@@ -69,6 +70,7 @@ const Login = lazy(() => import("./pages/login/Login"));
 const Register = lazy(() => import("./pages/register/Register"));
 const Settings = lazy(() => import("./pages/settings/Settings"));
 const Profile = lazy(() => import("./pages/profile/Profile"));
+const ChangePassword = lazy(() => import("./pages/profile/ChangePassword"));
 const Course = lazy(() => import("./pages/course/Course"));
 const Lesson = lazy(() => import("./pages/lesson/Lesson"));
 const CreateCourse = lazy(() => import("./pages/create/CreateCourse"));
@@ -106,6 +108,7 @@ const Routing: React.FC = () => {
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />
       <Route path="/profile" render={() => <Profile />} exact />
+      <Route path="/profile/change-password" component={ChangePassword} exact />
       <Route path="/community" render={() => <Community />} exact />
       <Route path="/community/:post_id" component={PostDetail} exact />
       <Route path="/home" render={() => <Home />} exact />
