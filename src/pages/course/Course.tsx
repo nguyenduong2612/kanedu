@@ -141,7 +141,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
       author: currentUser.user.name,
       profileURL: currentUser.user.profileURL,
       title: name,
-      sharedLink: window.location.href,
+      sharedLink: window.location.pathname,
       content: `Tham gia khóa học ${name} này cùng mình nhé !`,
       created_at: Date.now(),
     };
