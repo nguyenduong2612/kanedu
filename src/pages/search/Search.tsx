@@ -51,18 +51,26 @@ const SearchResult: React.FC<SearchResultProps> = ({
             {searchResult.map((item: any, index: number) => {
               if (searchIndex === "courses") {
                 return (
-                  <IonItem routerLink={`/courses/${item.objectID}`} key={index}>
+                  <IonItem
+                    routerLink={`/courses/${item.objectID}`}
+                    key={index}
+                    mode="ios"
+                  >
                     {item.name}
                   </IonItem>
                 );
               } else if (searchIndex === "posts") {
                 return (
-                  <IonItem routerLink={`/community`} key={index}>
+                  <IonItem routerLink={`/community`} key={index} mode="ios">
                     {item.title}
                   </IonItem>
                 ); //TODO
               } else {
-                return <IonItem key={index}>{item.name}</IonItem>; //TODO
+                return (
+                  <IonItem key={index} mode="ios">
+                    {item.name}
+                  </IonItem>
+                ); //TODO
               }
             })}
           </IonList>
@@ -105,14 +113,14 @@ const Search: React.FC<ContainerProps> = () => {
             slot="start"
             className="menu-btn"
             color="light"
-            style={{marginTop: 14}}
+            style={{ marginTop: 14 }}
           ></IonMenuButton>
           <IonSearchbar
             value={searchTerm}
             onIonChange={(e: any) => setSearchTerm(e.detail.value!)}
             placeholder={placeholderSelect(searchIndex)}
             mode="ios"
-            style={{marginTop: 10, paddingBottom: 5}}
+            style={{ marginTop: 10, paddingBottom: 5 }}
             color="light"
           />
         </IonToolbar>

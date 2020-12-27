@@ -18,9 +18,9 @@ import {
 import {
   ellipsisVertical,
   ellipsisVerticalOutline,
-  heartOutline,
+  heart,
   personCircle,
-  shareSocialOutline,
+  shareSocial,
 } from "ionicons/icons";
 import React, { useState, useEffect, lazy } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -74,7 +74,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         setName(doc.data().name);
         setAuthor(doc.data().author);
         setAuthorId(doc.data().author_id);
-        setCountFollowers(doc.data().followed_by.length)
+        setCountFollowers(doc.data().followed_by?.length)
 
         var course_index = courseList.courses
           .map((course: any) => {
@@ -179,11 +179,11 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
             >
               <IonList>
                 {isFollowed ? (
-                  <IonItem onClick={handleUnfollow}>Bỏ theo dõi</IonItem>
+                  <IonItem onClick={handleUnfollow} lines="none">Bỏ theo dõi</IonItem>
                 ) : (
-                  <IonItem onClick={handleFollow}>Theo dõi</IonItem>
+                  <IonItem onClick={handleFollow} lines="none">Theo dõi</IonItem>
                 )}
-                <IonItem onClick={handleShowShareModal}>Chia sẻ</IonItem>
+                <IonItem onClick={handleShowShareModal} lines="none">Chia sẻ</IonItem>
               </IonList>
             </IonPopover>
           </IonButtons>
@@ -197,13 +197,13 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
             <IonText style={{ marginLeft: 10 }}>Được tạo bởi {author}</IonText>
           </IonItem>
           <IonItem lines="none">
-            <IonIcon icon={heartOutline}></IonIcon>
+            <IonIcon icon={heart}></IonIcon>
             <IonText style={{ marginLeft: 10 }}>
-              {countFollowers} người theo dõi khóa học này
+              {countFollowers ? countFollowers : 0} người theo dõi khóa học này
             </IonText>
           </IonItem>
           <IonItem lines="none">
-            <IonIcon icon={shareSocialOutline}></IonIcon>
+            <IonIcon icon={shareSocial}></IonIcon>
             <IonText style={{ marginLeft: 10 }}>
               123123 lượt chia sẻ
             </IonText>

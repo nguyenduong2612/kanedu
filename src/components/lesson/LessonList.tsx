@@ -48,9 +48,9 @@ const LessonList: React.FC<ContainerProps> = ({
                 key={index}
                 routerLink={`/courses/${courseId}/${lesson.id}`}
               >
-                <IonCard style={{ width: "100%" }}>
+                <IonCard mode="md" style={{ width: "100%" }}>
                   <IonCardHeader>
-                    <IonCardTitle>{lesson.data().title}</IonCardTitle>
+                    <IonCardTitle><b>{lesson.data().title}</b></IonCardTitle>
                   </IonCardHeader>
                 </IonCard>
               </IonItem>

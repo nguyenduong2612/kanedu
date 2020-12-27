@@ -65,6 +65,8 @@ import LandingPage from "./pages/LandingPage";
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
 const CreateModal = lazy(() => import("./components/create/CreateModal"));
 const Home = lazy(() => import("./pages/home/Home"));
+const MyCourse = lazy(() => import("./pages/home/my_courses/MyCourse"));
+const MyFollowingCourse = lazy(() => import("./pages/home/following/MyFollowingCourse")); 
 const Login = lazy(() => import("./pages/login/Login"));
 const Register = lazy(() => import("./pages/register/Register"));
 const Settings = lazy(() => import("./pages/settings/Settings"));
@@ -108,13 +110,15 @@ const Routing: React.FC = () => {
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />
-      <Route path="/profile" render={() => <Profile />} exact />
+      <Route path="/profile" component={Profile} exact />
       <Route path="/profile/change-password" component={ChangePassword} exact />
-      <Route path="/community" render={() => <Community />} exact />
+      <Route path="/community" component={Community} exact />
       <Route path="/community/:post_id" component={PostDetail} exact />
       <Route path="/dict" component={Dict} exact />
       <Route path="/test" component={Test} exact />
-      <Route path="/home" render={() => <Home />} exact />
+      <Route path="/home" component={Home} exact />
+      <Route path="/home/my-courses" component={MyCourse} exact />
+      <Route path="/home/following-courses" component={MyFollowingCourse} exact />
       <Route path="/welcome" component={LandingPage} exact />
     </IonRouterOutlet>
   );

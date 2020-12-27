@@ -4,12 +4,14 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonItem,
   IonMenuButton,
   IonList,
   IonItemDivider,
   IonLabel,
+  IonButton,
+  IonIcon,
 } from "@ionic/react";
+import { chevronForward } from "ionicons/icons";
 import React, { lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { database } from "../../config/firebaseConfig";
@@ -49,6 +51,8 @@ const Home: React.FC = () => {
             author: doc.data().author,
             author_id: doc.data().author_id,
             name: doc.data().name,
+            description: doc.data().description,
+            followers: doc.data().followed_by?.length,
           };
           dispatch(setFollowingCourses(course));
         });
@@ -69,6 +73,8 @@ const Home: React.FC = () => {
             author: doc.data().author,
             author_id: doc.data().author_id,
             name: doc.data().name,
+            description: doc.data().description,
+            followers: doc.data().followed_by?.length,
           };
           dispatch(setMyCourses(course));
         });
@@ -92,28 +98,70 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonItem lines="none">
-          <p>{currentUser.user.email}</p>
-        </IonItem>
-
         <IonList>
           <IonItemDivider mode="md">
-            <IonLabel color="dark">Đang theo dõi</IonLabel>
+            <IonLabel color="dark">
+              <b>Đang theo dõi</b>
+            </IonLabel>
+            <IonButton
+              mode="ios"
+              slot="end"
+              size="small"
+              fill="clear"
+              routerLink="/home/following-courses"
+            >
+              <IonLabel>
+                <b>
+                  Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
+                </b>
+              </IonLabel>
+            </IonButton>
           </IonItemDivider>
-          {courseList.courses.map((course: any, index: number) => {
+          {courseList.courses.slice(0, 2).map((course: any, index: number) => {
             return (
-              <CourseContainer key={index} id={course.id} name={course.name} />
+              <CourseContainer
+                key={index}
+                id={course.id}
+                name={course.name}
+                author={course.author}
+                description={course.description}
+                followers={course.followers}
+              />
             );
           })}
 
           <IonItemDivider mode="md">
-            <IonLabel color="dark">Khóa học của tôi</IonLabel>
+            <IonLabel color="dark">
+              <b>Khóa học của tôi</b>
+            </IonLabel>
+            <IonButton
+              mode="ios"
+              slot="end"
+              size="small"
+              fill="clear"
+              routerLink="/home/my-courses"
+            >
+              <IonLabel>
+                <b>
+                  Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
+                </b>
+              </IonLabel>
+            </IonButton>
           </IonItemDivider>
-          {courseList.my_courses.map((course: any, index: number) => {
-            return (
-              <CourseContainer key={index} id={course.id} name={course.name} />
-            );
-          })}
+          {courseList.my_courses
+            .slice(0, 2)
+            .map((course: any, index: number) => {
+              return (
+                <CourseContainer
+                  key={index}
+                  id={course.id}
+                  name={course.name}
+                  author={course.author}
+                  description={course.description}
+                  followers={course.followers}
+                />
+              );
+            })}
         </IonList>
       </IonContent>
     </IonPage>
