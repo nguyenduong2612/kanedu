@@ -66,7 +66,9 @@ const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
 const CreateModal = lazy(() => import("./components/create/CreateModal"));
 const Home = lazy(() => import("./pages/home/Home"));
 const MyCourse = lazy(() => import("./pages/home/my_courses/MyCourse"));
-const MyFollowingCourse = lazy(() => import("./pages/home/following/MyFollowingCourse")); 
+const MyFollowingCourse = lazy(
+  () => import("./pages/home/following/MyFollowingCourse")
+);
 const Login = lazy(() => import("./pages/login/Login"));
 const Register = lazy(() => import("./pages/register/Register"));
 const Settings = lazy(() => import("./pages/settings/Settings"));
@@ -85,7 +87,8 @@ const Search = lazy(() => import("./pages/search/Search"));
 const Dict = lazy(() => import("./pages/dict/Dict"));
 const Test = lazy(() => import("./pages/test/Test"));
 
-const { StatusBar } = Plugins;
+// Capacitor plugins
+const { StatusBar, Keyboard } = Plugins;
 
 const Routing: React.FC = () => {
   return (
@@ -118,7 +121,11 @@ const Routing: React.FC = () => {
       <Route path="/test" component={Test} exact />
       <Route path="/home" component={Home} exact />
       <Route path="/home/my-courses" component={MyCourse} exact />
-      <Route path="/home/following-courses" component={MyFollowingCourse} exact />
+      <Route
+        path="/home/following-courses"
+        component={MyFollowingCourse}
+        exact
+      />
       <Route path="/welcome" component={LandingPage} exact />
     </IonRouterOutlet>
   );
@@ -136,16 +143,30 @@ interface RootState {
 const App: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(true);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const [showFabButton, setShowFabButton] = useState<boolean>(true);
 
   const currentUser = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(getPlatforms());
+
     const changeStatusBar = () => {
       if (Capacitor.isPluginAvailable("StatusBar")) {
         StatusBar.setBackgroundColor({
           color: "#b589c9",
+        });
+      }
+    };
+
+    const toggleFabButton = () => {
+      if (Capacitor.isPluginAvailable("Keyboard")) {
+        Keyboard.addListener("keyboardWillShow", () => {
+          setShowFabButton(false);
+        });
+
+        Keyboard.addListener("keyboardWillHide", () => {
+          setShowFabButton(true);
         });
       }
     };
@@ -181,6 +202,7 @@ const App: React.FC = () => {
     });
 
     changeStatusBar();
+    toggleFabButton();
   }, [dispatch]);
 
   async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
@@ -212,9 +234,11 @@ const App: React.FC = () => {
                     <IonRefresherContent></IonRefresherContent>
                   </IonRefresher>
                   <IonFab vertical="bottom" horizontal="center">
-                    <IonFabButton onClick={handleShowModal}>
-                      <IonIcon icon={add} size="large" />
-                    </IonFabButton>
+                    {showFabButton && (
+                      <IonFabButton onClick={handleShowModal}>
+                        <IonIcon icon={add} size="large" />
+                      </IonFabButton>
+                    )}
                     <CreateModal
                       isOpen={showCreateModal}
                       handleCloseModal={handleCloseModal}
@@ -249,7 +273,7 @@ const App: React.FC = () => {
 
                 <IonContent id="right-side" fullscreen>
                   <IonList className="ads">
-                    <IonTitle>Quảng cáo</IonTitle>
+                    <IonTitle>Có thể bạn chưa biết</IonTitle>
                   </IonList>
                 </IonContent>
               </IonSplitPane>

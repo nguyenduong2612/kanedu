@@ -15,11 +15,14 @@ const slideOpts = {
   initialSlide: 0,
   speed: 400,
   loop: true,
+  autoplay: {
+    delay: 5000,
+  },
 };
 
 const LandingPage: React.FC<ContainerProps> = () => {
   return (
-    <IonPage>
+    <IonPage className="page-container">
       <IonContent fullscreen>
         <div className="logo-wrapper">
           <h1 className="logo">Kanedu</h1>

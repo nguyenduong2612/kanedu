@@ -1,0 +1,30 @@
+.hint-container {
+  height: 35vh;
+  .hint-wrapper {
+    width: 90%;
+    height: 75%;
+    margin-bottom: 45px;
+    .hint-header,
+    .hint-content {
+      text-align: left;
+      display: flex;
+      .hint-title {
+        display: flex;
+      }
+    }
+
+    .hint-content {
+      img {
+        height: 18vh;
+      }
+      .hint-text {
+        display: inline-block;
+        padding: 0 15px;
+      }
+      .hint-button {
+        margin-top: 15px;
+        font-size: 13px;
+      }
+    }
+  }
+}

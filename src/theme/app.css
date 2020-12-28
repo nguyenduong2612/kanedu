@@ -23,8 +23,8 @@
   text-decoration: none;
 }
 
-#main::-webkit-scrollbar  {
-  width: 0px; 
+#main::-webkit-scrollbar {
+  width: 0px;
   background: transparent;
 }
 
@@ -38,6 +38,11 @@ ion-content#right-side {
 }
 
 .toolbar {
-  --background:#b589c9;
-  color: #fff
+  --background: #b589c9;
+  color: #fff;
+}
+
+.page-container {
+  max-width: 768px;
+  margin: auto !important;
 }

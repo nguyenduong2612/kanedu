@@ -97,6 +97,7 @@ const SideMenu: React.FC<ContainerProps> = () => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem
+                  button
                   className={
                     location.pathname === appPage.url ? "selected" : ""
                   }
@@ -110,7 +111,7 @@ const SideMenu: React.FC<ContainerProps> = () => {
                     ios={appPage.iosIcon}
                     md={appPage.mdIcon}
                   />
-                  <IonLabel>{appPage.title}</IonLabel>
+                  <IonLabel color="light">{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
@@ -118,6 +119,7 @@ const SideMenu: React.FC<ContainerProps> = () => {
           <IonMenuToggle autoHide={false}>
             <IonItem />
             <IonItem
+              button
               onClick={signoutUser}
               routerDirection="none"
               lines="none"

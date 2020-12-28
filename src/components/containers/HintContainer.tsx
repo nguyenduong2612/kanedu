@@ -1,0 +1,89 @@
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonIcon,
+  IonSlide,
+  IonSlides,
+} from "@ionic/react";
+import { bulb } from "ionicons/icons";
+import React from "react";
+import "./HintContainer.scss";
+
+interface ContainerProps {}
+
+const slideOpts = {
+  initialSlide: 0,
+  speed: 400,
+  loop: true,
+};
+
+const HintContainer: React.FC<ContainerProps> = () => {
+  return (
+    <div className="hint-container">
+      <IonSlides pager={true} options={slideOpts} style={{ height: "100%" }}>
+        <IonSlide>
+          <IonCard className="hint-wrapper">
+            <IonCardHeader mode="md" className="hint-header">
+              <IonCardTitle className="hint-title">
+                <IonIcon
+                  icon={bulb}
+                  style={{ paddingRight: 10, paddingTop: 2 }}
+                ></IonIcon>
+                Mẹo
+              </IonCardTitle>
+            </IonCardHeader>
+
+            <IonCardContent className="hint-content">
+              <img src="../assets/images/hint1.png" alt="hint1" />
+              <div className="hint-text">
+                Tìm kiếm bài học, câu hỏi, bạn bè.<br></br>Hãy bắt đầu với việc
+                tìm cho mình một khóa học phù hợp.<br></br>
+                <IonButton
+                  fill="outline"
+                  className="hint-button"
+                  routerLink="/search"
+                >
+                  Tìm kiếm
+                </IonButton>
+              </div>
+            </IonCardContent>
+          </IonCard>
+        </IonSlide>
+
+        <IonSlide>
+          <IonCard className="hint-wrapper">
+            <IonCardHeader mode="md" className="hint-header">
+              <IonCardTitle className="hint-title">
+                <IonIcon
+                  icon={bulb}
+                  style={{ paddingRight: 10, paddingTop: 2 }}
+                ></IonIcon>
+                Mẹo
+              </IonCardTitle>
+            </IonCardHeader>
+
+            <IonCardContent className="hint-content">
+              <img src="../assets/images/hint2.png" alt="hint2" />
+              <div className="hint-text">
+                Tạo khóa học cho riêng mình.<br></br>
+                Chia sẻ chúng với bạn bè.<br></br>
+                <IonButton
+                  fill="outline"
+                  className="hint-button"
+                  routerLink="/course/create"
+                >
+                  Tạo khóa học
+                </IonButton>
+              </div>
+            </IonCardContent>
+          </IonCard>
+        </IonSlide>
+      </IonSlides>
+    </div>
+  );
+};
+
+export default HintContainer;

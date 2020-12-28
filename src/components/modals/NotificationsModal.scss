@@ -1,0 +1,39 @@
+.noti-modal {
+  --height: 93%;
+  --border-radius: 10px 10px 0 0;
+  .modal-wrapper,
+  .modal-shadow {
+    position: absolute;
+    bottom: 0 !important;
+  }
+  .noti-modal-wrapper {
+    position: relative;
+    overflow: auto;
+    .noti-modal-title {
+      position: sticky;
+      top: 0;
+      padding: 5px;
+      background: var(--ion-background-color, #fff);
+      ion-button {
+        margin: 0;
+      }
+    }
+    .noti-modal-item {
+      padding-top: 5px;
+      ion-button {
+        margin: 0;
+      }
+      .noti-content {
+        padding: 10px 10px 5px 0;
+      }
+      .noti-content > b {
+        font-size: 15px;
+      }
+      .noti-content > p {
+        font-size: 14px;
+        margin: 5px 0;
+        color: var(--ion-color-medium);
+      }
+    }
+  }
+}

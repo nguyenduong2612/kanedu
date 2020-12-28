@@ -11,9 +11,19 @@
     bottom: 0 !important;
   }
   .comment-list-wrapper {
-    padding-top: 10px;
+    position: relative;
+    overflow: auto;
     b, p {
       display: block;
+    }
+    .modal-title {
+      position: sticky;
+      top: 0;
+      padding-top: 5px;
+      background: var(--ion-background-color, #fff);
+      ion-button {
+        margin: 0;
+      }
     }
   }
   .comment-wrapper {
@@ -24,10 +34,17 @@
   .comment-input-wrapper {
     border-top: 1px solid #bbb;
     font-size: 14px;
+    ion-button {
+      margin: 0;
+    }
   }
 }
 
-.post-content {
-  padding-top: 5px; 
-  word-break: break-word;
+.post-wrapper {
+  width: 100%;
+  margin: 10px 2px;
+  .post-content {
+    padding-top: 5px; 
+    word-break: break-word;
+  }
 }

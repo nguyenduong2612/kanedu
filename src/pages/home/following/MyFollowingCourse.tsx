@@ -11,6 +11,7 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 import CourseContainer from "../../../components/course/CourseContainer";
+import ErrorPage from "../../../components/ErrorPage";
 
 interface RootState {
   courses: any;
@@ -32,20 +33,24 @@ const MyFollowingCourse: React.FC<ContainerProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
-          {courseList.courses.map((course: any, index: number) => {
-            return (
-              <CourseContainer
-                key={index}
-                id={course.id}
-                name={course.name}
-                author={course.author}
-                description={course.description}
-                followers={course.followers}
-              />
-            );
-          })}
-        </IonList>
+        {courseList.courses.length > 0 ? (
+          <IonList>
+            {courseList.courses.map((course: any, index: number) => {
+              return (
+                <CourseContainer
+                  key={index}
+                  id={course.id}
+                  name={course.name}
+                  author={course.author}
+                  description={course.description}
+                  followers={course.followers}
+                />
+              );
+            })}
+          </IonList>
+        ) : (
+          <ErrorPage>Không có dữ liệu</ErrorPage>
+        )}
       </IonContent>
     </IonPage>
   );

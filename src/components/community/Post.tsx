@@ -93,7 +93,8 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
   return (
     <IonItem lines="none">
       <IonCard
-        style={{ width: "100%" }} /*routerLink={`/community/${post.id}`}*/
+        className="post-wrapper"
+        /*routerLink={`/community/${post.id}`}*/
       >
         <IonCardHeader>
           <IonText style={{ fontSize: 20, color: "black" }}>
@@ -116,7 +117,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
           </IonRow>
 
           <IonRow>
-            <p className="post-content">{post.data.content}</p>
+            <p className="post-content">{post.data.content}</p><br></br>
             {post.data.sharedLink && (
               <IonButton href={post.data.sharedLink} fill="outline">
                 Tham gia
@@ -150,7 +151,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
               mode="ios"
             >
               <div className="comment-list-wrapper">
-                <IonItem lines="none">
+                <IonItem lines="none" className="modal-title">
                   ({commentCount ? commentCount : 0}) Bình luận
                   <IonButton fill="clear" onClick={handleCloseModal} slot="end">
                     <IonIcon
@@ -185,7 +186,12 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
                   fill="clear"
                   onClick={handleSendComment}
                 >
-                  <IonIcon slot="icon-only" ios={sendOutline} md={sendSharp} />
+                  <IonIcon
+                    className="send-icon"
+                    color="primary"
+                    ios={sendOutline}
+                    md={sendSharp}
+                  />
                 </IonButton>
               </IonItem>
             </IonModal>

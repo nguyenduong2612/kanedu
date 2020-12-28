@@ -1,11 +1,11 @@
 import { IonButton, IonIcon, IonItem, IonLabel, IonModal } from "@ionic/react";
 import {
+  book,
   bookOutline,
-  bookSharp,
   closeOutline,
   closeSharp,
+  library,
   libraryOutline,
-  librarySharp,
 } from "ionicons/icons";
 import React from "react";
 import "./CreateModal.scss";
@@ -29,12 +29,8 @@ const CreateModal: React.FC<ContainerProps> = ({
     >
       <div className="create-modal-wrapper">
         <IonItem className="create-modal-item" lines="none">
-          Tạo
-          <IonButton
-            fill="clear"
-            onClick={handleCloseModal}
-            slot="end"
-          >
+          <b>Tạo</b>
+          <IonButton fill="clear" onClick={handleCloseModal} slot="end">
             <IonIcon
               color="dark"
               slot="icon-only"
@@ -51,7 +47,12 @@ const CreateModal: React.FC<ContainerProps> = ({
           routerLink="/course/create"
           onClick={() => handleCloseModal()}
         >
-          <IonIcon slot="start" ios={libraryOutline} md={librarySharp} />
+          <IonIcon
+            slot="start"
+            color="primary"
+            ios={libraryOutline}
+            md={library}
+          />
           <IonLabel>Tạo khóa học</IonLabel>
         </IonItem>
         <IonItem
@@ -61,7 +62,12 @@ const CreateModal: React.FC<ContainerProps> = ({
           routerLink="/lesson/create"
           onClick={() => handleCloseModal()}
         >
-          <IonIcon slot="start" ios={bookOutline} md={bookSharp} />
+          <IonIcon
+            slot="start"
+            color="primary"
+            ios={bookOutline}
+            md={book}
+          />
           <IonLabel>Tạo bài học</IonLabel>
         </IonItem>
       </div>

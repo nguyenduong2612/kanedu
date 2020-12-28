@@ -10,16 +10,24 @@ import {
   IonLabel,
   IonButton,
   IonIcon,
+  IonButtons,
 } from "@ionic/react";
-import { chevronForward } from "ionicons/icons";
-import React, { lazy, useEffect } from "react";
+import {
+  chevronForward,
+  notifications,
+  notificationsOutline,
+} from "ionicons/icons";
+import React, { lazy, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import HintContainer from "../../components/containers/HintContainer";
+import ErrorPage from "../../components/ErrorPage";
+import NotificationsModal from "../../components/modals/NotificationsModal";
 import { database } from "../../config/firebaseConfig";
 import {
   setFollowingCourses,
   setMyCourses,
 } from "../../redux/reducers/coursesReducer";
-import "./Home.css";
+import "./Home.scss";
 
 const CourseContainer = lazy(
   () => import("../../components/course/CourseContainer")
@@ -35,6 +43,12 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state: RootState) => state.user);
   const courseList = useSelector((state: RootState) => state.courses);
+
+  const [showNotiModal, setShowNotiModal] = useState<boolean>(false);
+
+  const handleCloseModal = () => {
+    setShowNotiModal(false);
+  };
 
   useEffect(() => {
     async function getFollowingCourses() {
@@ -95,73 +109,109 @@ const Home: React.FC = () => {
             color="light"
           ></IonMenuButton>
           <IonTitle>Trang chủ</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={() => setShowNotiModal(true)}>
+              <IonIcon
+                color="light"
+                slot="icon-only"
+                ios={notificationsOutline}
+                md={notifications}
+              />
+            </IonButton>
+
+            <NotificationsModal
+              isOpen={showNotiModal}
+              handleCloseModal={handleCloseModal}
+            ></NotificationsModal>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonList>
-          <IonItemDivider mode="md">
-            <IonLabel color="dark">
-              <b>Đang theo dõi</b>
-            </IonLabel>
-            <IonButton
-              mode="ios"
-              slot="end"
-              size="small"
-              fill="clear"
-              routerLink="/home/following-courses"
-            >
-              <IonLabel>
-                <b>
-                  Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
-                </b>
+          {courseList.courses.length === 0 &&
+            courseList.my_courses.length === 0 && <HintContainer />}
+            
+          <div className="section-wrapper">
+            <IonItemDivider mode="md">
+              <IonLabel color="dark">
+                <b>Đang theo dõi</b>
               </IonLabel>
-            </IonButton>
-          </IonItemDivider>
-          {courseList.courses.slice(0, 2).map((course: any, index: number) => {
-            return (
-              <CourseContainer
-                key={index}
-                id={course.id}
-                name={course.name}
-                author={course.author}
-                description={course.description}
-                followers={course.followers}
-              />
-            );
-          })}
+              <IonButton
+                mode="ios"
+                slot="end"
+                size="small"
+                fill="clear"
+                routerLink="/home/following-courses"
+              >
+                <IonLabel>
+                  <b>
+                    Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
+                  </b>
+                </IonLabel>
+              </IonButton>
+            </IonItemDivider>
+            {courseList.courses.length > 0 ? (
+              courseList.courses
+                .slice(0, 2)
+                .map((course: any, index: number) => {
+                  return (
+                    <CourseContainer
+                      key={index}
+                      id={course.id}
+                      name={course.name}
+                      author={course.author}
+                      description={course.description}
+                      followers={course.followers}
+                    />
+                  );
+                })
+            ) : (
+              <div className="error-msg">
+                <ErrorPage>Bạn chưa theo dõi khóa học nào</ErrorPage>
+              </div>
+            )}
+          </div>
 
-          <IonItemDivider mode="md">
-            <IonLabel color="dark">
-              <b>Khóa học của tôi</b>
-            </IonLabel>
-            <IonButton
-              mode="ios"
-              slot="end"
-              size="small"
-              fill="clear"
-              routerLink="/home/my-courses"
-            >
-              <IonLabel>
-                <b>
-                  Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
-                </b>
+          <div className="section-wrapper">
+            <IonItemDivider mode="md">
+              <IonLabel color="dark">
+                <b>Khóa học của tôi</b>
               </IonLabel>
-            </IonButton>
-          </IonItemDivider>
-          {courseList.my_courses
-            .slice(0, 2)
-            .map((course: any, index: number) => {
-              return (
-                <CourseContainer
-                  key={index}
-                  id={course.id}
-                  name={course.name}
-                  author={course.author}
-                  description={course.description}
-                  followers={course.followers}
-                />
-              );
-            })}
+              <IonButton
+                mode="ios"
+                slot="end"
+                size="small"
+                fill="clear"
+                routerLink="/home/my-courses"
+              >
+                <IonLabel>
+                  <b>
+                    Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
+                  </b>
+                </IonLabel>
+              </IonButton>
+            </IonItemDivider>
+            {courseList.my_courses.length > 0 ? (
+              courseList.my_courses
+                .slice(0, 2)
+                .map((course: any, index: number) => {
+                  return (
+                    <CourseContainer
+                      key={index}
+                      id={course.id}
+                      name={course.name}
+                      author={course.author}
+                      description={course.description}
+                      followers={course.followers}
+                    />
+                  );
+                })
+            ) : (
+              <div className="error-msg">
+                <ErrorPage>Bạn chưa tạo khóa học nào</ErrorPage>
+              </div>
+            )}
+          </div>
         </IonList>
       </IonContent>
     </IonPage>
