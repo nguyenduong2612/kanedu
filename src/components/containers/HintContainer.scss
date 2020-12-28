@@ -8,9 +8,14 @@
     .hint-content {
       text-align: left;
       display: flex;
+      padding-bottom: 7px;
       .hint-title {
         display: flex;
       }
+    }
+
+    .hint-header {
+      padding-top: 15px;
     }
 
     .hint-content {
@@ -19,11 +24,10 @@
       }
       .hint-text {
         display: inline-block;
-        padding: 0 15px;
+        padding-left: 15px;
       }
       .hint-button {
-        margin-top: 15px;
-        font-size: 13px;
+        margin-top: 13px;
       }
     }
   }

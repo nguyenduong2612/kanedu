@@ -30,7 +30,7 @@ const HintContainer: React.FC<ContainerProps> = () => {
               <IonCardTitle className="hint-title">
                 <IonIcon
                   icon={bulb}
-                  style={{ paddingRight: 10, paddingTop: 2 }}
+                  style={{ paddingRight: 7, paddingTop: 1 }}
                 ></IonIcon>
                 Mẹo
               </IonCardTitle>
@@ -59,7 +59,7 @@ const HintContainer: React.FC<ContainerProps> = () => {
               <IonCardTitle className="hint-title">
                 <IonIcon
                   icon={bulb}
-                  style={{ paddingRight: 10, paddingTop: 2 }}
+                  style={{ paddingRight: 7, paddingTop: 1 }}
                 ></IonIcon>
                 Mẹo
               </IonCardTitle>

@@ -7,7 +7,7 @@
 }
 
 .error-container .error-text {
-  font-size: 18px;
+  font-size: min(16px, 4vw);
   line-height: 26px;
   color: #8c8c8c;
 }
