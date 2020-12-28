@@ -48,10 +48,10 @@ ion-content#right-side {
 }
 
 .hint-title {
-  font-size: min(16px, 4vw);
+  font-size: min(16px, 4.5vw);
 }
 
 .hint-text, .hint-button {
-  font-size: min(13px, 3vw);
+  font-size: min(13px, 3.5vw);
 }
 

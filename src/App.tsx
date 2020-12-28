@@ -47,14 +47,14 @@ import "./theme/app.css";
 /* Ionic icons */
 import {
   peopleOutline,
-  personOutline,
   homeOutline,
   searchOutline,
   add,
   home,
   people,
-  person,
   search,
+  language,
+  languageOutline,
 } from "ionicons/icons";
 
 import { database, getCurrentUser } from "./config/firebaseConfig";
@@ -263,8 +263,8 @@ const App: React.FC = () => {
                         <IonIcon ios={peopleOutline} md={people} />
                         {/* <IonLabel>Cộng đồng</IonLabel> */}
                       </IonTabButton>
-                      <IonTabButton tab="profile" href="/profile">
-                        <IonIcon ios={personOutline} md={person} />
+                      <IonTabButton tab="dict" href="/dict">
+                        <IonIcon ios={languageOutline} md={language} />
                         {/* <IonLabel>Tài khoản</IonLabel> */}
                       </IonTabButton>
                     </IonTabBar>

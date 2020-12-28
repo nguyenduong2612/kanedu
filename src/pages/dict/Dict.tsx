@@ -2,33 +2,106 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
-  IonButtons,
   IonList,
   IonMenuButton,
+  IonSearchbar,
+  IonItem,
 } from "@ionic/react";
-import React from "react";
+import algoliasearch from "algoliasearch";
+import React, { useEffect, useState } from "react";
+import ErrorPage from "../../components/ErrorPage";
+import "./Dict.scss";
 
 interface ContainerProps {}
 
+const client = algoliasearch(
+  String(process.env.REACT_APP_ALGOLIA_APP_ID),
+  String(process.env.REACT_APP_ALGOLIA_SEARCH_API_KEY)
+);
+
+interface SearchResultProps {
+  searchResult: object[];
+  searchTerm: string;
+}
+
+const SearchResult: React.FC<SearchResultProps> = ({
+  searchTerm,
+  searchResult,
+}) => {
+  return (
+    <>
+      {searchTerm.trim() !== "" ? (
+        searchResult.length !== 0 ? (
+          <IonList>
+            {searchResult.slice(0, 15).map((item: any, index: number) => {
+              return (
+                <IonItem
+                  button
+                  key={index}
+                  mode="ios"
+                  className="search-result-item"
+                >
+                  <div className="item-wrapper">
+                    <p className="keyword">{item.keyword}</p>
+                    <p className="meaning">{item.meaning}</p>
+                  </div>
+                </IonItem>
+              );
+            })}
+          </IonList>
+        ) : (
+          <ErrorPage>Không tìm thấy kết quả phù hợp</ErrorPage>
+        )
+      ) : (
+        <ErrorPage>Nhập từ khóa để bắt đầu</ErrorPage>
+      )}
+    </>
+  );
+};
+
 const Dict: React.FC<ContainerProps> = () => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchResult, setSearchResult] = useState<object[]>([]);
+
+  useEffect(() => {
+    const handleSearch = () => {
+      if (searchTerm.trim() === "") {
+        return;
+      } else {
+        const dict_index = client.initIndex("dict");
+
+        dict_index.search(searchTerm).then(({ hits }) => {
+          setSearchResult(hits);
+        });
+      }
+    };
+
+    handleSearch();
+  }, [searchTerm]);
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar className="toolbar">
-          <IonButtons slot="start">
-            <IonMenuButton
-              slot="start"
-              className="menu-btn"
-              color="light"
-            ></IonMenuButton>
-          </IonButtons>
-          <IonTitle>Từ điển</IonTitle>
+          <IonMenuButton
+            slot="start"
+            className="menu-btn"
+            color="light"
+            style={{ marginTop: 14 }}
+          ></IonMenuButton>
+          <IonSearchbar
+            value={searchTerm}
+            onIonChange={(e: any) => setSearchTerm(e.detail.value!)}
+            placeholder="Tra từ Nhật - Việt, Việt - Nhật"
+            mode="ios"
+            style={{ marginTop: 10, paddingBottom: 5 }}
+            color="light"
+          />
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList></IonList>
+        <SearchResult searchTerm={searchTerm} searchResult={searchResult} />
       </IonContent>
     </IonPage>
   );
