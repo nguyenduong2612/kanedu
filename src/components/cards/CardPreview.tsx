@@ -4,7 +4,6 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonGrid,
-  IonItem,
   IonRow,
   IonSlide,
   IonSlides,
@@ -65,33 +64,32 @@ const CardPreview: React.FC<ContainerProps> = ({
                   }
                 >
                   <div className="flipper">
-                    <IonCard className="front card">
+                    <IonCard mode="ios" className="front card">
                       <IonCardHeader className="keyword-wrapper">
-                        <IonCardTitle className="keyword">
+                        <IonCardTitle className="preview-keyword">
                           {card.data().keyword}
                         </IonCardTitle>
                       </IonCardHeader>
                     </IonCard>
 
-                    <IonCard className="back card">
+                    <IonCard mode="ios" className="back card">
                       <IonCardHeader className="back-wrapper">
-                        <IonCardTitle>{card.data().keyword}</IonCardTitle>
+                        <IonCardTitle className="preview-keyword">{card.data().keyword}</IonCardTitle>
                       </IonCardHeader>
 
                       <IonCardContent>
-                        <IonItem
-                          lines="none"
-                          style={{ paddingBottom: 20, fontSize: 18 }}
-                        >
-                          <IonGrid>
-                            <IonRow>
-                              <p>{card.data().detail}</p>
-                            </IonRow>
-                            <IonRow>
-                              <p>{card.data().meaning}</p>
-                            </IonRow>
-                          </IonGrid>
-                        </IonItem>
+                        <IonGrid>
+                          <IonRow>
+                            <p className="preview-detail">
+                              {card.data().detail}
+                            </p>
+                          </IonRow>
+                          <IonRow>
+                            <p className="preview-meaning">
+                              {card.data().meaning}
+                            </p>
+                          </IonRow>
+                        </IonGrid>
                       </IonCardContent>
                     </IonCard>
                   </div>

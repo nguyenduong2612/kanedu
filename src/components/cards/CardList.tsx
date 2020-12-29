@@ -65,7 +65,7 @@ const CardList: React.FC<ContainerProps> = ({
                   }
                 >
                   <div className="flipper">
-                    <IonCard className="front card">
+                    <IonCard mode="ios" className="front card">
                       <IonCardHeader className="keyword-wrapper">
                         <IonCardTitle className="keyword">
                           {card.data().keyword}
@@ -73,25 +73,22 @@ const CardList: React.FC<ContainerProps> = ({
                       </IonCardHeader>
                     </IonCard>
 
-                    <IonCard className="back card">
+                    <IonCard mode="ios" className="back card">
                       <IonCardHeader className="back-wrapper">
-                        <IonCardTitle>{card.data().keyword}</IonCardTitle>
+                        <IonCardTitle className="keyword">
+                          {card.data().keyword}
+                        </IonCardTitle>
                       </IonCardHeader>
 
                       <IonCardContent>
-                        <IonItem
-                          lines="none"
-                          style={{ paddingBottom: 20, fontSize: 18 }}
-                        >
-                          <IonGrid>
-                            <IonRow>
-                              {card.data().detail}
-                            </IonRow>
-                            <IonRow>
-                              {card.data().meaning}
-                            </IonRow>
-                          </IonGrid>
-                        </IonItem>
+                        <IonGrid>
+                          <IonRow>
+                            <p className="detail">{card.data().detail}</p>
+                          </IonRow>
+                          <IonRow>
+                            <p className="meaning">{card.data().meaning}</p>
+                          </IonRow>
+                        </IonGrid>
 
                         {card.data().examples &&
                           card

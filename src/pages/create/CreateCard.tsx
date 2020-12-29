@@ -119,7 +119,7 @@ const CreateCard: React.FC<ContainerProps> = ({ match }) => {
         .collection("courses")
         .doc(match.params.course_id)
         .collection("lessons")
-        .add({ title: titleInput });
+        .add({ title: titleInput, created_at: Date.now() });
 
       const ref = database
         .collection("courses")

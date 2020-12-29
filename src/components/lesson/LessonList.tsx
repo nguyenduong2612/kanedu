@@ -21,7 +21,7 @@ const LessonList: React.FC<ContainerProps> = ({
         .collection("courses")
         .doc(courseId)
         .collection("lessons");
-      const docs = await ref.get();
+      const docs = await ref.orderBy("created_at", "asc").get();
       if (docs.empty) {
         console.log("No such document!");
         setIsEmpty(true);

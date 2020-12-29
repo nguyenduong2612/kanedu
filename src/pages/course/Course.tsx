@@ -205,7 +205,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
           <IonItem lines="none">
             <IonIcon icon={shareSocial}></IonIcon>
             <IonText style={{ marginLeft: 10 }}>
-              123123 lượt chia sẻ
+              0 lượt chia sẻ
             </IonText>
           </IonItem>
         </IonList>

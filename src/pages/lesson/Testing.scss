@@ -8,6 +8,10 @@
   .question-wrapper {
     height: 50%;
     padding-top: 10%;
+    h2 {
+      font-size: var(--ion-font-size-32);
+    }
+    
   }
   .answers-wrapper {
     height: 45%;

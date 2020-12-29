@@ -5,10 +5,6 @@
     align-items: center;
     height: 100%;
     padding: 15px 15px 10px;
-    .keyword {
-      font-size: 55px;
-      height: 50%;
-    }
   }
   margin: 0;
 }
@@ -45,11 +41,37 @@
 .front {
   z-index: 2;
   transform: rotateY(0deg);
+  .keyword {
+    font-size: 55px;
+    height: 50%;
+  }
+  .preview-keyword {
+    font-size: var(--ion-font-size-40);
+  }
 }
 
 .back {
   transform: rotateY(180deg);
   .back-wrapper {
     padding: 15px 15px 10px;
+    .keyword {
+      font-size: var(--ion-font-size-40);
+    }
+    .preview-keyword {
+      font-size: var(--ion-font-size-24);
+    }
+  }
+
+  .meaning, .detail {
+    font-size: var(--ion-font-size-24);
+    text-align: center;
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .preview-meaning, .preview-detail {
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
   }
 }

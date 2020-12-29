@@ -1,10 +1,10 @@
 .course-detail-popup {
   --width: 50%;
+  --max-width: 250px;
   .popover-content {
     padding: 0;
     position: absolute;
-    top: 50px !important;
+    top: 55px !important;
     left: unset !important;
-    right: 10px !important;
   }
 }

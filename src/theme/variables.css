@@ -23,6 +23,14 @@ ion-item-divider {
   --ion-color-primary-shade: #3171e0;
   --ion-color-primary-tint: #4c8dff; */
 
+  /* font-size */
+  --ion-font-size-13: min(13px, 3.5vw);
+  --ion-font-size-16: min(16px, 4.5vw);
+  --ion-font-size-24: min(24px, 6.5vw);
+  --ion-font-size-32: min(32px, 8.5vw);
+  --ion-font-size-40: min(40px, 12vw);
+
+
   /* font */
   --ion-font-family: "OpenSans", "Roboto", "sans-serif";
 

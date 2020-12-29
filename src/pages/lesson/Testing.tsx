@@ -179,7 +179,7 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
                                   fill="outline"
                                   mode="md"
                                 >
-                                  {answer.text}
+                                  <b>{answer.text}</b>
                                 </IonButton>
                               );
                             })}
