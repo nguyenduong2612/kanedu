@@ -60,6 +60,7 @@ import {
 import { database, getCurrentUser } from "./config/firebaseConfig";
 import { setCurrentUser } from "./redux/reducers/userReducer";
 import LandingPage from "./pages/LandingPage";
+import JlptExam from "./pages/jlpt/JlptExam";
 
 /* Pages and components */
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
@@ -85,7 +86,7 @@ const Community = lazy(() => import("./pages/community/Community"));
 const PostDetail = lazy(() => import("./pages/community/post/PostDetail"));
 const Search = lazy(() => import("./pages/search/Search"));
 const Dict = lazy(() => import("./pages/dict/Dict"));
-const Test = lazy(() => import("./pages/test/Test"));
+const Level = lazy(() => import("./pages/jlpt/Level"));
 
 // Capacitor plugins
 const { StatusBar, Keyboard } = Plugins;
@@ -118,7 +119,8 @@ const Routing: React.FC = () => {
       <Route path="/community" component={Community} exact />
       <Route path="/community/:post_id" component={PostDetail} exact />
       <Route path="/dict" component={Dict} exact />
-      <Route path="/test" component={Test} exact />
+      <Route path="/jlpt" component={Level} exact />
+      <Route path="/jlpt/:id" component={JlptExam} exact />
       <Route path="/home" component={Home} exact />
       <Route path="/home/my-courses" component={MyCourse} exact />
       <Route

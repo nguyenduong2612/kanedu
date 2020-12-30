@@ -24,3 +24,10 @@
     }
   }
 }
+
+.test-alert {
+  .alert-wrapper {
+    --width: 90%;
+    --max-width: 450px;
+  }
+}

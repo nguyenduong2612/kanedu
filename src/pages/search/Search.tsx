@@ -128,6 +128,7 @@ const Search: React.FC<ContainerProps> = () => {
 
       <IonContent fullscreen>
         <IonSegment
+          scrollable
           value={searchIndex}
           color="primary"
           onIonChange={(e: any) => setSearchIndex(e.detail.value!)}

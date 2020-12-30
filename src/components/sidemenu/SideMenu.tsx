@@ -58,8 +58,8 @@ const appPages: AppPage[] = [
     mdIcon: person,
   },
   {
-    title: "Kiểm tra",
-    url: "/test",
+    title: "Thi thử",
+    url: "/jlpt",
     iosIcon: barbellOutline,
     mdIcon: barbell,
   },

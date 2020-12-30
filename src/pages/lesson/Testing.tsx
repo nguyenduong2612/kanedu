@@ -12,8 +12,14 @@ import {
   IonRow,
   IonIcon,
   IonCol,
+  IonAlert,
 } from "@ionic/react";
-import { checkmarkOutline, checkmarkSharp, closeOutline, closeSharp } from "ionicons/icons";
+import {
+  checkmarkOutline,
+  checkmarkSharp,
+  closeOutline,
+  closeSharp,
+} from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { database } from "../../config/firebaseConfig";
@@ -41,6 +47,8 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
   const [wrongAnsCounter, setWrongAnsCounter] = useState<number>(0);
   const [answeredCounter, setAnsweredCounter] = useState<number>(0);
 
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
   useEffect(() => {
     async function getAllQuestion() {
       const ref = database
@@ -64,45 +72,45 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
     getAllQuestion();
   }, [match.params.course_id, match.params.lesson_id]);
 
+  useEffect(() => {
+    if (answeredCounter === numberOfQuestions && answeredCounter !== 0) {
+      setShowAlert(true);
+    }
+  }, [answeredCounter, numberOfQuestions]);
+
   const handleClickAnswer = (
     questionId: string,
     answerId: string,
     slideIndex: number
   ) => {
+    setAnsweredCounter(answeredCounter + 1);
+    let answerBtns = document.getElementsByClassName(
+      `${slideIndex}-answer-btn`
+    );
+    Array.prototype.forEach.call(answerBtns, function (answerBtn) {
+      answerBtn?.classList.add("disabled");
+    });
+
     if (questionId === answerId) {
       console.log("Correct!");
-      setAnsweredCounter(answeredCounter + 1);
       setCorrectAnsCounter(correctAnsCounter + 1);
 
       let correctBtn = document.getElementById(`${slideIndex}+${answerId}`);
-      let answerBtns = document.getElementsByClassName(
-        `${slideIndex}-answer-btn`
-      );
+
       correctBtn?.classList.add("ion-color");
       correctBtn?.classList.add("ion-color-success");
-
-      Array.prototype.forEach.call(answerBtns, function (answerBtn) {
-        answerBtn?.classList.add("disabled");
-      });
     } else {
       console.log("Wrong!");
-      setAnsweredCounter(answeredCounter + 1);
       setWrongAnsCounter(wrongAnsCounter + 1);
 
       let wrongBtn = document.getElementById(`${slideIndex}+${answerId}`);
       let correctBtn = document.getElementById(`${slideIndex}+${questionId}`);
-      let answerBtns = document.getElementsByClassName(
-        `${slideIndex}-answer-btn`
-      );
+
       wrongBtn?.classList.add("ion-color");
       wrongBtn?.classList.add("ion-color-danger");
 
       correctBtn?.classList.add("ion-color");
       correctBtn?.classList.add("ion-color-success");
-
-      Array.prototype.forEach.call(answerBtns, function (answerBtn) {
-        answerBtn?.classList.add("disabled");
-      });
     }
   };
 
@@ -127,7 +135,7 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
                 />
                 {correctAnsCounter}
               </IonCol>
-              
+
               <IonCol>
                 <IonIcon
                   color="light"
@@ -142,6 +150,14 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <IonAlert
+          isOpen={showAlert}
+          cssClass="test-alert"
+          onDidDismiss={() => setShowAlert(false)}
+          header={"Thông báo"}
+          message={`Điểm số: ${correctAnsCounter}/${numberOfQuestions}`}
+          buttons={["Xác nhận"]}
+        />
         <>
           {questions.length > 0 && (
             <IonSlides
@@ -155,14 +171,12 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
                     <IonContent>
                       <div className="main-wrapper">
                         <div className="question-wrapper">
-                          <h2>
-                            {item.question.text}
-                          </h2>
+                          <h2>{item.question.text}</h2>
                         </div>
 
                         <div className="answers-wrapper">
-                          {item
-                            .answers.map((answer: any, answerIndex: number) => {
+                          {item.answers.map(
+                            (answer: any, answerIndex: number) => {
                               return (
                                 <IonButton
                                   key={answerIndex}
@@ -182,7 +196,8 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
                                   <b>{answer.text}</b>
                                 </IonButton>
                               );
-                            })}
+                            }
+                          )}
                         </div>
                       </div>
                     </IonContent>
