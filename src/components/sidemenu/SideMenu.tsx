@@ -53,7 +53,7 @@ const appPages: AppPage[] = [
   },
   {
     title: "Tài khoản",
-    url: "/profile",
+    url: "/account",
     iosIcon: personOutline,
     mdIcon: person,
   },

@@ -61,16 +61,20 @@ const SearchResult: React.FC<SearchResultProps> = ({
                 );
               } else if (searchIndex === "posts") {
                 return (
-                  <IonItem routerLink={`/community`} key={index} mode="ios">
+                  <IonItem button key={index} mode="ios">
                     {item.title}
                   </IonItem>
                 ); //TODO
               } else {
                 return (
-                  <IonItem key={index} mode="ios">
+                  <IonItem
+                    routerLink={`/users/${item.objectID}`}
+                    key={index}
+                    mode="ios"
+                  >
                     {item.name}
                   </IonItem>
-                ); //TODO
+                );
               }
             })}
           </IonList>

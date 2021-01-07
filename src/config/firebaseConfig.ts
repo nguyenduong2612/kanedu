@@ -1,7 +1,9 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import "firebase/storage";
 import { toast } from "../utils/toast";
+import { algoliaUpdateUser } from "./algoliaConfig";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -16,7 +18,11 @@ const config = {
 
 firebase.initializeApp(config);
 
+export { firebase }
+
 export const database = firebase.firestore();
+
+export const storage = firebase.storage();
 
 export function getCurrentUser() {
   return new Promise((resolve) => {
@@ -55,17 +61,12 @@ export async function loginWithFacebook() {
         const user = {
           birthday: "",
           email: data.user.email,
-          uid: data.user.uid,
           name: data.user.displayName,
           profileURL: data.user.photoURL,
         };
-        const ref = database
-          .collection("users")
-          .where("uid", "==", data.user.uid)
-          .limit(1);
-        const docs = await ref.get();
-        if (docs.empty) {
-          await database.collection("users").add(user);
+        const doc = await database.collection("users").doc(data.user.uid).get();
+        if (!doc.exists) {
+          await database.collection("users").doc(data.user.uid).set(user);
         }
       });
     return true;
@@ -88,17 +89,19 @@ export async function signupUser(
   profileURL: string
 ) {
   try {
-    const res = await firebase
+    const res: any = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
     const user = {
-      email: res.user?.email,
-      uid: res.user?.uid,
+      email,
       name,
       birthday,
       profileURL,
     };
-    await database.collection("users").add(user);
+    if (algoliaUpdateUser(user, res.user?.uid)) console.log("add algolia ok");
+
+    await database.collection("users").doc(res.user?.uid).set(user);
+
     window.location.replace("/");
     return true;
   } catch (error) {

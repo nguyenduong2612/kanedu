@@ -106,7 +106,7 @@ const Community: React.FC<ContainerProps> = () => {
     } else {
       let post = {
         author: currentUser.user.name,
-        profileURL: currentUser.user.profileURL,
+        author_id: currentUser.user.uid,
         title: title,
         content: content,
         created_at: Date.now(),

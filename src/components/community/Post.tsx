@@ -22,8 +22,8 @@ import {
 } from "ionicons/icons";
 import moment from "moment";
 import "moment/locale/vi";
-import React, { useState } from "react";
-import { database } from "../../config/firebaseConfig";
+import React, { useEffect, useState } from "react";
+import { database, storage } from "../../config/firebaseConfig";
 import "./Post.scss";
 
 interface ContainerProps {
@@ -33,11 +33,26 @@ interface ContainerProps {
 }
 
 const Post: React.FC<ContainerProps> = ({ post, username }) => {
+  const [profileURL, setProfileURL] = useState<string>("");
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
   const [commentInput, setCommentInput] = useState<string>("");
 
   const [commentList, setCommentList] = useState<any[]>([]);
   const [commentCount, setCommentCount] = useState<number>();
+
+  useEffect(() => {
+    async function getProfileURL() {
+      const storageRef = storage.ref();
+
+      const fileName = `${post.data.author_id}`;
+      const fileRef = storageRef.child("users_avatar/" + fileName);
+
+      setProfileURL(await fileRef.getDownloadURL());
+    }
+
+    getProfileURL();
+  }, [post.data.author_id]);
+
 
   const handleSendComment = async () => {
     if (commentInput.trim() !== "") {
@@ -107,7 +122,7 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
               <img
                 alt="avatar"
                 style={{ borderRadius: "50%", width: "95%", maxWidth: 50 }}
-                src={post.data.profileURL}
+                src={profileURL}
               />
             </div>
             <div style={{ paddingLeft: 10 }}>
@@ -117,7 +132,8 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
           </IonRow>
 
           <IonRow>
-            <p className="post-content">{post.data.content}</p><br></br>
+            <p className="post-content">{post.data.content}</p>
+            <br></br>
             {post.data.sharedLink && (
               <IonButton href={post.data.sharedLink} fill="outline">
                 Tham gia

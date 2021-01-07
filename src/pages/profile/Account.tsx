@@ -12,30 +12,56 @@ import {
   IonItemGroup,
   IonText,
   IonMenuButton,
+  IonIcon,
+  IonButtons,
 } from "@ionic/react";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import "./Profile.css";
-import { verifyEmail } from "../../config/firebaseConfig";
+import "./Account.scss";
+import { database, storage, verifyEmail } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
+import { camera, checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 
 interface ContainerProps {}
 interface RootState {
   user: any;
 }
 
-const Profile: React.FC<ContainerProps> = () => {
+const Account: React.FC<ContainerProps> = () => {
   const currentUser = useSelector((state: RootState) => state.user);
+
+  const [avatarInput, setAvatarInput] = useState<any>();
 
   async function verifyUser() {
     const res = await verifyEmail();
 
     if (res) {
-      toast("Email sent");
+      toast("Đã gửi email xác nhận");
     } else {
-      toast("An error happened");
+      toast("Có lỗi xảy ra");
     }
   }
+
+  const uploadAvatar = async () => {
+    const storageRef = storage.ref();
+
+    const fileName = `${currentUser.user.uid}`;
+    const fileRef = storageRef.child("users_avatar/" + fileName);
+
+    //console.log(avatarInput);
+    toast("Thay đổi ảnh đại diện thành công");
+    try {
+      await fileRef.put(avatarInput);
+      await database
+        .collection("users")
+        .doc(currentUser.user.uid)
+        .update({ profileURL: await fileRef.getDownloadURL() });
+
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <IonPage id="main">
@@ -47,13 +73,23 @@ const Profile: React.FC<ContainerProps> = () => {
             color="light"
           ></IonMenuButton>
           <IonTitle>Tài khoản</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={uploadAvatar}>
+              <IonIcon
+                color="light"
+                slot="icon-only"
+                ios={checkmarkOutline}
+                md={checkmarkSharp}
+              />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
         <IonList>
           <IonItemGroup>
-            <IonItem lines="none">
+            <div className="avatar-wrapper">
               <img
                 alt="avatar"
                 className="profile-img"
@@ -61,7 +97,18 @@ const Profile: React.FC<ContainerProps> = () => {
                 width="100"
                 height="100"
               />
-            </IonItem>
+              <label htmlFor="avatarInput">
+                <IonIcon icon={camera}></IonIcon>
+              </label>
+            </div>
+
+            <input
+              type="file"
+              name="avatar"
+              id="avatarInput"
+              onChange={(e: any) => setAvatarInput(e.target.files[0])}
+            />
+
             <IonItem lines="none">
               <b className="username">{currentUser.user.name}</b>
             </IonItem>
@@ -77,7 +124,7 @@ const Profile: React.FC<ContainerProps> = () => {
               <IonLabel>Ngày sinh</IonLabel>
               <p style={{ color: "#aaa" }}>{currentUser.user.birthday}</p>
             </IonItem>
-            <IonItem lines="none" routerLink="/profile/change-password">
+            <IonItem lines="none" routerLink="/change-password">
               <IonLabel>Thay đổi mật khẩu</IonLabel>
             </IonItem>
             <IonItemDivider mode="md" />
@@ -106,4 +153,4 @@ const Profile: React.FC<ContainerProps> = () => {
   );
 };
 
-export default Profile;
+export default Account;

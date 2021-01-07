@@ -61,6 +61,7 @@ import { database, getCurrentUser } from "./config/firebaseConfig";
 import { setCurrentUser } from "./redux/reducers/userReducer";
 import LandingPage from "./pages/LandingPage";
 import JlptExam from "./pages/jlpt/JlptExam";
+import UserProfile from "./pages/profile/UserProfile";
 
 /* Pages and components */
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
@@ -73,7 +74,7 @@ const MyFollowingCourse = lazy(
 const Login = lazy(() => import("./pages/login/Login"));
 const Register = lazy(() => import("./pages/register/Register"));
 const Settings = lazy(() => import("./pages/settings/Settings"));
-const Profile = lazy(() => import("./pages/profile/Profile"));
+const Account = lazy(() => import("./pages/profile/Account"));
 const ChangePassword = lazy(() => import("./pages/profile/ChangePassword"));
 const Course = lazy(() => import("./pages/course/Course"));
 const Lesson = lazy(() => import("./pages/lesson/Lesson"));
@@ -114,8 +115,8 @@ const Routing: React.FC = () => {
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />
-      <Route path="/profile" component={Profile} exact />
-      <Route path="/profile/change-password" component={ChangePassword} exact />
+      <Route path="/account" component={Account} exact />
+      <Route path="/change-password" component={ChangePassword} exact />
       <Route path="/community" component={Community} exact />
       <Route path="/community/:post_id" component={PostDetail} exact />
       <Route path="/dict" component={Dict} exact />
@@ -123,6 +124,7 @@ const Routing: React.FC = () => {
       <Route path="/jlpt/:id" component={JlptExam} exact />
       <Route path="/home" component={Home} exact />
       <Route path="/home/my-courses" component={MyCourse} exact />
+      <Route path="/users/:uid" component={UserProfile} exact />
       <Route
         path="/home/following-courses"
         component={MyFollowingCourse}
@@ -177,25 +179,19 @@ const App: React.FC = () => {
       //console.log(user)
       if (user) {
         //window.history.replaceState({}, '', '/')
-        const ref = database
-          .collection("users")
-          .where("uid", "==", user.uid)
-          .limit(1);
-        const docs = await ref.get();
-        if (docs.empty) {
+        const doc: any = await database.collection("users").doc(user.uid).get();
+        if (!doc.exists) {
           console.log("No such document!");
         } else {
-          docs.forEach((doc) => {
-            let currentUser = {
-              uid: user.uid,
-              email: user.email,
-              name: doc.data().name,
-              birthday: doc.data().birthday,
-              profileURL: doc.data().profileURL,
-              verified: user.emailVerified,
-            };
-            dispatch(setCurrentUser(currentUser));
-          });
+          let currentUser = {
+            uid: doc.id,
+            email: doc.data().email,
+            name: doc.data().name,
+            birthday: doc.data().birthday,
+            profileURL: doc.data().profileURL,
+            verified: user.emailVerified,
+          };
+          dispatch(setCurrentUser(currentUser));
         }
       } else {
         window.history.replaceState({}, "", "/welcome");
