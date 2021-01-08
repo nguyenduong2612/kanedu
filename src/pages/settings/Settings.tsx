@@ -9,15 +9,17 @@ import {
   IonButtons,
   IonList,
   IonLabel,
-  IonToggle,
+  IonButton,
 } from "@ionic/react";
 import React from "react";
+//import notifications from '../../utils/Notifications';
 
 interface ContainerProps {}
 
 const Settings: React.FC<ContainerProps> = () => {
-  function setDarkMode(event: any) {
-    document.body.classList.toggle("dark", event.detail.checked);
+  async function setLocalNoti() {
+    // document.body.classList.toggle("dark", event.detail.checked);
+    //await notifications.schedule("123123123")
   }
 
   return (
@@ -33,8 +35,8 @@ const Settings: React.FC<ContainerProps> = () => {
       <IonContent fullscreen>
         <IonList>
           <IonItem>
-            <IonLabel>Dark Mode</IonLabel>
-            <IonToggle onIonChange={(e: any) => setDarkMode(e)} />
+            <IonLabel>Local Notifications</IonLabel>
+            <IonButton onClick={setLocalNoti} />
           </IonItem>
         </IonList>
       </IonContent>

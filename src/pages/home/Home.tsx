@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import HintContainer from "../../components/containers/HintContainer";
 import ErrorPage from "../../components/ErrorPage";
 import NotificationsModal from "../../components/modals/NotificationsModal";
+import Refresher from "../../components/Refresher";
 import { database } from "../../config/firebaseConfig";
 import {
   setFollowingCourses,
@@ -127,6 +128,7 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <Refresher />
         <IonList>
           {courseList.courses.length === 0 &&
             courseList.my_courses.length === 0 && <HintContainer />}

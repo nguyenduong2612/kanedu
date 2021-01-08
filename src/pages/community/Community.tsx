@@ -21,6 +21,7 @@ import "../../theme/app.css";
 import "./Community.scss";
 import { algoliaUpdatePost } from "../../config/algoliaConfig";
 import ErrorPage from "../../components/ErrorPage";
+import Refresher from "../../components/Refresher";
 
 const Post = lazy(() => import("../../components/community/Post"));
 const SendQuestionModal = lazy(() => import("../../components/modals/SendQuestionModal"));
@@ -140,6 +141,7 @@ const Community: React.FC<ContainerProps> = () => {
 
       {currentUser.user.verified ? (
         <IonContent fullscreen>
+          <Refresher />
           <IonGrid className="input-wrapper">
             <IonRow className="row">
               <IonCol size="2" className="col">

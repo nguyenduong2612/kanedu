@@ -12,6 +12,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import CourseContainer from "../../../components/course/CourseContainer";
 import ErrorPage from "../../../components/ErrorPage";
+import Refresher from "../../../components/Refresher";
 
 interface RootState {
   courses: any;
@@ -33,6 +34,7 @@ const MyCourse: React.FC<ContainerProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <Refresher />
         {courseList.my_courses.length > 0 ? (
           <IonList>
             {courseList.my_courses.map((course: any, index: number) => {

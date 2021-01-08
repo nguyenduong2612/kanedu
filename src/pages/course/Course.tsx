@@ -35,6 +35,7 @@ import { toast } from "../../utils/toast";
 import "./Course.scss";
 import ShareModal from "../../components/modals/ShareModal";
 import { algoliaUpdatePost } from "../../config/algoliaConfig";
+import Refresher from "../../components/Refresher";
 
 const LessonList = lazy(() => import("../../components/lesson/LessonList"));
 
@@ -74,7 +75,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         setName(doc.data().name);
         setAuthor(doc.data().author);
         setAuthorId(doc.data().author_id);
-        setCountFollowers(doc.data().followed_by?.length)
+        setCountFollowers(doc.data().followed_by?.length);
 
         var course_index = courseList.courses
           .map((course: any) => {
@@ -139,7 +140,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
   const handleShare = async () => {
     let post = {
       author: currentUser.user.name,
-      profileURL: currentUser.user.profileURL,
+      author_id: currentUser.user.uid,
       title: name,
       sharedLink: window.location.pathname,
       content: `Tham gia khóa học ${name} này cùng mình nhé !`,
@@ -179,11 +180,17 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
             >
               <IonList>
                 {isFollowed ? (
-                  <IonItem onClick={handleUnfollow} lines="none">Bỏ theo dõi</IonItem>
+                  <IonItem onClick={handleUnfollow} lines="none">
+                    Bỏ theo dõi
+                  </IonItem>
                 ) : (
-                  <IonItem onClick={handleFollow} lines="none">Theo dõi</IonItem>
+                  <IonItem onClick={handleFollow} lines="none">
+                    Theo dõi
+                  </IonItem>
                 )}
-                <IonItem onClick={handleShowShareModal} lines="none">Chia sẻ</IonItem>
+                <IonItem onClick={handleShowShareModal} lines="none">
+                  Chia sẻ
+                </IonItem>
               </IonList>
             </IonPopover>
           </IonButtons>
@@ -191,6 +198,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <Refresher />
         <IonList style={{ marginTop: 10 }}>
           <IonItem lines="none">
             <IonIcon icon={personCircle}></IonIcon>
@@ -204,9 +212,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
           </IonItem>
           <IonItem lines="none">
             <IonIcon icon={shareSocial}></IonIcon>
-            <IonText style={{ marginLeft: 10 }}>
-              0 lượt chia sẻ
-            </IonText>
+            <IonText style={{ marginLeft: 10 }}>0 lượt chia sẻ</IonText>
           </IonItem>
         </IonList>
 

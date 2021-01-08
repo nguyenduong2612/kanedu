@@ -55,3 +55,6 @@ ion-content#right-side {
   font-size: min(13px, 3.5vw);
 }
 
+ion-refresher.refresher-native {
+  z-index: 9;
+}

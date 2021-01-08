@@ -22,6 +22,7 @@ import {
 } from "ionicons/icons";
 import React, { useState, useEffect, lazy } from "react";
 import { RouteComponentProps } from "react-router";
+import Refresher from "../../components/Refresher";
 import { database } from "../../config/firebaseConfig";
 import "./Lesson.scss";
 
@@ -85,6 +86,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <Refresher />
         <div className="cards-preview">
           <CardPreview
             courseId={match.params.course_id}

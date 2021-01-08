@@ -9,8 +9,6 @@ import {
   IonTabButton,
   IonIcon,
   IonContent,
-  IonRefresher,
-  IonRefresherContent,
   IonLoading,
   IonSplitPane,
   IonFab,
@@ -20,7 +18,6 @@ import {
 } from "@ionic/react";
 
 import { IonReactRouter } from "@ionic/react-router";
-import { RefresherEventDetail } from "@ionic/core";
 import { Plugins, Capacitor } from "@capacitor/core";
 import { getPlatforms } from "@ionic/react";
 
@@ -203,11 +200,6 @@ const App: React.FC = () => {
     toggleFabButton();
   }, [dispatch]);
 
-  async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
-    window.location.reload();
-    event.detail.complete();
-  }
-
   const handleShowModal = () => {
     setShowCreateModal(true);
   };
@@ -228,9 +220,6 @@ const App: React.FC = () => {
                 <SideMenu />
 
                 <IonContent fullscreen id="main" style={{ maxWidth: 800 }}>
-                  <IonRefresher slot="fixed" onIonRefresh={doRefresh}>
-                    <IonRefresherContent></IonRefresherContent>
-                  </IonRefresher>
                   <IonFab vertical="bottom" horizontal="center">
                     {showFabButton && (
                       <IonFabButton onClick={handleShowModal}>
