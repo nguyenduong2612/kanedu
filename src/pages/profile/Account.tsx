@@ -43,23 +43,25 @@ const Account: React.FC<ContainerProps> = () => {
   }
 
   const uploadAvatar = async () => {
-    const storageRef = storage.ref();
+    if (avatarInput) {
+      const storageRef = storage.ref();
 
-    const fileName = `${currentUser.user.uid}`;
-    const fileRef = storageRef.child("users_avatar/" + fileName);
+      const fileName = `${currentUser.user.uid}`;
+      const fileRef = storageRef.child("users_avatar/" + fileName);
 
-    //console.log(avatarInput);
-    toast("Thay đổi ảnh đại diện thành công");
-    try {
-      await fileRef.put(avatarInput);
-      await database
-        .collection("users")
-        .doc(currentUser.user.uid)
-        .update({ profileURL: await fileRef.getDownloadURL() });
+      //console.log(avatarInput);
+      toast("Thay đổi ảnh đại diện thành công");
+      try {
+        await fileRef.put(avatarInput);
+        await database
+          .collection("users")
+          .doc(currentUser.user.uid)
+          .update({ profileURL: await fileRef.getDownloadURL() });
 
-      window.location.reload();
-    } catch (err) {
-      console.error(err);
+        //window.location.reload();
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -73,16 +75,18 @@ const Account: React.FC<ContainerProps> = () => {
             color="light"
           ></IonMenuButton>
           <IonTitle>Tài khoản</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={uploadAvatar}>
-              <IonIcon
-                color="light"
-                slot="icon-only"
-                ios={checkmarkOutline}
-                md={checkmarkSharp}
-              />
-            </IonButton>
-          </IonButtons>
+          {avatarInput && (
+            <IonButtons slot="end">
+              <IonButton onClick={uploadAvatar}>
+                <IonIcon
+                  color="light"
+                  slot="icon-only"
+                  ios={checkmarkOutline}
+                  md={checkmarkSharp}
+                />
+              </IonButton>
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
 

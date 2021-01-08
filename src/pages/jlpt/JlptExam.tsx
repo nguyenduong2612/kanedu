@@ -33,6 +33,9 @@ interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const JlptExam: React.FC<ContainerProps> = ({ match }) => {
   const [busy, setBusy] = useState<boolean>(true);
+  
+  const [minutes, setMinutes] = useState<number>();
+  const [seconds, setSeconds] = useState<number>();
 
   const [title, setTitle] = useState<string>("");
   const [questions, setQuestions] = useState<any[]>([]);
@@ -70,8 +73,35 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
       setBusy(false);
     };
 
+    const setTimer = () => {
+      var timeLimit = Date.now() + 300000;
+
+      var timer = setInterval(() => {
+        var now = Date.now();
+
+        var distance = timeLimit - now;
+
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setMinutes(minutes);
+        setSeconds(seconds);
+
+        if (distance <= 0) {
+          let submitBtn = document.getElementById("submit-btn");
+          submitBtn?.click();
+          clearInterval(timer);
+        }
+      }, 1000);
+
+      return () => clearInterval(timer);
+    };
+
     getData();
+    setTimer();
   }, [match.params.id]);
+
+  
 
   const handleChangeAnswer = (newValue: number, i: number) => {
     let temp = [...submitAnswer];
@@ -115,6 +145,9 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
             <IonBackButton color="light" text="" defaultHref="/jlpt" />
           </IonButtons>
           <IonButtons slot="end">
+            <IonTitle>
+              {minutes}:{seconds}
+            </IonTitle>
             <IonButton
               fill="clear"
               id="submit-btn"

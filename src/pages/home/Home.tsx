@@ -17,17 +17,12 @@ import {
   notifications,
   notificationsOutline,
 } from "ionicons/icons";
-import React, { lazy, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { lazy, useState } from "react";
+import { useSelector } from "react-redux";
 import HintContainer from "../../components/containers/HintContainer";
 import ErrorPage from "../../components/ErrorPage";
 import NotificationsModal from "../../components/modals/NotificationsModal";
 import Refresher from "../../components/Refresher";
-import { database } from "../../config/firebaseConfig";
-import {
-  setFollowingCourses,
-  setMyCourses,
-} from "../../redux/reducers/coursesReducer";
 import "./Home.scss";
 
 const CourseContainer = lazy(
@@ -41,8 +36,6 @@ interface RootState {
 }
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
-  const currentUser = useSelector((state: RootState) => state.user);
   const courseList = useSelector((state: RootState) => state.courses);
 
   const [showNotiModal, setShowNotiModal] = useState<boolean>(false);
@@ -50,55 +43,6 @@ const Home: React.FC = () => {
   const handleCloseModal = () => {
     setShowNotiModal(false);
   };
-
-  useEffect(() => {
-    async function getFollowingCourses() {
-      const ref = database
-        .collection("courses")
-        .where("followed_by", "array-contains", currentUser.user.uid);
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          let course = {
-            id: doc.id,
-            author: doc.data().author,
-            author_id: doc.data().author_id,
-            name: doc.data().name,
-            description: doc.data().description,
-            followers: doc.data().followed_by?.length,
-          };
-          dispatch(setFollowingCourses(course));
-        });
-      }
-    }
-
-    async function getMyCourses() {
-      const ref = database
-        .collection("courses")
-        .where("author_id", "==", currentUser.user.uid);
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          let course = {
-            id: doc.id,
-            author: doc.data().author,
-            author_id: doc.data().author_id,
-            name: doc.data().name,
-            description: doc.data().description,
-            followers: doc.data().followed_by?.length,
-          };
-          dispatch(setMyCourses(course));
-        });
-      }
-    }
-
-    getFollowingCourses();
-    getMyCourses();
-  }, [currentUser.user.uid, dispatch]);
 
   return (
     <IonPage>

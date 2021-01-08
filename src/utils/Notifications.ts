@@ -23,7 +23,7 @@ class Notifications {
             schedule: {
               at: new Date(Date.now() + 1000 * 60),
               repeats: true,
-              every: "minute",
+              every: "day",
             },
             actionTypeId: "",
             extra: null,

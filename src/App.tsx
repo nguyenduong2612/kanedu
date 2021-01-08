@@ -59,6 +59,7 @@ import { setCurrentUser } from "./redux/reducers/userReducer";
 import LandingPage from "./pages/LandingPage";
 import JlptExam from "./pages/jlpt/JlptExam";
 import UserProfile from "./pages/profile/UserProfile";
+import { setFollowingCourses, setMyCourses } from "./redux/reducers/coursesReducer";
 
 /* Pages and components */
 const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
@@ -199,6 +200,55 @@ const App: React.FC = () => {
     changeStatusBar();
     toggleFabButton();
   }, [dispatch]);
+
+  useEffect(() => {
+    async function getFollowingCourses() {
+      const ref = database
+        .collection("courses")
+        .where("followed_by", "array-contains", currentUser.user.uid);
+      const docs = await ref.get();
+      if (docs.empty) {
+        console.log("No such document!");
+      } else {
+        docs.forEach((doc) => {
+          let course = {
+            id: doc.id,
+            author: doc.data().author,
+            author_id: doc.data().author_id,
+            name: doc.data().name,
+            description: doc.data().description,
+            followers: doc.data().followed_by?.length,
+          };
+          dispatch(setFollowingCourses(course));
+        });
+      }
+    }
+
+    async function getMyCourses() {
+      const ref = database
+        .collection("courses")
+        .where("author_id", "==", currentUser.user.uid);
+      const docs = await ref.get();
+      if (docs.empty) {
+        console.log("No such document!");
+      } else {
+        docs.forEach((doc) => {
+          let course = {
+            id: doc.id,
+            author: doc.data().author,
+            author_id: doc.data().author_id,
+            name: doc.data().name,
+            description: doc.data().description,
+            followers: doc.data().followed_by?.length,
+          };
+          dispatch(setMyCourses(course));
+        });
+      }
+    }
+
+    getFollowingCourses();
+    getMyCourses();
+  }, [currentUser.user.uid, dispatch]);
 
   const handleShowModal = () => {
     setShowCreateModal(true);
