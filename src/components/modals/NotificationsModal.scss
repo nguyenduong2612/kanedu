@@ -1,5 +1,5 @@
 .noti-modal {
-  --height: 93%;
+  --height: calc(100% - 56px);
   --border-radius: 10px 10px 0 0;
   .modal-wrapper,
   .modal-shadow {

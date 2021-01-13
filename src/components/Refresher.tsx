@@ -4,7 +4,7 @@ import { RefresherEventDetail } from "@ionic/core";
 
 interface ContainerProps {}
 
-const Settings: React.FC<ContainerProps> = () => {
+const Refresher: React.FC<ContainerProps> = () => {
   async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
     window.location.reload();
     event.detail.complete();
@@ -17,4 +17,4 @@ const Settings: React.FC<ContainerProps> = () => {
   );
 };
 
-export default Settings;
+export default Refresher;

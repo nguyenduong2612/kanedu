@@ -2,10 +2,6 @@ import React, { useEffect, useState, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   IonApp,
-  IonRouterOutlet,
-  IonTabs,
-  IonTabBar,
-  IonTabButton,
   IonIcon,
   IonContent,
   IonLoading,
@@ -41,25 +37,19 @@ import "./theme/variables.css";
 import "./theme/app.css";
 
 /* Ionic icons */
-import {
-  peopleOutline,
-  homeOutline,
-  searchOutline,
-  add,
-  home,
-  people,
-  search,
-  language,
-  languageOutline,
-} from "ionicons/icons";
+import { add } from "ionicons/icons";
 
 import { database, getCurrentUser } from "./config/firebaseConfig";
 import { setCurrentUser } from "./redux/reducers/userReducer";
-import { setFollowingCourses, setMyCourses } from "./redux/reducers/coursesReducer";
+import {
+  setFollowingCourses,
+  setMyCourses,
+} from "./redux/reducers/coursesReducer";
 
 import SideMenu from "./components/sidemenu/SideMenu";
 import CreateModal from "./components/modals/CreateModal";
 import Routing from "./route/Routing";
+import BottomTabbar from "./components/tabbars/BottomTabbar";
 
 // Capacitor plugins
 const { StatusBar, Keyboard } = Plugins;
@@ -213,30 +203,7 @@ const App: React.FC = () => {
                     />
                   </IonFab>
 
-                  <IonTabs>
-                    <IonRouterOutlet>
-                      <Routing />
-                    </IonRouterOutlet>
-                    <IonTabBar slot="bottom" id="appTabBar">
-                      <IonTabButton tab="home" href="/home">
-                        <IonIcon ios={homeOutline} md={home} />
-                        {/* <IonLabel>Trang chủ</IonLabel> */}
-                      </IonTabButton>
-                      <IonTabButton tab="search" href="/search">
-                        <IonIcon ios={searchOutline} md={search} />
-                        {/* <IonLabel>Tìm kiếm</IonLabel> */}
-                      </IonTabButton>
-                      <IonTabButton disabled></IonTabButton>
-                      <IonTabButton tab="community" href="/community">
-                        <IonIcon ios={peopleOutline} md={people} />
-                        {/* <IonLabel>Cộng đồng</IonLabel> */}
-                      </IonTabButton>
-                      <IonTabButton tab="dict" href="/dict">
-                        <IonIcon ios={languageOutline} md={language} />
-                        {/* <IonLabel>Tài khoản</IonLabel> */}
-                      </IonTabButton>
-                    </IonTabBar>
-                  </IonTabs>
+                  <BottomTabbar />
                 </IonContent>
 
                 <IonContent id="right-side" fullscreen>

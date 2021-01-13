@@ -1,0 +1,41 @@
+.comment-modal {
+  --height: calc(100% - 56px);
+  --border-radius: 10px 10px 0 0;
+  .modal-wrapper {
+    position: absolute;
+    bottom: 0 !important;
+    font-size: 14px;
+  }
+  .modal-shadow {
+    position: absolute;
+    bottom: 0 !important;
+  }
+  .comment-list-wrapper {
+    position: relative;
+    overflow: auto;
+    b, p {
+      display: block;
+    }
+    .modal-title {
+      position: sticky;
+      top: 0;
+      padding-top: 5px;
+      background: var(--ion-background-color, #fff);
+      ion-button {
+        margin: 0;
+      }
+    }
+  }
+  .comment-wrapper {
+    font-size: 14px;
+    margin: 15px 20px;
+    border-bottom: 1px solid #bbb;
+  }
+  .comment-input-wrapper {
+    border-top: 1px solid #bbb;
+    font-size: 14px;
+    ion-button {
+      margin: 0;
+    }
+  }
+}
