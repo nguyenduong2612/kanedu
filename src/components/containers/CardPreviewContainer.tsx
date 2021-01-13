@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { database } from "../../config/firebaseConfig";
-import "./CardList.scss";
+import "./CardListContainer.scss";
 
 interface ContainerProps {
   courseId: string;
@@ -22,7 +22,7 @@ const slideOpts = {
   speed: 400,
 };
 
-const CardPreview: React.FC<ContainerProps> = ({
+const CardPreviewContainer: React.FC<ContainerProps> = ({
   courseId,
   lessonId,
 }: ContainerProps) => {
@@ -104,4 +104,4 @@ const CardPreview: React.FC<ContainerProps> = ({
   );
 };
 
-export default CardPreview;
+export default CardPreviewContainer;

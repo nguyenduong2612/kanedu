@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { database } from "../../config/firebaseConfig";
-import "./CardList.scss";
+import "./CardListContainer.scss";
 
 interface ContainerProps {
   courseId: string;
@@ -24,7 +24,7 @@ const slideOpts = {
   loop: true,
 };
 
-const CardList: React.FC<ContainerProps> = ({
+const CardListContainer: React.FC<ContainerProps> = ({
   courseId,
   lessonId,
 }: ContainerProps) => {
@@ -114,4 +114,4 @@ const CardList: React.FC<ContainerProps> = ({
   );
 };
 
-export default CardList;
+export default CardListContainer;

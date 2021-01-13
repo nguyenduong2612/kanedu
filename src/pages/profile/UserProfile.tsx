@@ -12,8 +12,8 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import CourseContainer from "../../components/course/CourseContainer";
-import ErrorPage from "../../components/ErrorPage";
+import CourseContainer from "../../components/containers/CourseContainer";
+import ErrorPage from "../../components/error_pages/ErrorPage";
 import { database } from "../../config/firebaseConfig";
 import "./UserProfile.scss";
 

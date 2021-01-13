@@ -26,7 +26,7 @@ import {
 } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 import { logoFacebook, logoGoogle } from "ionicons/icons";
-import ForgotPasswordModal from "../../components/modals/ForgotPasswordModal";
+import ForgotPasswordPopup from "../../components/popups/ForgotPasswordPopup";
 
 const Login: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false);
@@ -147,7 +147,7 @@ const Login: React.FC = () => {
             Quên mật khẩu?
           </IonButton>
 
-          <ForgotPasswordModal
+          <ForgotPasswordPopup
             isOpen={isModalOpen}
             handleCloseModal={() => setIsModalOpen(false)}
             handleSendEmail={handleSendResetPasswordEmail}

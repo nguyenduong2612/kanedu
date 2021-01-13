@@ -37,7 +37,7 @@ import ShareModal from "../../components/modals/ShareModal";
 import { algoliaUpdatePost } from "../../config/algoliaConfig";
 import Refresher from "../../components/Refresher";
 
-const LessonList = lazy(() => import("../../components/lesson/LessonList"));
+const LessonListContainer = lazy(() => import("../../components/containers/LessonListContainer"));
 
 interface MatchParams {
   id: string;
@@ -219,7 +219,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         <IonItemDivider mode="md">
           <IonLabel color="dark">Danh sách bài học</IonLabel>
         </IonItemDivider>
-        <LessonList author={author} courseId={match.params.id} />
+        <LessonListContainer author={author} courseId={match.params.id} />
       </IonContent>
 
       <ShareModal

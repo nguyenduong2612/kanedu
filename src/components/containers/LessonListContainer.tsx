@@ -1,14 +1,14 @@
 import { IonCard, IonCardHeader, IonCardTitle, IonItem } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { database } from "../../config/firebaseConfig";
-import ErrorPage from "../ErrorPage";
+import ErrorPage from "../error_pages/ErrorPage";
 
 interface ContainerProps {
   courseId: string;
   author: string;
 }
 
-const LessonList: React.FC<ContainerProps> = ({
+const LessonListContainer: React.FC<ContainerProps> = ({
   author,
   courseId,
 }: ContainerProps) => {
@@ -62,4 +62,4 @@ const LessonList: React.FC<ContainerProps> = ({
   );
 };
 
-export default LessonList;
+export default LessonListContainer;

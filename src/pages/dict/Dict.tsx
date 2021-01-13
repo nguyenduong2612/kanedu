@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import algoliasearch from "algoliasearch";
 import React, { useEffect, useState } from "react";
-import ErrorPage from "../../components/ErrorPage";
+import ErrorPage from "../../components/error_pages/ErrorPage";
 import "./Dict.scss";
 
 interface ContainerProps {}

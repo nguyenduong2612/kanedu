@@ -1,5 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
-import { Redirect, Route } from "react-router-dom";
+import React, { useEffect, useState, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   IonApp,
@@ -56,82 +55,14 @@ import {
 
 import { database, getCurrentUser } from "./config/firebaseConfig";
 import { setCurrentUser } from "./redux/reducers/userReducer";
-import LandingPage from "./pages/LandingPage";
-import JlptExam from "./pages/jlpt/JlptExam";
-import UserProfile from "./pages/profile/UserProfile";
 import { setFollowingCourses, setMyCourses } from "./redux/reducers/coursesReducer";
 
-/* Pages and components */
-const SideMenu = lazy(() => import("./components/sidemenu/SideMenu"));
-const CreateModal = lazy(() => import("./components/create/CreateModal"));
-const Home = lazy(() => import("./pages/home/Home"));
-const MyCourse = lazy(() => import("./pages/home/my_courses/MyCourse"));
-const MyFollowingCourse = lazy(
-  () => import("./pages/home/following/MyFollowingCourse")
-);
-const Login = lazy(() => import("./pages/login/Login"));
-const Register = lazy(() => import("./pages/register/Register"));
-const Settings = lazy(() => import("./pages/settings/Settings"));
-const Account = lazy(() => import("./pages/profile/Account"));
-const ChangePassword = lazy(() => import("./pages/profile/ChangePassword"));
-const Course = lazy(() => import("./pages/course/Course"));
-const Lesson = lazy(() => import("./pages/lesson/Lesson"));
-const CreateCourse = lazy(() => import("./pages/create/CreateCourse"));
-const CreateLesson = lazy(() => import("./pages/create/CreateLesson"));
-const CreateCard = lazy(() => import("./pages/create/CreateCard"));
-const Learning = lazy(() => import("./pages/lesson/Learning"));
-const Testing = lazy(() => import("./pages/lesson/Testing"));
-const Community = lazy(() => import("./pages/community/Community"));
-const PostDetail = lazy(() => import("./pages/community/post/PostDetail"));
-const Search = lazy(() => import("./pages/search/Search"));
-const Dict = lazy(() => import("./pages/dict/Dict"));
-const Level = lazy(() => import("./pages/jlpt/Level"));
+import SideMenu from "./components/sidemenu/SideMenu";
+import CreateModal from "./components/modals/CreateModal";
+import Routing from "./route/Routing";
 
 // Capacitor plugins
 const { StatusBar, Keyboard } = Plugins;
-
-const Routing: React.FC = () => {
-  return (
-    <IonRouterOutlet>
-      <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
-      <Route path="/login" component={Login} exact />
-      <Route path="/courses/:id" component={Course} exact />
-      <Route path="/courses/:course_id/:lesson_id" component={Lesson} exact />
-      <Route
-        path="/courses/:course_id/:lesson_id/study"
-        component={Learning}
-        exact
-      />
-      <Route
-        path="/courses/:course_id/:lesson_id/test"
-        component={Testing}
-        exact
-      />
-      <Route path="/course/create" component={CreateCourse} exact />
-      <Route path="/lesson/create" component={CreateLesson} exact />
-      <Route path="/lesson/create/:course_id" component={CreateCard} exact />
-      <Route path="/register" component={Register} exact />
-      <Route path="/settings" component={Settings} exact />
-      <Route path="/search" component={Search} exact />
-      <Route path="/account" component={Account} exact />
-      <Route path="/change-password" component={ChangePassword} exact />
-      <Route path="/community" component={Community} exact />
-      <Route path="/community/:post_id" component={PostDetail} exact />
-      <Route path="/dict" component={Dict} exact />
-      <Route path="/jlpt" component={Level} exact />
-      <Route path="/jlpt/:id" component={JlptExam} exact />
-      <Route path="/home" component={Home} exact />
-      <Route path="/home/my-courses" component={MyCourse} exact />
-      <Route path="/users/:uid" component={UserProfile} exact />
-      <Route
-        path="/home/following-courses"
-        component={MyFollowingCourse}
-        exact
-      />
-      <Route path="/welcome" component={LandingPage} exact />
-    </IonRouterOutlet>
-  );
-};
 
 const Loading: React.FC = () => {
   return <IonLoading message="Vui lòng đợi" duration={0} isOpen={true} />;

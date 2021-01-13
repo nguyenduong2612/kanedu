@@ -13,7 +13,7 @@ import {
   IonList,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import ErrorPage from "../../components/ErrorPage";
+import ErrorPage from "../../components/error_pages/ErrorPage";
 import { database } from "../../config/firebaseConfig";
 
 interface ContainerProps {}

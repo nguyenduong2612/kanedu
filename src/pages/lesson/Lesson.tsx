@@ -26,7 +26,7 @@ import Refresher from "../../components/Refresher";
 import { database } from "../../config/firebaseConfig";
 import "./Lesson.scss";
 
-const CardPreview = lazy(() => import("../../components/cards/CardPreview"));
+const CardPreviewContainer = lazy(() => import("../../components/containers/CardPreviewContainer"));
 interface MatchParams {
   course_id: string;
   lesson_id: string;
@@ -88,7 +88,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
       <IonContent fullscreen>
         <Refresher />
         <div className="cards-preview">
-          <CardPreview
+          <CardPreviewContainer
             courseId={match.params.course_id}
             lessonId={match.params.lesson_id}
           />

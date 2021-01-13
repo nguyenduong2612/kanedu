@@ -3,45 +3,35 @@ import {
   IonInput,
   IonItem,
   IonPopover,
-  IonTextarea,
 } from "@ionic/react";
 import React, { useState } from "react";
-import "./SendQuestionModal.scss";
+import "./ForgotPasswordPopup.scss";
 
 interface ContainerProps {
   isOpen: boolean;
   handleCloseModal: () => void;
-  handleSendQuestion: (title: string, content: string) => void;
+  handleSendEmail: (email: string) => void;
 }
 
-const SendQuestionModal: React.FC<ContainerProps> = ({
+const ForgotPasswordPopup: React.FC<ContainerProps> = ({
   isOpen,
   handleCloseModal,
-  handleSendQuestion,
+  handleSendEmail,
 }) => {
-  const [title, setTitle] = useState<string>("");
-  const [content, setContent] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
 
   return (
     <IonPopover
+      cssClass="forgot-password-modal"
       isOpen={isOpen}
-      cssClass="send-question-modal"
       onDidDismiss={handleCloseModal}
     >
-      <IonItem>
+      <IonItem >
         <IonInput
-          value={title}
-          placeholder="Tiêu đề"
-          onIonChange={(e: any) => setTitle(e.detail.value!)}
+          value={email}
+          placeholder="Nhập email của bạn"
+          onIonChange={(e) => setEmail(e.detail.value!)}
         ></IonInput>
-      </IonItem>
-      <IonItem lines="none">
-        <IonTextarea
-          rows={6}
-          value={content}
-          placeholder="Nội dung câu hỏi"
-          onIonChange={(e: any) => setContent(e.detail.value!)}
-        ></IonTextarea>
       </IonItem>
       <IonItem lines="none" className="modal-footer">
         <IonButton
@@ -58,13 +48,13 @@ const SendQuestionModal: React.FC<ContainerProps> = ({
           size="default"
           color="primary"
           className="send-btn"
-          onClick={() => handleSendQuestion(title, content)}
+          onClick={() => handleSendEmail(email)}
         >
-          Đăng
+          Gửi
         </IonButton>
       </IonItem>
     </IonPopover>
   );
 };
 
-export default SendQuestionModal;
+export default ForgotPasswordPopup;

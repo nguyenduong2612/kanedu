@@ -1,0 +1,15 @@
+.error-container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 45%;
+}
+
+.error-container {
+  .error-text {
+    font-size: var(--ion-font-size-16);
+    line-height: 26px;
+    color: #8c8c8c;
+  }
+}

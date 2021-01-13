@@ -24,7 +24,7 @@ import moment from "moment";
 import "moment/locale/vi";
 import React, { useEffect, useState } from "react";
 import { database, storage } from "../../config/firebaseConfig";
-import "./Post.scss";
+import "./PostContainer.scss";
 
 interface ContainerProps {
   key: number;
@@ -32,7 +32,7 @@ interface ContainerProps {
   username: string;
 }
 
-const Post: React.FC<ContainerProps> = ({ post, username }) => {
+const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
   const [profileURL, setProfileURL] = useState<string>("");
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
   const [commentInput, setCommentInput] = useState<string>("");
@@ -231,4 +231,4 @@ const Post: React.FC<ContainerProps> = ({ post, username }) => {
   );
 };
 
-export default Post;
+export default PostContainer;

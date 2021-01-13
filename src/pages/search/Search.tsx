@@ -13,7 +13,7 @@ import {
 } from "@ionic/react";
 import algoliasearch from "algoliasearch";
 import React, { useState, useEffect } from "react";
-import ErrorPage from "../../components/ErrorPage";
+import ErrorPage from "../../components/error_pages/ErrorPage";
 
 const client = algoliasearch(
   String(process.env.REACT_APP_ALGOLIA_APP_ID),

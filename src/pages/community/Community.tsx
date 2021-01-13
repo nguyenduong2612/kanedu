@@ -20,11 +20,11 @@ import { toast } from "../../utils/toast";
 import "../../theme/app.css";
 import "./Community.scss";
 import { algoliaUpdatePost } from "../../config/algoliaConfig";
-import ErrorPage from "../../components/ErrorPage";
+import ErrorPage from "../../components/error_pages/ErrorPage";
 import Refresher from "../../components/Refresher";
+import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
 
-const Post = lazy(() => import("../../components/community/Post"));
-const SendQuestionModal = lazy(() => import("../../components/modals/SendQuestionModal"));
+const PostContainer = lazy(() => import("../../components/containers/PostContainer"));
 
 interface ContainerProps {}
 interface RootState {
@@ -165,7 +165,7 @@ const Community: React.FC<ContainerProps> = () => {
                     <p>Đặt câu hỏi</p>
                   </IonButton>
 
-                  <SendQuestionModal
+                  <SendQuestionPopup
                     isOpen={showPopover}
                     handleCloseModal={() => setShowPopover(false)}
                     handleSendQuestion={handleSendQuestion}
@@ -180,7 +180,7 @@ const Community: React.FC<ContainerProps> = () => {
               .filter((post) => post !== undefined)
               .map((post: any, index: number) => {
                 return (
-                  <Post
+                  <PostContainer
                     key={index}
                     post={post}
                     username={currentUser.user.name}

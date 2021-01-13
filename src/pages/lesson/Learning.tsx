@@ -9,7 +9,7 @@ import {
 import React, { lazy } from "react";
 import { RouteComponentProps } from "react-router";
 
-const CardList = lazy(() => import("../../components/cards/CardList"));
+const CardListContainer = lazy(() => import("../../components/containers/CardListContainer"));
 
 interface MatchParams {
   course_id: string;
@@ -30,7 +30,7 @@ const Learning: React.FC<ContainerProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <CardList
+        <CardListContainer
           courseId={match.params.course_id}
           lessonId={match.params.lesson_id}
         />

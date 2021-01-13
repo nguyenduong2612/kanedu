@@ -3,35 +3,45 @@ import {
   IonInput,
   IonItem,
   IonPopover,
+  IonTextarea,
 } from "@ionic/react";
 import React, { useState } from "react";
-import "./ForgotPasswordModal.scss";
+import "./SendQuestionPopup.scss";
 
 interface ContainerProps {
   isOpen: boolean;
   handleCloseModal: () => void;
-  handleSendEmail: (email: string) => void;
+  handleSendQuestion: (title: string, content: string) => void;
 }
 
-const ForgotPasswordModal: React.FC<ContainerProps> = ({
+const SendQuestionPopup: React.FC<ContainerProps> = ({
   isOpen,
   handleCloseModal,
-  handleSendEmail,
+  handleSendQuestion,
 }) => {
-  const [email, setEmail] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
   return (
     <IonPopover
-      cssClass="forgot-password-modal"
       isOpen={isOpen}
+      cssClass="send-question-modal"
       onDidDismiss={handleCloseModal}
     >
-      <IonItem >
+      <IonItem>
         <IonInput
-          value={email}
-          placeholder="Nhập email của bạn"
-          onIonChange={(e) => setEmail(e.detail.value!)}
+          value={title}
+          placeholder="Tiêu đề"
+          onIonChange={(e: any) => setTitle(e.detail.value!)}
         ></IonInput>
+      </IonItem>
+      <IonItem lines="none">
+        <IonTextarea
+          rows={6}
+          value={content}
+          placeholder="Nội dung câu hỏi"
+          onIonChange={(e: any) => setContent(e.detail.value!)}
+        ></IonTextarea>
       </IonItem>
       <IonItem lines="none" className="modal-footer">
         <IonButton
@@ -48,13 +58,13 @@ const ForgotPasswordModal: React.FC<ContainerProps> = ({
           size="default"
           color="primary"
           className="send-btn"
-          onClick={() => handleSendEmail(email)}
+          onClick={() => handleSendQuestion(title, content)}
         >
-          Gửi
+          Đăng
         </IonButton>
       </IonItem>
     </IonPopover>
   );
 };
 
-export default ForgotPasswordModal;
+export default SendQuestionPopup;

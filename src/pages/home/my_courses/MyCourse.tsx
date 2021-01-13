@@ -10,8 +10,8 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { useSelector } from "react-redux";
-import CourseContainer from "../../../components/course/CourseContainer";
-import ErrorPage from "../../../components/ErrorPage";
+import CourseContainer from "../../../components/containers/CourseContainer";
+import ErrorPage from "../../../components/error_pages/ErrorPage";
 import Refresher from "../../../components/Refresher";
 
 interface RootState {

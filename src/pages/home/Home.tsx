@@ -20,13 +20,13 @@ import {
 import React, { lazy, useState } from "react";
 import { useSelector } from "react-redux";
 import HintContainer from "../../components/containers/HintContainer";
-import ErrorPage from "../../components/ErrorPage";
+import ErrorPage from "../../components/error_pages/ErrorPage";
 import NotificationsModal from "../../components/modals/NotificationsModal";
 import Refresher from "../../components/Refresher";
 import "./Home.scss";
 
 const CourseContainer = lazy(
-  () => import("../../components/course/CourseContainer")
+  () => import("../../components/containers/CourseContainer")
 );
 
 interface RootState {
