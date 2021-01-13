@@ -3,28 +3,28 @@ const initialState = {
   my_courses: [],
 };
 
-export function setFollowingCourses(course) {
+export function setFollowingCourses(course: any) {
   return {
     type: "SET_FOLLOWING_COURSES",
     payload: course,
   };
 }
 
-export function removeFollowingCourses(course_index) {
+export function removeFollowingCourses(course_index: number) {
   return {
     type: "REMOVE_FOLLOWING_COURSES",
     payload: course_index,
   };
 }
 
-export function setMyCourses(course) {
+export function setMyCourses(course: any) {
   return {
     type: "SET_MY_COURSES",
     payload: course,
   };
 }
 
-export function coursesReducer(state = initialState, action) {
+export function coursesReducer(state = initialState, action: any) {
   switch (action.type) {
     case "SET_FOLLOWING_COURSES":
       return {

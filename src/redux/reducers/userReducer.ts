@@ -10,14 +10,14 @@ const initialState = {
   logged_in: false,
 }
 
-export function setCurrentUser(user) {
+export function setCurrentUser(user: any) {
   return {
     type: "SET_CURRENT_USER",
     payload: user
   }
 }
 
-export function userReducer(state = initialState, action) {
+export function userReducer(state = initialState, action: any) {
   switch (action.type) {
     case "SET_CURRENT_USER": 
       return {
