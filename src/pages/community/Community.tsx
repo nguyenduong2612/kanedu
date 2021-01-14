@@ -24,7 +24,9 @@ import ErrorPage from "../../components/error_pages/ErrorPage";
 import Refresher from "../../components/Refresher";
 import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
 
-const PostContainer = lazy(() => import("../../components/containers/PostContainer"));
+const PostContainer = lazy(
+  () => import("../../components/containers/PostContainer")
+);
 
 interface ContainerProps {}
 interface RootState {
@@ -65,13 +67,12 @@ const Community: React.FC<ContainerProps> = () => {
 
   useEffect(() => {
     function getCurrentPost() {
-      if (loadedPostList) {
-        for (let i = 0; i < 5; i++) {
-          setCurrentPostList((currentPostList) => [
-            ...currentPostList,
-            postList[i],
-          ]);
-        }
+      if (!loadedPostList) return;
+      for (let i = 0; i < 5; i++) {
+        setCurrentPostList((currentPostList) => [
+          ...currentPostList,
+          postList[i],
+        ]);
       }
     }
     getCurrentPost();
@@ -126,6 +127,21 @@ const Community: React.FC<ContainerProps> = () => {
     }
   }
 
+  var prevScrollpos = 0;
+  const handleScroll = (event: any) => {
+    var inputWrapper = document.getElementById("post-input-wrapper");
+
+    if (!inputWrapper) return;
+
+    var currentScrollPos = event.detail.scrollTop;
+    if (prevScrollpos > currentScrollPos) {
+      inputWrapper.style.top = "0";
+    } else {
+      inputWrapper.style.top = "-75px";
+    }
+    prevScrollpos = currentScrollPos;
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -140,9 +156,13 @@ const Community: React.FC<ContainerProps> = () => {
       </IonHeader>
 
       {currentUser.user.verified ? (
-        <IonContent fullscreen>
+        <IonContent
+          fullscreen
+          scrollEvents={true}
+          onIonScroll={(e: any) => handleScroll(e)}
+        >
           <Refresher />
-          <IonGrid className="input-wrapper">
+          <IonGrid id="post-input-wrapper">
             <IonRow className="row">
               <IonCol size="2" className="col">
                 <div className="image-wrapper">

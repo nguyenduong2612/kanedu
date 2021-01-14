@@ -1,8 +1,9 @@
-.input-wrapper {
+#post-input-wrapper {
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
   z-index: 2;
+  transition: top 0.3s;
   background-color: #fff;
   border-bottom: solid 1px #bbb;
   .col {

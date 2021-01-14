@@ -58,3 +58,7 @@ ion-content#right-side {
 ion-refresher.refresher-native {
   z-index: 9;
 }
+
+.ion-page {
+  padding-bottom: 65px;
+}
