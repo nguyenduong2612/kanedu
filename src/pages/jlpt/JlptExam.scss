@@ -2,3 +2,17 @@
   --width: 90%;
   --max-width: 450px;
 }
+
+.part-segment {
+  position: sticky !important;
+  top: 0;
+  z-index: 9;
+  background: #fff;
+}
+
+.audio-wrapper {
+  margin: 0 10px;
+  .listening-audio {
+    width: 100%;
+  }
+}

@@ -15,6 +15,8 @@ import {
   IonButton,
   IonAlert,
   IonLoading,
+  IonSegment,
+  IonSegmentButton,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
@@ -33,11 +35,15 @@ interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const JlptExam: React.FC<ContainerProps> = ({ match }) => {
   const [busy, setBusy] = useState<boolean>(true);
-  
+
+  const [hours, setHours] = useState<number>();
   const [minutes, setMinutes] = useState<number>();
   const [seconds, setSeconds] = useState<number>();
 
+  const [level, setLevel] = useState<string>("");
+  const [part, setPart] = useState<string>("0");
   const [title, setTitle] = useState<string>("");
+  const [audioSrc, setAudioSrc] = useState<string>("");
   const [questions, setQuestions] = useState<any[]>([]);
   const [answerSheet, setAnswerSheet] = useState<number[]>([]);
   const [submitAnswer, setSubmitAnswer] = useState<number[]>([]);
@@ -55,6 +61,8 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
       } else {
         setTitle(doc.data().title);
         setAnswerSheet(doc.data().answer_sheet);
+        setLevel(doc.data().level);
+        setAudioSrc(doc.data().listening_audio);
         let questions_docs = await ref.collection("questions").get();
         if (questions_docs.empty) {
           console.log("No such document!");
@@ -64,6 +72,7 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
               id: doc.id,
               question: doc.data().question,
               answer: doc.data().answer,
+              part: doc.data().part,
             };
             setQuestions((questions) => [...questions, ques]);
           });
@@ -73,35 +82,63 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
       setBusy(false);
     };
 
-    const setTimer = () => {
-      var timeLimit = Date.now() + 300000;
-
-      var timer = setInterval(() => {
-        var now = Date.now();
-
-        var distance = timeLimit - now;
-
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        setMinutes(minutes);
-        setSeconds(seconds);
-
-        if (distance <= 0) {
-          let submitBtn = document.getElementById("submit-btn");
-          submitBtn?.click();
-          clearInterval(timer);
-        }
-      }, 1000);
-
-      return () => clearInterval(timer);
-    };
-
     getData();
-    setTimer();
   }, [match.params.id]);
 
-  
+  useEffect(() => {
+    const setTimer = () => {
+      if (level) {
+        var timeLimit: number;
+        switch (level) {
+          case "5":
+            timeLimit = Date.now() + 6300000;
+            break;
+          case "4":
+            timeLimit = Date.now() + 7500000;
+            break;
+          case "3":
+            timeLimit = Date.now() + 8400000;
+            break;
+          case "2":
+            timeLimit = Date.now() + 9300000;
+            break;
+          case "1":
+            timeLimit = Date.now() + 10200000;
+            break;
+        }
+
+        var timer = setInterval(() => {
+          var now = Date.now();
+
+          var distance = timeLimit - now;
+
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          setHours(hours);
+          setMinutes(minutes);
+          setSeconds(seconds);
+
+          if (distance <= 0) {
+            let submitBtn = document.getElementById("submit-btn");
+            submitBtn?.click();
+            clearInterval(timer);
+          }
+        }, 1000);
+
+        return () => clearInterval(timer);
+      }
+    };
+
+    setTimer();
+  }, [level]);
+
+  useEffect(() => {
+    setTimeout(function () {
+      onChangePart("0");
+    }, 500);
+  }, []);
 
   const handleChangeAnswer = (newValue: number, i: number) => {
     let temp = [...submitAnswer];
@@ -137,6 +174,23 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
     }
   };
 
+  const onChangePart = (part: string) => {
+    setPart(part);
+    let allQues = document.getElementsByClassName(`ques`);
+    Array.prototype.forEach.call(allQues, function (ques) {
+      if (ques) {
+        ques.style.display = "none";
+      }
+    });
+
+    let showQues = document.getElementsByClassName(`part-${part}`);
+    Array.prototype.forEach.call(showQues, function (ques) {
+      if (ques) {
+        ques.style.display = "block";
+      }
+    });
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -146,7 +200,7 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
           </IonButtons>
           <IonButtons slot="end">
             <IonTitle>
-              {minutes}:{seconds}
+              {hours}:{minutes}:{seconds}
             </IonTitle>
             <IonButton
               fill="clear"
@@ -174,13 +228,52 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
               message={alertMessage}
               buttons={["Xác nhận"]}
             />
+            <IonSegment
+              scrollable
+              value={part}
+              color="primary"
+              className="part-segment"
+              onIonChange={(e: any) => onChangePart(e.detail.value!)}
+            >
+              {["4", "5"].includes(level) ? (
+                <>
+                  <IonSegmentButton value="0">
+                    <IonLabel>言語知識・読解</IonLabel>
+                  </IonSegmentButton>
+                  <IonSegmentButton value="2">
+                    <IonLabel>聴解</IonLabel>
+                  </IonSegmentButton>
+                </>
+              ) : (
+                <>
+                  <IonSegmentButton value="0">
+                    <IonLabel>言語知識</IonLabel>
+                  </IonSegmentButton>
+                  <IonSegmentButton value="1">
+                    <IonLabel>読解</IonLabel>
+                  </IonSegmentButton>
+                  <IonSegmentButton value="2">
+                    <IonLabel>聴解</IonLabel>
+                  </IonSegmentButton>
+                </>
+              )}
+            </IonSegment>
 
             <IonList>
+              {part === "2" && (
+                <div className="audio-wrapper">
+                  <audio className="listening-audio" controls>
+                    <source src={audioSrc} />
+                  </audio>
+                </div>
+              )}
+
               {questions.map((q, i) => {
                 return (
                   <IonRadioGroup
                     key={i}
                     onIonChange={(e) => handleChangeAnswer(e.detail.value, i)}
+                    className={`part-${q.part} ques`}
                   >
                     <IonListHeader>
                       <IonLabel>

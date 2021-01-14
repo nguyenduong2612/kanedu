@@ -28,7 +28,7 @@ const BottomTabbar: React.FC<ContainerProps> = () => {
       <IonRouterOutlet>
         <Routing />
       </IonRouterOutlet>
-      <IonTabBar slot="bottom" id="appTabBar">
+      <IonTabBar mode="md" slot="bottom" id="appTabBar">
         <IonTabButton tab="home" href="/home">
           <IonIcon ios={homeOutline} md={home} />
           <IonLabel>Trang chủ</IonLabel>

@@ -19,7 +19,7 @@ import { database } from "../../config/firebaseConfig";
 interface ContainerProps {}
 
 const Level: React.FC<ContainerProps> = () => {
-  const [level, setLevel] = useState<string>("N5");
+  const [level, setLevel] = useState<string>("5");
   const [exams, setExams] = useState<any[]>([]);
 
   useEffect(() => {
@@ -68,19 +68,19 @@ const Level: React.FC<ContainerProps> = () => {
           color="primary"
           onIonChange={(e) => handleChangeLevel(e)}
         >
-          <IonSegmentButton value="N5">
+          <IonSegmentButton value="5">
             <IonLabel>N5</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="N4">
+          <IonSegmentButton value="4">
             <IonLabel>N4</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="N3">
+          <IonSegmentButton value="3">
             <IonLabel>N3</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="N2">
+          <IonSegmentButton value="2">
             <IonLabel>N2</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton value="N1">
+          <IonSegmentButton value="1">
             <IonLabel>N1</IonLabel>
           </IonSegmentButton>
         </IonSegment>

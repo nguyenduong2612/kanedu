@@ -2,17 +2,28 @@
   ion-tab-button {
     &.tab-selected {
       ion-label {
-        opacity: 1;
-        height: auto;
+        position: relative;
+        bottom: -17px;
+        transition: bottom 0.3s;
+      }
+      ion-icon {
+        position: absolute;
+        font-size: 25px;
+        top: 0;
+        transition: top 0.3s;
       }
     }
 
     ion-label {
-      opacity: 0;
-      height: 0;
+      position: relative;
+      bottom: -45px;
+      transition: bottom 0.3s;
     }
     ion-icon {
+      position: absolute;
       font-size: 25px;
+      top: 8px;
+      transition: top 0.3s;
     }
   }
 }

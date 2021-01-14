@@ -13,14 +13,13 @@ import {
   IonText,
   IonMenuButton,
   IonIcon,
-  IonButtons,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import "./Account.scss";
 import { database, storage, verifyEmail } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
-import { camera, checkmarkOutline, checkmarkSharp } from "ionicons/icons";
+import { camera } from "ionicons/icons";
 
 interface ContainerProps {}
 interface RootState {
@@ -29,8 +28,6 @@ interface RootState {
 
 const Account: React.FC<ContainerProps> = () => {
   const currentUser = useSelector((state: RootState) => state.user);
-
-  const [avatarInput, setAvatarInput] = useState<any>();
 
   async function verifyUser() {
     const res = await verifyEmail();
@@ -42,23 +39,23 @@ const Account: React.FC<ContainerProps> = () => {
     }
   }
 
-  const uploadAvatar = async () => {
-    if (avatarInput) {
+  const uploadAvatar = async (avatar: any) => {
+    if (avatar) {
       const storageRef = storage.ref();
 
       const fileName = `${currentUser.user.uid}`;
       const fileRef = storageRef.child("users_avatar/" + fileName);
 
-      //console.log(avatarInput);
+      //console.log(avatar);
       toast("Thay đổi ảnh đại diện thành công");
       try {
-        await fileRef.put(avatarInput);
+        await fileRef.put(avatar);
         await database
           .collection("users")
           .doc(currentUser.user.uid)
           .update({ profileURL: await fileRef.getDownloadURL() });
 
-        //window.location.reload();
+        window.location.reload();
       } catch (err) {
         console.error(err);
       }
@@ -75,18 +72,6 @@ const Account: React.FC<ContainerProps> = () => {
             color="light"
           ></IonMenuButton>
           <IonTitle>Tài khoản</IonTitle>
-          {avatarInput && (
-            <IonButtons slot="end">
-              <IonButton onClick={uploadAvatar}>
-                <IonIcon
-                  color="light"
-                  slot="icon-only"
-                  ios={checkmarkOutline}
-                  md={checkmarkSharp}
-                />
-              </IonButton>
-            </IonButtons>
-          )}
         </IonToolbar>
       </IonHeader>
 
@@ -110,7 +95,7 @@ const Account: React.FC<ContainerProps> = () => {
               type="file"
               name="avatar"
               id="avatarInput"
-              onChange={(e: any) => setAvatarInput(e.target.files[0])}
+              onChange={(e: any) => uploadAvatar(e.target.files[0])}
             />
 
             <IonItem lines="none">
