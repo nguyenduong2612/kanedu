@@ -6,10 +6,12 @@ import {
   IonBackButton,
   IonButtons,
 } from "@ionic/react";
-import React, { lazy } from "react";
+import React, { lazy, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 
-const CardListContainer = lazy(() => import("../../components/containers/CardListContainer"));
+const CardListContainer = lazy(
+  () => import("../../components/containers/CardListContainer")
+);
 
 interface MatchParams {
   course_id: string;
@@ -19,6 +21,23 @@ interface MatchParams {
 interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const Learning: React.FC<ContainerProps> = ({ match }) => {
+  useEffect(() => {
+    function hideTabbar() {
+      var tabbar = document.getElementById(`appTabBar`);
+      if (tabbar) tabbar.style.bottom = "-60px";
+      var fabbtn = document.getElementById(`appFabBtn`);
+      if (fabbtn) fabbtn.style.opacity = "0";
+    }
+
+    hideTabbar();
+
+    return function showTabbar() {
+      var tabbar = document.getElementById(`appTabBar`);
+      if (tabbar) tabbar.style.bottom = "0";
+      var fabbtn = document.getElementById(`appFabBtn`);
+      if (fabbtn) fabbtn.style.opacity = "1";
+    };
+  }, []);
 
   return (
     <IonPage>

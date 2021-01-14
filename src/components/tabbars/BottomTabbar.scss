@@ -1,4 +1,9 @@
 #appTabBar {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  transition: bottom 0.3s;
+
   ion-tab-button {
     &.tab-selected {
       ion-label {
@@ -26,4 +31,9 @@
       transition: top 0.3s;
     }
   }
+}
+
+#appFabBtn {
+  opacity: 1;
+  transition: opacity 0.3s;
 }

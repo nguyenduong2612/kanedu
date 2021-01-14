@@ -191,9 +191,9 @@ const App: React.FC = () => {
                 <SideMenu />
 
                 <IonContent fullscreen id="main" style={{ maxWidth: 800 }}>
-                  <IonFab vertical="bottom" horizontal="center">
+                  <IonFab vertical="bottom" horizontal="center" >
                     {showFabButton && (
-                      <IonFabButton onClick={handleShowModal}>
+                      <IonFabButton onClick={handleShowModal} id="appFabBtn">
                         <IonIcon icon={add} size="large" />
                       </IonFabButton>
                     )}

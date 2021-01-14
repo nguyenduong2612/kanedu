@@ -52,6 +52,24 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
   const [alertMessage, setAlertMessage] = useState<string>("");
 
   useEffect(() => {
+    function hideTabbar() {
+      var tabbar = document.getElementById(`appTabBar`);
+      if (tabbar) tabbar.style.bottom = "-60px";
+      var fabbtn = document.getElementById(`appFabBtn`);
+      if (fabbtn) fabbtn.style.opacity = "0";
+    }
+
+    hideTabbar();
+
+    return function showTabbar() {
+      var tabbar = document.getElementById(`appTabBar`);
+      if (tabbar) tabbar.style.bottom = "0";
+      var fabbtn = document.getElementById(`appFabBtn`);
+      if (fabbtn) fabbtn.style.opacity = "1";
+    };
+  }, []);
+
+  useEffect(() => {
     const getData = async () => {
       let ref = database.collection("tests").doc(match.params.id);
       let doc: any = await ref.get();
