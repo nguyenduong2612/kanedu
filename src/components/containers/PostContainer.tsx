@@ -83,6 +83,7 @@ const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
   const handleShowModal = () => {
     setShowCommentModal(true);
     getAllComment();
+    console.log(isFavorited, post.id)
   };
 
   const handleCloseModal = () => {

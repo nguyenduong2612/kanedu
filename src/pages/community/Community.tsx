@@ -31,26 +31,24 @@ const PostContainer = lazy(
 interface ContainerProps {}
 interface RootState {
   user: any;
+  posts: any;
 }
 
 const Community: React.FC<ContainerProps> = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
   const [postList, setPostList] = useState<any[]>([]);
-  const [loadedPostList, setLoadedPostList] = useState<boolean>();
-  const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(
-    false
-  );
-  const [currentPostList, setCurrentPostList] = useState<any[]>([]);
 
   const currentUser = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    async function getAllPost() {
+    async function loadPost() {
       const ref = database.collection("posts");
-      const docs = await ref.orderBy("created_at", "desc").get();
+      const docs = await ref.orderBy("created_at", "desc").limit(5).get();
+
       if (docs.empty) {
         console.log("No such document!");
+        return;
       } else {
         docs.forEach((doc) => {
           setPostList((postList) => [
@@ -58,47 +56,33 @@ const Community: React.FC<ContainerProps> = () => {
             { data: doc.data(), id: doc.id },
           ]);
         });
-        setLoadedPostList(true);
       }
     }
 
-    getAllPost();
+    loadPost();
   }, []);
 
-  useEffect(() => {
-    function getCurrentPost() {
-      if (!loadedPostList) return;
-      for (let i = 0; i < 5; i++) {
-        setCurrentPostList((currentPostList) => [
-          ...currentPostList,
-          postList[i],
-        ]);
-      }
-    }
-    getCurrentPost();
-  }, [loadedPostList, postList]);
+  const loadNextPost = async () => {
+    const lastLoadedPost = postList[postList.length - 1];
 
-  const pushData = () => {
-    const max = currentPostList.length + 3;
-    const min = max - 3;
-    for (let i = min; i < max; i++) {
-      setCurrentPostList((currentPostList) => [
-        ...currentPostList,
-        postList[i],
+    const next = await database
+      .collection("posts")
+      .orderBy("created_at", "desc")
+      .startAfter(lastLoadedPost.data.created_at)
+      .limit(3)
+      .get();
+    next.forEach((doc) => {
+      setPostList((postList) => [
+        ...postList,
+        { data: doc.data(), id: doc.id },
       ]);
-    }
+    });
   };
 
   const loadData = ($event: CustomEvent<void>) => {
     setTimeout(() => {
-      pushData();
+      loadNextPost();
       ($event.target as HTMLIonInfiniteScrollElement).complete();
-
-      // App logic to determine if all data is loaded
-      // and disable the infinite scroll
-      if (currentPostList.length >= postList.length) {
-        setDisableInfiniteScroll(true);
-      }
     }, 750);
   };
 
@@ -118,12 +102,10 @@ const Community: React.FC<ContainerProps> = () => {
 
       if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
-      setCurrentPostList((currentPostList) => [
-        { data: post, id: res.id },
-        ...currentPostList,
-      ]);
+      setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
       toast("Đăng thành công");
       setShowPopover(false);
+      window.location.reload();
     }
   }
 
@@ -196,7 +178,7 @@ const Community: React.FC<ContainerProps> = () => {
           </IonGrid>
 
           <div style={{ backgroundColor: "#ddd" }}>
-            {currentPostList
+            {postList
               .filter((post) => post !== undefined)
               .map((post: any, index: number) => {
                 return (
@@ -210,7 +192,6 @@ const Community: React.FC<ContainerProps> = () => {
 
             <IonInfiniteScroll
               threshold="100px"
-              disabled={disableInfiniteScroll}
               onIonInfinite={(e: CustomEvent<void>) => loadData(e)}
             >
               <IonInfiniteScrollContent loadingText="Đang tải thêm"></IonInfiniteScrollContent>
