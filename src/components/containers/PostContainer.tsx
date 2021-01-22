@@ -1,5 +1,4 @@
 import {
-  IonItem,
   IonCard,
   IonCardHeader,
   IonCardContent,
@@ -10,10 +9,12 @@ import {
   IonRow,
   IonCol,
 } from "@ionic/react";
-import { chatboxOutline, heartOutline } from "ionicons/icons";
+import * as firebase from "firebase/app";
+import { chatboxOutline, heartOutline, heartSharp } from "ionicons/icons";
 import moment from "moment";
 import "moment/locale/vi";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { database, storage } from "../../config/firebaseConfig";
 import CommentsModal from "../modals/CommentsModal";
 import "./PostContainer.scss";
@@ -24,12 +25,24 @@ interface ContainerProps {
   username: string;
 }
 
+interface RootState {
+  user: any;
+  posts: any;
+}
+
 const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
   const [profileURL, setProfileURL] = useState<string>("");
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
 
   const [commentList, setCommentList] = useState<any[]>([]);
   const [commentCount, setCommentCount] = useState<number>(0);
+
+  const [isFavorited, setIsFavorited] = useState<boolean>(false);
+
+  const currentUser = useSelector((state: RootState) => state.user);
+  const favoritePosts = useSelector(
+    (state: RootState) => state.posts.favoritePosts
+  );
 
   useEffect(() => {
     async function getProfileURL() {
@@ -41,8 +54,10 @@ const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
       setProfileURL(await fileRef.getDownloadURL());
     }
 
+    if (favoritePosts.includes(post.id)) setIsFavorited(true);
+
     getProfileURL();
-  }, [post.data.author_id]);
+  }, [favoritePosts, post.id, post.data.author_id]);
 
   const handleSendComment = async (commentInput: string) => {
     if (commentInput.trim() !== "") {
@@ -75,6 +90,26 @@ const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
     setCommentList([]);
   };
 
+  const handleLikePost = () => {
+    setIsFavorited(true);
+    //dispatch(setFavoritePost(post.id));
+
+    let ref = database.collection("users").doc(currentUser.user.uid);
+    ref.update({
+      favorite_posts: firebase.firestore.FieldValue.arrayUnion(post.id),
+    });
+  };
+
+  const handleUnlikePost = () => {
+    setIsFavorited(false);
+    //dispatch(setFavoritePost(post.id));
+
+    let ref = database.collection("users").doc(currentUser.user.uid);
+    ref.update({
+      favorite_posts: firebase.firestore.FieldValue.arrayRemove(post.id),
+    });
+  };
+
   async function getAllComment() {
     const ref = database
       .collection("posts")
@@ -95,7 +130,7 @@ const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
   }
 
   return (
-    <IonItem lines="none">
+    <div>
       <IonCard
         className="post-wrapper"
         /*routerLink={`/community/${post.id}`}*/
@@ -138,8 +173,13 @@ const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
               style={{ width: "100%", fontSize: 12 }}
               color="dark"
               fill="clear"
+              onClick={isFavorited ? handleUnlikePost : handleLikePost}
             >
-              <IonIcon slot="icon-only" icon={heartOutline} />
+              {isFavorited ? (
+                <IonIcon color="primary" slot="icon-only" icon={heartSharp} />
+              ) : (
+                <IonIcon slot="icon-only" icon={heartOutline} />
+              )}
               <IonLabel style={{ paddingLeft: 7, overflow: "unset" }}>
                 Yêu thích
               </IonLabel>
@@ -147,7 +187,6 @@ const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
           </IonCol>
 
           <IonCol size="6">
-        
             <CommentsModal
               isOpen={showCommentModal}
               commentCount={commentCount}
@@ -171,7 +210,7 @@ const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
           </IonCol>
         </IonRow>
       </IonCard>
-    </IonItem>
+    </div>
   );
 };
 

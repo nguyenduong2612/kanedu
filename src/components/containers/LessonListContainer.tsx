@@ -2,6 +2,7 @@ import { IonCard, IonCardHeader, IonCardTitle, IonItem } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { database } from "../../config/firebaseConfig";
 import ErrorPage from "../error_pages/ErrorPage";
+import "./LessonContainer.scss";
 
 interface ContainerProps {
   courseId: string;
@@ -40,7 +41,7 @@ const LessonListContainer: React.FC<ContainerProps> = ({
       {isEmpty ? (
         <ErrorPage>Không có bài học</ErrorPage>
       ) : (
-        <div style={{ paddingTop: 10 }}>
+        <div className="lesson-list-wrapper">
           {lessonList.map((lesson: any, index: number) => {
             return (
               <IonItem
@@ -48,9 +49,11 @@ const LessonListContainer: React.FC<ContainerProps> = ({
                 key={index}
                 routerLink={`/courses/${courseId}/${lesson.id}`}
               >
-                <IonCard mode="md" style={{ width: "100%" }}>
+                <IonCard mode="md" className="lesson-wrapper">
                   <IonCardHeader>
-                    <IonCardTitle><b>{lesson.data().title}</b></IonCardTitle>
+                    <IonCardTitle>
+                      <b>{lesson.data().title}</b>
+                    </IonCardTitle>
                   </IonCardHeader>
                 </IonCard>
               </IonItem>

@@ -195,7 +195,7 @@ const Community: React.FC<ContainerProps> = () => {
             </IonRow>
           </IonGrid>
 
-          <div style={{ paddingTop: 10 }}>
+          <div style={{ backgroundColor: "#ddd" }}>
             {currentPostList
               .filter((post) => post !== undefined)
               .map((post: any, index: number) => {

@@ -45,6 +45,7 @@ import {
   setFollowingCourses,
   setMyCourses,
 } from "./redux/reducers/coursesReducer";
+import { setFavoritePost } from "./redux/reducers/postsReducer";
 
 import SideMenu from "./components/sidemenu/SideMenu";
 import CreateModal from "./components/modals/CreateModal";
@@ -124,6 +125,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     async function getFollowingCourses() {
+      if (!currentUser.user.uid) return; 
       const ref = database
         .collection("courses")
         .where("followed_by", "array-contains", currentUser.user.uid);
@@ -146,6 +148,7 @@ const App: React.FC = () => {
     }
 
     async function getMyCourses() {
+      if (!currentUser.user.uid) return; 
       const ref = database
         .collection("courses")
         .where("author_id", "==", currentUser.user.uid);
@@ -167,8 +170,25 @@ const App: React.FC = () => {
       }
     }
 
+    async function getFavoritePosts() {
+      if (!currentUser.user.uid) return; 
+      const ref = database
+        .collection("users")
+        .doc(currentUser.user.uid);
+      const doc: any = await ref.get();
+      if (!doc.exists) {
+        console.log("No such document!");
+      } else {
+        if (!doc.data().favorite_posts) return;
+        doc.data().favorite_posts.forEach((postId: string) => {
+          dispatch(setFavoritePost(postId));
+        });
+      }
+    }
+
     getFollowingCourses();
     getMyCourses();
+    getFavoritePosts();
   }, [currentUser.user.uid, dispatch]);
 
   const handleShowModal = () => {

@@ -3,7 +3,7 @@ import React from "react";
 import { Route, Redirect } from "react-router";
 
 /* Pages and components */
-import Settings from "../components/Refresher";
+import Settings from "../pages/settings/Settings";
 import Community from "../pages/community/Community";
 import PostDetail from "../pages/community/post/PostDetail";
 import Course from "../pages/course/Course";
