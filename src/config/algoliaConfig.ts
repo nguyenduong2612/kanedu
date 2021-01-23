@@ -9,9 +9,9 @@ const coursesIndex = client.initIndex(`courses`);
 const postsIndex = client.initIndex(`posts`);
 const usersIndex = client.initIndex(`users`);
 
-export function algoliaUpdateCourse(course: any, objectID: string) {
+export async function algoliaUpdateCourse(course: any, objectID: string) {
   try {
-    coursesIndex.saveObject(Object.assign({}, { objectID }, course))
+    await coursesIndex.saveObject(Object.assign({}, { objectID }, course))
     return true;
   } catch (error) {
     console.log(error);
@@ -19,9 +19,9 @@ export function algoliaUpdateCourse(course: any, objectID: string) {
   }
 }
 
-export function algoliaUpdatePost(post: any, objectID: string) {
+export async function algoliaUpdatePost(post: any, objectID: string) {
   try {
-    postsIndex.saveObject(Object.assign({}, { objectID }, post))
+    await postsIndex.saveObject(Object.assign({}, { objectID }, post))
     return true;
   } catch (error) {
     console.log(error);
@@ -29,9 +29,9 @@ export function algoliaUpdatePost(post: any, objectID: string) {
   }
 }
 
-export function algoliaUpdateUser(user: any, objectID: string) {
+export async function algoliaUpdateUser(user: any, objectID: string) {
   try {
-    usersIndex.saveObject(Object.assign({}, { objectID }, user))
+    await usersIndex.saveObject(Object.assign({}, { objectID }, user))
     return true;
   } catch (error) {
     console.log(error);

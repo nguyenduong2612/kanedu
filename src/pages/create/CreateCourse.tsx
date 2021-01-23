@@ -47,7 +47,7 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
 
       const res = await database.collection("courses").add(course);
 
-      if (algoliaUpdateCourse(course, res.id)) console.log("add algolia ok");
+      if (await algoliaUpdateCourse(course, res.id)) console.log("add algolia ok");
 
       dispatch(
         setMyCourses({

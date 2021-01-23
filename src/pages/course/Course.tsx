@@ -37,6 +37,7 @@ import ShareModal from "../../components/modals/ShareModal";
 import { algoliaUpdatePost } from "../../config/algoliaConfig";
 import Refresher from "../../components/Refresher";
 import useCourse from "../../hooks/course/useCourse";
+import { Post } from "../../modals/Post";
 
 const LessonListContainer = lazy(
   () => import("../../components/containers/LessonListContainer")
@@ -110,18 +111,20 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   };
 
   const handleShare = async () => {
-    let post = {
+    let post: Post = {
       author: currentUser.user.name,
       author_id: currentUser.user.uid,
       title: course.name,
       sharedLink: window.location.pathname,
+      likes: 0,
+      comments: 0,
       content: `Tham gia khóa học ${course.name} này cùng mình nhé !`,
       created_at: Date.now(),
     };
 
     const res = await database.collection("posts").add(post);
 
-    if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
+    if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
     toast("Chia sẻ khóa học thành công");
     setShowShareModal(false);

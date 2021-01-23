@@ -23,6 +23,7 @@ import { algoliaUpdatePost } from "../../config/algoliaConfig";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import Refresher from "../../components/Refresher";
 import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
+import { Post } from "../../modals/Post";
 
 const PostContainer = lazy(
   () => import("../../components/containers/PostContainer")
@@ -44,7 +45,7 @@ const Community: React.FC<CommunityPageProps> = () => {
   useEffect(() => {
     async function loadPost() {
       const ref = database.collection("posts");
-      const docs = await ref.orderBy("created_at", "desc").limit(5).get();
+      const docs = await ref.orderBy("created_at", "desc").limit(6).get();
 
       if (docs.empty) {
         console.log("No such document!");
@@ -69,7 +70,7 @@ const Community: React.FC<CommunityPageProps> = () => {
       .collection("posts")
       .orderBy("created_at", "desc")
       .startAfter(lastLoadedPost.data.created_at)
-      .limit(3)
+      .limit(6)
       .get();
     next.forEach((doc) => {
       setPostList((postList) => [
@@ -90,17 +91,19 @@ const Community: React.FC<CommunityPageProps> = () => {
     if (title.trim() === "" || content.trim() === "") {
       toast("Hãy nhập tiêu đề và nội dung câu hỏi");
     } else {
-      let post = {
+      let post: Post = {
         author: currentUser.user.name,
         author_id: currentUser.user.uid,
         title: title,
         content: content,
+        likes: 0,
+        comments: 0,
         created_at: Date.now(),
       };
 
       const res = await database.collection("posts").add(post);
 
-      if (algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
+      if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
       setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
       toast("Đăng thành công");
@@ -184,7 +187,7 @@ const Community: React.FC<CommunityPageProps> = () => {
                 return (
                   <PostContainer
                     key={index}
-                    post={post}
+                    postData={post}
                     username={currentUser.user.name}
                   />
                 );

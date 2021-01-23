@@ -13,15 +13,16 @@ import * as firebase from "firebase/app";
 import { chatboxOutline, heartOutline, heartSharp } from "ionicons/icons";
 import moment from "moment";
 import "moment/locale/vi";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { database, storage } from "../../config/firebaseConfig";
+import { database } from "../../config/firebaseConfig";
+import usePost from "../../hooks/community/usePost";
 import CommentsModal from "../modals/CommentsModal";
 import "./PostContainer.scss";
 
 interface PostContainerProps {
   key: number;
-  post: any;
+  postData: any;
   username: string;
 }
 
@@ -30,60 +31,46 @@ interface RootState {
   posts: any;
 }
 
-const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
-  const [profileURL, setProfileURL] = useState<string>("");
+const PostContainer: React.FC<PostContainerProps> = ({
+  postData,
+  username,
+}) => {
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
 
   const [commentList, setCommentList] = useState<any[]>([]);
-  const [commentCount, setCommentCount] = useState<number>(0);
-
-  const [isFavorited, setIsFavorited] = useState<boolean>(false);
 
   const currentUser = useSelector((state: RootState) => state.user);
-  const favoritePosts = useSelector(
-    (state: RootState) => state.posts.favoritePosts
-  );
-
-  useEffect(() => {
-    async function getProfileURL() {
-      const storageRef = storage.ref();
-
-      const fileName = `${post.data.author_id}`;
-      const fileRef = storageRef.child("users_avatar/" + fileName);
-
-      setProfileURL(await fileRef.getDownloadURL());
-    }
-
-    if (favoritePosts.includes(post.id)) setIsFavorited(true);
-
-    getProfileURL();
-  }, [favoritePosts, post.id, post.data.author_id]);
+  const post = usePost(postData);
 
   const handleSendComment = async (commentInput: string) => {
-    if (commentInput.trim() !== "") {
-      let comment = {
-        author: username,
-        content: commentInput,
-        created_at: Date.now(),
-      };
+    if (commentInput.trim() === "") return;
+    let comment = {
+      author: username,
+      content: commentInput,
+      created_at: Date.now(),
+    };
 
-      const res = await database
-        .collection("posts")
-        .doc(post.id)
-        .collection("comments")
-        .add(comment);
+    const res = await database
+      .collection("posts")
+      .doc(post.id)
+      .collection("comments")
+      .add(comment);
 
-      setCommentList((commentList) => [
-        ...commentList,
-        { data: comment, id: res.id },
-      ]);
-    }
+    let postRef = database.collection("posts").doc(post.id);
+    postRef.update({
+      comments: firebase.firestore.FieldValue.increment(1),
+    });
+
+    setCommentList((commentList) => [
+      ...commentList,
+      { data: comment, id: res.id },
+    ]);
+    post.setComments(post.comments + 1);
   };
 
   const handleShowModal = () => {
     setShowCommentModal(true);
     getAllComment();
-    console.log(isFavorited, post.id)
   };
 
   const handleCloseModal = () => {
@@ -92,22 +79,34 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
   };
 
   const handleLikePost = () => {
-    setIsFavorited(true);
+    post.setIsFavorited(true);
+    post.setLikes(post.likes + 1);
     //dispatch(setFavoritePost(post.id));
 
-    let ref = database.collection("users").doc(currentUser.user.uid);
-    ref.update({
+    let userRef = database.collection("users").doc(currentUser.user.uid);
+    userRef.update({
       favorite_posts: firebase.firestore.FieldValue.arrayUnion(post.id),
+    });
+
+    let postRef = database.collection("posts").doc(post.id);
+    postRef.update({
+      likes: firebase.firestore.FieldValue.increment(1),
     });
   };
 
   const handleUnlikePost = () => {
-    setIsFavorited(false);
+    post.setIsFavorited(false);
+    post.setLikes(post.likes - 1);
     //dispatch(setFavoritePost(post.id));
 
     let ref = database.collection("users").doc(currentUser.user.uid);
     ref.update({
       favorite_posts: firebase.firestore.FieldValue.arrayRemove(post.id),
+    });
+
+    let postRef = database.collection("posts").doc(post.id);
+    postRef.update({
+      likes: firebase.firestore.FieldValue.increment(-1),
     });
   };
 
@@ -125,7 +124,6 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
           ...commentList,
           { data: doc.data(), id: doc.id },
         ]);
-        setCommentCount(docs.size);
       });
     }
   }
@@ -147,7 +145,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
               <img
                 alt="avatar"
                 style={{ borderRadius: "50%", width: "95%", maxWidth: 50 }}
-                src={profileURL}
+                src={post.profileURL}
               />
             </div>
             <div style={{ paddingLeft: 10 }}>
@@ -174,15 +172,15 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
               style={{ width: "100%", fontSize: 12 }}
               color="dark"
               fill="clear"
-              onClick={isFavorited ? handleUnlikePost : handleLikePost}
+              onClick={post.isFavorited ? handleUnlikePost : handleLikePost}
             >
-              {isFavorited ? (
+              {post.isFavorited ? (
                 <IonIcon color="primary" slot="icon-only" icon={heartSharp} />
               ) : (
                 <IonIcon slot="icon-only" icon={heartOutline} />
               )}
               <IonLabel style={{ paddingLeft: 7, overflow: "unset" }}>
-                Yêu thích
+                ({post.likes}) Yêu thích
               </IonLabel>
             </IonButton>
           </IonCol>
@@ -190,7 +188,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
           <IonCol size="6">
             <CommentsModal
               isOpen={showCommentModal}
-              commentCount={commentCount}
+              commentCount={post.comments}
               commentList={commentList}
               handleCloseModal={handleCloseModal}
               handleSendComment={handleSendComment}
@@ -205,7 +203,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
             >
               <IonIcon slot="icon-only" icon={chatboxOutline} />
               <IonLabel style={{ paddingLeft: 7, overflow: "unset" }}>
-                Bình luận
+                ({post.comments}) Bình luận
               </IonLabel>
             </IonButton>
           </IonCol>
