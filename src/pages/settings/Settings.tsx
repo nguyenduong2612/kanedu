@@ -14,9 +14,9 @@ import {
 import React from "react";
 //import notifications from '../../utils/Notifications';
 
-interface ContainerProps {}
+interface SettingPageProps {}
 
-const Settings: React.FC<ContainerProps> = () => {
+const Settings: React.FC<SettingPageProps> = () => {
   async function setLocalNoti() {
     // document.body.classList.toggle("dark", event.detail.checked);
     //await notifications.schedule("123123123")

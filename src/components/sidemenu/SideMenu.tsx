@@ -32,7 +32,7 @@ import {
 import "./SideMenu.scss";
 import { signoutUser } from "../../config/firebaseConfig";
 
-interface ContainerProps {}
+interface SidemenuContainerProps {}
 
 interface RootState {
   user: any;
@@ -83,7 +83,7 @@ const appPages: AppPage[] = [
   },
 ];
 
-const SideMenu: React.FC<ContainerProps> = () => {
+const SideMenu: React.FC<SidemenuContainerProps> = () => {
   const location = useLocation();
   const currentUser = useSelector((state: RootState) => state.user);
 

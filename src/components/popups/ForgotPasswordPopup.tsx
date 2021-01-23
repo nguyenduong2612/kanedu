@@ -7,13 +7,13 @@ import {
 import React, { useState } from "react";
 import "./ForgotPasswordPopup.scss";
 
-interface ContainerProps {
+interface ForgotPasswordPopupProps {
   isOpen: boolean;
   handleCloseModal: () => void;
   handleSendEmail: (email: string) => void;
 }
 
-const ForgotPasswordPopup: React.FC<ContainerProps> = ({
+const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({
   isOpen,
   handleCloseModal,
   handleSendEmail,

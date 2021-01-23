@@ -9,11 +9,11 @@ import {
   IonSlide,
   IonSlides,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import { database } from "../../config/firebaseConfig";
+import React from "react";
+import useCards from "../../hooks/card/useCards";
 import "./CardListContainer.scss";
 
-interface ContainerProps {
+interface CardListContainerProps {
   courseId: string;
   lessonId: string;
 }
@@ -24,33 +24,13 @@ const slideOpts = {
   loop: true,
 };
 
-const CardListContainer: React.FC<ContainerProps> = ({
+const CardListContainer: React.FC<CardListContainerProps> = ({
   courseId,
   lessonId,
-}: ContainerProps) => {
-  const [cardList, setCardList] = useState<any[]>([]);
+}: CardListContainerProps) => {
   const flipped: boolean = false;
 
-  useEffect(() => {
-    async function getAllLesson() {
-      const ref = database
-        .collection("courses")
-        .doc(courseId)
-        .collection("lessons")
-        .doc(lessonId)
-        .collection("cards");
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          setCardList((cardList) => [...cardList, doc]);
-        });
-      }
-    }
-
-    getAllLesson();
-  }, [courseId, lessonId]);
+  const cardList = useCards(courseId, lessonId).cardList;
 
   return (
     <>

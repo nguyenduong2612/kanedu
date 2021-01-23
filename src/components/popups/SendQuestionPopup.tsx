@@ -8,13 +8,13 @@ import {
 import React, { useState } from "react";
 import "./SendQuestionPopup.scss";
 
-interface ContainerProps {
+interface SendQuestionPopupProps {
   isOpen: boolean;
   handleCloseModal: () => void;
   handleSendQuestion: (title: string, content: string) => void;
 }
 
-const SendQuestionPopup: React.FC<ContainerProps> = ({
+const SendQuestionPopup: React.FC<SendQuestionPopupProps> = ({
   isOpen,
   handleCloseModal,
   handleSendQuestion,

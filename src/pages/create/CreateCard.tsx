@@ -36,9 +36,9 @@ interface MatchParams {
   course_id: string;
 }
 
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
+interface CreateCardPageProps extends RouteComponentProps<MatchParams> {}
 
-const CreateCard: React.FC<ContainerProps> = ({ match }) => {
+const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
   const blankCard = {
     detail: "",
     keyword: "",

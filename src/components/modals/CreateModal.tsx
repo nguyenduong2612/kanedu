@@ -10,12 +10,12 @@ import {
 import React from "react";
 import "./CreateModal.scss";
 
-interface ContainerProps {
+interface CreateModalProps {
   isOpen: boolean;
   handleCloseModal: () => void;
 }
 
-const CreateModal: React.FC<ContainerProps> = ({
+const CreateModal: React.FC<CreateModalProps> = ({
   isOpen,
   handleCloseModal,
 }) => {

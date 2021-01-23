@@ -8,11 +8,11 @@ import {
   IonSlide,
   IonSlides,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import { database } from "../../config/firebaseConfig";
+import React from "react";
+import useCards from "../../hooks/card/useCards";
 import "./CardListContainer.scss";
 
-interface ContainerProps {
+interface CardPreviewContainerProps {
   courseId: string;
   lessonId: string;
 }
@@ -22,34 +22,13 @@ const slideOpts = {
   speed: 400,
 };
 
-const CardPreviewContainer: React.FC<ContainerProps> = ({
+const CardPreviewContainer: React.FC<CardPreviewContainerProps> = ({
   courseId,
   lessonId,
-}: ContainerProps) => {
-  const [cardPreview, setCardPreview] = useState<any[]>([]);
+}: CardPreviewContainerProps) => {
   const flipped: boolean = false;
-
-  useEffect(() => {
-    async function getAllLesson() {
-      const ref = database
-        .collection("courses")
-        .doc(courseId)
-        .collection("lessons")
-        .doc(lessonId)
-        .collection("cards")
-        .limit(3);
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          setCardPreview((cardPreview) => [...cardPreview, doc]);
-        });
-      }
-    }
-
-    getAllLesson();
-  }, [courseId, lessonId]);
+  
+  const cardPreview = useCards(courseId, lessonId).cardPreview;
 
   return (
     <>

@@ -19,7 +19,7 @@ import { database, storage } from "../../config/firebaseConfig";
 import CommentsModal from "../modals/CommentsModal";
 import "./PostContainer.scss";
 
-interface ContainerProps {
+interface PostContainerProps {
   key: number;
   post: any;
   username: string;
@@ -30,7 +30,7 @@ interface RootState {
   posts: any;
 }
 
-const PostContainer: React.FC<ContainerProps> = ({ post, username }) => {
+const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
   const [profileURL, setProfileURL] = useState<string>("");
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
 

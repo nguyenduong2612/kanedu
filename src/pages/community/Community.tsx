@@ -28,13 +28,13 @@ const PostContainer = lazy(
   () => import("../../components/containers/PostContainer")
 );
 
-interface ContainerProps {}
+interface CommunityPageProps {}
 interface RootState {
   user: any;
   posts: any;
 }
 
-const Community: React.FC<ContainerProps> = () => {
+const Community: React.FC<CommunityPageProps> = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
   const [postList, setPostList] = useState<any[]>([]);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   IonApp,
   IonIcon,
@@ -39,18 +39,16 @@ import "./theme/app.css";
 /* Ionic icons */
 import { add } from "ionicons/icons";
 
-import { database, getCurrentUser } from "./config/firebaseConfig";
-import { setCurrentUser } from "./redux/reducers/userReducer";
-import {
-  setFollowingCourses,
-  setMyCourses,
-} from "./redux/reducers/coursesReducer";
-import { setFavoritePost } from "./redux/reducers/postsReducer";
-
 import SideMenu from "./components/sidemenu/SideMenu";
 import CreateModal from "./components/modals/CreateModal";
 import Routing from "./route/Routing";
 import BottomTabbar from "./components/tabbars/BottomTabbar";
+
+// hooks
+import useFollowingCourses from "./hooks/useFollowingCourses";
+import useMyCourses from "./hooks/useMyCourses";
+import useFavoritePosts from "./hooks/useFavoritePosts";
+import useCurrentUser from "./hooks/useCurrentUser";
 
 // Capacitor plugins
 const { StatusBar, Keyboard } = Plugins;
@@ -59,18 +57,15 @@ const Loading: React.FC = () => {
   return <IonLoading message="Vui lòng đợi" duration={0} isOpen={true} />;
 };
 
-interface RootState {
-  user: any;
-  logged_in: boolean;
-}
-
 const App: React.FC = () => {
-  const [busy, setBusy] = useState<boolean>(true);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [showFabButton, setShowFabButton] = useState<boolean>(true);
-
-  const currentUser = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+
+  const currentUser = useCurrentUser();
+  useFollowingCourses();
+  useMyCourses();
+  useFavoritePosts();
 
   useEffect(() => {
     console.log(getPlatforms());
@@ -95,101 +90,9 @@ const App: React.FC = () => {
       }
     };
 
-    getCurrentUser().then(async (user: any) => {
-      //console.log(user)
-      if (user) {
-        //window.history.replaceState({}, '', '/')
-        const doc: any = await database.collection("users").doc(user.uid).get();
-        if (!doc.exists) {
-          console.log("No such document!");
-        } else {
-          let currentUser = {
-            uid: doc.id,
-            email: doc.data().email,
-            name: doc.data().name,
-            birthday: doc.data().birthday,
-            profileURL: doc.data().profileURL,
-            verified: user.emailVerified,
-          };
-          dispatch(setCurrentUser(currentUser));
-        }
-      } else {
-        window.history.replaceState({}, "", "/welcome");
-      }
-      setBusy(false);
-    });
-
     changeStatusBar();
     toggleFabButton();
   }, [dispatch]);
-
-  useEffect(() => {
-    async function getFollowingCourses() {
-      if (!currentUser.user.uid) return; 
-      const ref = database
-        .collection("courses")
-        .where("followed_by", "array-contains", currentUser.user.uid);
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          let course = {
-            id: doc.id,
-            author: doc.data().author,
-            author_id: doc.data().author_id,
-            name: doc.data().name,
-            description: doc.data().description,
-            followers: doc.data().followed_by?.length,
-          };
-          dispatch(setFollowingCourses(course));
-        });
-      }
-    }
-
-    async function getMyCourses() {
-      if (!currentUser.user.uid) return; 
-      const ref = database
-        .collection("courses")
-        .where("author_id", "==", currentUser.user.uid);
-      const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          let course = {
-            id: doc.id,
-            author: doc.data().author,
-            author_id: doc.data().author_id,
-            name: doc.data().name,
-            description: doc.data().description,
-            followers: doc.data().followed_by?.length,
-          };
-          dispatch(setMyCourses(course));
-        });
-      }
-    }
-
-    async function getFavoritePosts() {
-      if (!currentUser.user.uid) return; 
-      const ref = database
-        .collection("users")
-        .doc(currentUser.user.uid);
-      const doc: any = await ref.get();
-      if (!doc.exists) {
-        console.log("No such document!");
-      } else {
-        if (!doc.data().favorite_posts) return;
-        doc.data().favorite_posts.forEach((postId: string) => {
-          dispatch(setFavoritePost(postId));
-        });
-      }
-    }
-
-    getFollowingCourses();
-    getMyCourses();
-    getFavoritePosts();
-  }, [currentUser.user.uid, dispatch]);
 
   const handleShowModal = () => {
     setShowCreateModal(true);
@@ -202,11 +105,11 @@ const App: React.FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <IonApp>
-        {busy ? (
+        {currentUser.busy ? (
           <Loading />
         ) : (
           <IonReactRouter>
-            {currentUser.logged_in ? (
+            {currentUser.user.logged_in ? (
               <IonSplitPane contentId="main">
                 <SideMenu />
 

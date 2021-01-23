@@ -22,7 +22,7 @@ import {
   personCircle,
   shareSocial,
 } from "ionicons/icons";
-import React, { useState, useEffect, lazy } from "react";
+import React, { useState, lazy } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { database } from "../../config/firebaseConfig";
@@ -36,8 +36,11 @@ import "./Course.scss";
 import ShareModal from "../../components/modals/ShareModal";
 import { algoliaUpdatePost } from "../../config/algoliaConfig";
 import Refresher from "../../components/Refresher";
+import useCourse from "../../hooks/course/useCourse";
 
-const LessonListContainer = lazy(() => import("../../components/containers/LessonListContainer"));
+const LessonListContainer = lazy(
+  () => import("../../components/containers/LessonListContainer")
+);
 
 interface MatchParams {
   id: string;
@@ -48,82 +51,51 @@ interface RootState {
   courses: any;
 }
 
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
+interface CoursePageProps extends RouteComponentProps<MatchParams> {}
 
-const Course: React.FC<ContainerProps> = ({ match }) => {
-  const [name, setName] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-  const [authorId, setAuthorId] = useState<string>("");
-  const [countFollowers, setCountFollowers] = useState<number>();
-
-  const [followingCourseIndex, setFollowingCourseIndex] = useState<number>(-1);
-  const [isFollowed, setIsFollowed] = useState<boolean>();
+const Course: React.FC<CoursePageProps> = ({ match }) => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
 
   const currentUser = useSelector((state: RootState) => state.user);
-  const courseList = useSelector((state: RootState) => state.courses);
+  const courseId = match.params.id;
+
+  const course = useCourse(courseId);
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    async function getInfo() {
-      let ref = database.collection("courses").doc(match.params.id);
-      let doc: any = await ref.get();
-      if (!doc.exists) {
-        console.log("No such document!");
-      } else {
-        setName(doc.data().name);
-        setAuthor(doc.data().author);
-        setAuthorId(doc.data().author_id);
-        setCountFollowers(doc.data().followed_by?.length);
-
-        var course_index = courseList.courses
-          .map((course: any) => {
-            return course.id;
-          })
-          .indexOf(match.params.id);
-        if (course_index !== -1) {
-          setFollowingCourseIndex(course_index);
-          setIsFollowed(true);
-        }
-      }
-    }
-
-    getInfo();
-  }, [courseList.courses, match]);
-
   const handleFollow = () => {
-    let course = {
-      id: match.params.id,
-      author: author,
-      author_id: authorId,
-      name: name,
+    let newFollow = {
+      id: courseId,
+      author: course.author,
+      author_id: course.authorId,
+      name: course.name,
     };
-    dispatch(setFollowingCourses(course));
+    dispatch(setFollowingCourses(newFollow));
 
-    let ref = database.collection("courses").doc(match.params.id);
+    let ref = database.collection("courses").doc(courseId);
     ref.update({
       followed_by: firebase.firestore.FieldValue.arrayUnion(
         currentUser.user.uid
       ),
     });
 
-    setIsFollowed(true);
+    course.setIsFollowed(true);
     setShowPopover(false);
     toast("Thẽo dõi khóa học thành công");
   };
 
   const handleUnfollow = () => {
-    dispatch(removeFollowingCourses(followingCourseIndex));
-    let ref = database.collection("courses").doc(match.params.id);
+    dispatch(removeFollowingCourses(course.followingCourseIndex));
+    let ref = database.collection("courses").doc(courseId);
     ref.update({
       followed_by: firebase.firestore.FieldValue.arrayRemove(
         currentUser.user.uid
       ),
     });
 
-    setFollowingCourseIndex(-1);
-    setIsFollowed(false);
+    course.setFollowingCourseIndex(-1);
+    course.setIsFollowed(false);
     setShowPopover(false);
     toast("Đã bỏ theo dõi khóa học");
   };
@@ -141,9 +113,9 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
     let post = {
       author: currentUser.user.name,
       author_id: currentUser.user.uid,
-      title: name,
+      title: course.name,
       sharedLink: window.location.pathname,
-      content: `Tham gia khóa học ${name} này cùng mình nhé !`,
+      content: `Tham gia khóa học ${course.name} này cùng mình nhé !`,
       created_at: Date.now(),
     };
 
@@ -162,7 +134,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
           <IonButtons slot="start">
             <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
-          <IonTitle>{name}</IonTitle>
+          <IonTitle>{course.name}</IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={() => setShowPopover(true)}>
               <IonIcon
@@ -179,7 +151,7 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
               onDidDismiss={() => setShowPopover(false)}
             >
               <IonList>
-                {isFollowed ? (
+                {course.isFollowed ? (
                   <IonItem onClick={handleUnfollow} lines="none">
                     Bỏ theo dõi
                   </IonItem>
@@ -202,12 +174,15 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         <IonList style={{ marginTop: 10 }}>
           <IonItem lines="none">
             <IonIcon icon={personCircle}></IonIcon>
-            <IonText style={{ marginLeft: 10 }}>Được tạo bởi {author}</IonText>
+            <IonText style={{ marginLeft: 10 }}>
+              Được tạo bởi {course.author}
+            </IonText>
           </IonItem>
           <IonItem lines="none">
             <IonIcon icon={heart}></IonIcon>
             <IonText style={{ marginLeft: 10 }}>
-              {countFollowers ? countFollowers : 0} người theo dõi khóa học này
+              {course.countFollowers ? course.countFollowers : 0} người
+              theo dõi khóa học này
             </IonText>
           </IonItem>
           <IonItem lines="none">
@@ -219,7 +194,10 @@ const Course: React.FC<ContainerProps> = ({ match }) => {
         <IonItemDivider mode="md">
           <IonLabel color="dark">Danh sách bài học</IonLabel>
         </IonItemDivider>
-        <LessonListContainer author={author} courseId={match.params.id} />
+        <LessonListContainer
+          author={course.author}
+          courseId={courseId}
+        />
       </IonContent>
 
       <ShareModal

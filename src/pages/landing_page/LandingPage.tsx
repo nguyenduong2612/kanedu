@@ -9,8 +9,6 @@ import {
 import React from "react";
 import "./LandingPage.scss";
 
-interface ContainerProps {}
-
 const slideOpts = {
   initialSlide: 0,
   speed: 400,
@@ -20,7 +18,9 @@ const slideOpts = {
   },
 };
 
-const LandingPage: React.FC<ContainerProps> = () => {
+interface LandingPageProps {}
+
+const LandingPage: React.FC<LandingPageProps> = () => {
   return (
     <IonPage className="page-container">
       <IonContent fullscreen>

@@ -10,13 +10,13 @@ import { logoFacebook, shareSocial, shareSocialOutline } from "ionicons/icons";
 import React from "react";
 import "./ShareModal.scss";
 
-interface ContainerProps {
+interface ShareModalProps {
   isOpen: boolean;
   handleCloseShareModal: () => void;
   handleShare: () => void;
 }
 
-const ShareModal: React.FC<ContainerProps> = ({
+const ShareModal: React.FC<ShareModalProps> = ({
   isOpen,
   handleCloseShareModal,
   handleShare,

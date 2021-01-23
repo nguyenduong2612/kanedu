@@ -30,8 +30,6 @@ const placeholderSelect = (searchIndex: string) => {
   }
 };
 
-interface ContainerProps {}
-
 interface SearchResultProps {
   searchResult: object[];
   searchIndex: string;
@@ -88,7 +86,9 @@ const SearchResult: React.FC<SearchResultProps> = ({
   );
 };
 
-const Search: React.FC<ContainerProps> = () => {
+interface SearchPageProps {}
+
+const Search: React.FC<SearchPageProps> = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchIndex, setSearchIndex] = useState<string>("courses");
   const [searchResult, setSearchResult] = useState<object[]>([]);

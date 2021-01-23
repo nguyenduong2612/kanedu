@@ -20,9 +20,9 @@ import {
 import Routing from "../../route/Routing";
 import "./BottomTabbar.scss";
 
-interface ContainerProps {}
+interface BottomTabbarContainerProps {}
 
-const BottomTabbar: React.FC<ContainerProps> = () => {
+const BottomTabbar: React.FC<BottomTabbarContainerProps> = () => {
   return (
     <IonTabs>
       <IonRouterOutlet>

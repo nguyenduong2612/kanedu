@@ -4,7 +4,7 @@ import moment from "moment";
 import React, { useState } from "react";
 import "./CommentsModal.scss";
 
-interface ContainerProps {
+interface CommentsModalProps {
   isOpen: boolean;
   commentCount: number;
   commentList: any;
@@ -12,7 +12,7 @@ interface ContainerProps {
   handleSendComment: (commentInput: string) => void;
 }
 
-const CommentsModal: React.FC<ContainerProps> = ({
+const CommentsModal: React.FC<CommentsModalProps> = ({
   isOpen,
   commentCount,
   commentList,

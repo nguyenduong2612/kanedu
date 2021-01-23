@@ -13,7 +13,7 @@ import { heart } from "ionicons/icons";
 import React from "react";
 import "./CourseContainer.scss";
 
-interface ContainerProps {
+interface CourseContainerProps {
   id: string;
   name: string;
   author: string;
@@ -21,13 +21,13 @@ interface ContainerProps {
   followers: number;
 }
 
-const CourseContainer: React.FC<ContainerProps> = ({
+const CourseContainer: React.FC<CourseContainerProps> = ({
   id,
   name,
   author,
   description,
   followers,
-}: ContainerProps) => {
+}: CourseContainerProps) => {
   return (
     <IonItem lines="none" routerLink={`/courses/${id}`}>
       <IonCard mode="md" className="course-wrapper">

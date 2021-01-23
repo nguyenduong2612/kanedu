@@ -23,9 +23,9 @@ interface RootState {
   user: any;
 }
 
-interface ContainerProps {}
+interface ChangePasswordPageProps {}
 
-const ChangePassword: React.FC<ContainerProps> = () => {
+const ChangePassword: React.FC<ChangePasswordPageProps> = () => {
   const [oldPassword, setOldPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");

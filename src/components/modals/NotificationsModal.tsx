@@ -8,12 +8,12 @@ import { closeOutline, closeSharp, notificationsCircle } from "ionicons/icons";
 import React from "react";
 import "./NotificationsModal.scss";
 
-interface ContainerProps {
+interface NotificationsModalProps {
   isOpen: boolean;
   handleCloseModal: () => void;
 }
 
-const NotificationsModal: React.FC<ContainerProps> = ({
+const NotificationsModal: React.FC<NotificationsModalProps> = ({
   isOpen,
   handleCloseModal,
 }) => {

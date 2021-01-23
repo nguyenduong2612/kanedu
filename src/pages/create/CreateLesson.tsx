@@ -15,12 +15,12 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 
-interface ContainerProps {}
+interface CreateLessonPageProps {}
 interface RootState {
   courses: any;
 }
 
-const CreateLesson: React.FC<ContainerProps> = () => {
+const CreateLesson: React.FC<CreateLessonPageProps> = () => {
   const courseList = useSelector((state: RootState) => state.courses);
 
   return (

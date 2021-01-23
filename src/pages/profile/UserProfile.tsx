@@ -21,9 +21,9 @@ interface MatchParams {
   uid: string;
 }
 
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
+interface UserProfilePageProps extends RouteComponentProps<MatchParams> {}
 
-const UserProfile: React.FC<ContainerProps> = ({ match }) => {
+const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
   const [courses, setCourses] = useState<any[]>([]);
   const [userInfo, setUserInfo] = useState<any>({});
 

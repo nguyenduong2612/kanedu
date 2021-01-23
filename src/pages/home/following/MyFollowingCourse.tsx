@@ -18,9 +18,9 @@ interface RootState {
   courses: any;
 }
 
-interface ContainerProps {}
+interface MyFollowingCoursePageProps {}
 
-const MyFollowingCourse: React.FC<ContainerProps> = () => {
+const MyFollowingCourse: React.FC<MyFollowingCoursePageProps> = () => {
   const courseList = useSelector((state: RootState) => state.courses);
 
   return (

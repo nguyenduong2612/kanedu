@@ -2,9 +2,9 @@ import { IonRefresher, IonRefresherContent } from "@ionic/react";
 import React from "react";
 import { RefresherEventDetail } from "@ionic/core";
 
-interface ContainerProps {}
+interface RefresherContainerProps {}
 
-const Refresher: React.FC<ContainerProps> = () => {
+const Refresher: React.FC<RefresherContainerProps> = () => {
   async function doRefresh(event: CustomEvent<RefresherEventDetail>) {
     window.location.reload();
     event.detail.complete();

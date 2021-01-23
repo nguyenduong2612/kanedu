@@ -20,55 +20,27 @@ import {
   pencilOutline,
   pencilSharp,
 } from "ionicons/icons";
-import React, { useState, useEffect, lazy } from "react";
+import React, { lazy } from "react";
 import { RouteComponentProps } from "react-router";
 import Refresher from "../../components/Refresher";
-import { database } from "../../config/firebaseConfig";
+import useLesson from "../../hooks/lesson/useLesson";
 import "./Lesson.scss";
 
-const CardPreviewContainer = lazy(() => import("../../components/containers/CardPreviewContainer"));
+const CardPreviewContainer = lazy(
+  () => import("../../components/containers/CardPreviewContainer")
+);
 interface MatchParams {
   course_id: string;
   lesson_id: string;
 }
 
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
+interface LessonPageProps extends RouteComponentProps<MatchParams> {}
 
-const Lesson: React.FC<ContainerProps> = ({ match }) => {
-  const [name, setName] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-  const [numberOfCards, setNumberOfCards] = useState<number>();
+const Lesson: React.FC<LessonPageProps> = ({ match }) => {
+  const courseId = match.params.course_id;
+  const lessonId = match.params.lesson_id;
 
-  useEffect(() => {
-    async function getInfo() {
-      const course_ref = database
-        .collection("courses")
-        .doc(match.params.course_id);
-      const course_doc: any = await course_ref.get();
-      if (!course_doc.exists) {
-        console.log("No such document!");
-      } else {
-        setAuthor(course_doc.data().author);
-        const lesson_ref = course_ref
-          .collection("lessons")
-          .doc(match.params.lesson_id);
-        const lesson_doc: any = await lesson_ref.get();
-        if (!lesson_doc.exists) {
-          console.log("No such document!");
-        } else {
-          setName(lesson_doc.data().title);
-          lesson_ref
-            .collection("cards")
-            .get()
-            .then((snap) => {
-              setNumberOfCards(snap.size);
-            });
-        }
-      }
-    }
-
-    getInfo();
-  }, [match.params.course_id, match.params.lesson_id]);
+  const lesson = useLesson(courseId, lessonId);
 
   return (
     <IonPage>
@@ -78,10 +50,10 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
             <IonBackButton
               color="light"
               text=""
-              defaultHref={`/courses/${match.params.course_id}`}
+              defaultHref={`/courses/${courseId}`}
             />
           </IonButtons>
-          <IonTitle>{name}</IonTitle>
+          <IonTitle>{lesson.name}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -96,11 +68,11 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
         <div className="main-menu">
           <IonGrid>
             <IonRow className="padding-x">
-              <h1>{name}</h1>
+              <h1>{lesson.name}</h1>
             </IonRow>
             <IonRow className="padding-x">
               <p>
-                {author} | {numberOfCards} thẻ
+                {lesson.author} | {lesson.numberOfCards} thẻ
               </p>
             </IonRow>
             <IonRow>
@@ -108,7 +80,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
                 <IonCard
                   className="menu-button"
                   button={true}
-                  routerLink={`/courses/${match.params.course_id}/${match.params.lesson_id}/study`}
+                  routerLink={`/courses/${courseId}/${lessonId}/study`}
                 >
                   <IonCardHeader className="menu-icon">
                     <IonIcon ios={bookOutline} md={bookSharp} />
@@ -120,7 +92,7 @@ const Lesson: React.FC<ContainerProps> = ({ match }) => {
                 <IonCard
                   className="menu-button"
                   button={true}
-                  routerLink={`/courses/${match.params.course_id}/${match.params.lesson_id}/test`}
+                  routerLink={`/courses/${courseId}/${lessonId}/test`}
                 >
                   <IonCardHeader className="menu-icon">
                     <IonIcon ios={pencilOutline} md={pencilSharp} />

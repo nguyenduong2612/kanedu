@@ -16,9 +16,9 @@ import React, { useEffect, useState } from "react";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import { database } from "../../config/firebaseConfig";
 
-interface ContainerProps {}
+interface LevelPageProps {}
 
-const Level: React.FC<ContainerProps> = () => {
+const Level: React.FC<LevelPageProps> = () => {
   const [level, setLevel] = useState<string>("5");
   const [exams, setExams] = useState<any[]>([]);
 

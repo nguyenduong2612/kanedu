@@ -22,12 +22,12 @@ import { database } from "../../config/firebaseConfig";
 import { setMyCourses } from "../../redux/reducers/coursesReducer";
 import { toast } from "../../utils/toast";
 
-interface ContainerProps {}
+interface CreateCoursePageProps {}
 interface RootState {
   user: any;
 }
 
-const CreateCourse: React.FC<ContainerProps> = () => {
+const CreateCourse: React.FC<CreateCoursePageProps> = () => {
   const [titleInput, setTitleInput] = useState<string>("");
   const [desInput, setDesInput] = useState<string>("");
 

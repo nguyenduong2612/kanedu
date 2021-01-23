@@ -2,17 +2,17 @@ import { IonCard, IonCardHeader, IonCardTitle, IonItem } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { database } from "../../config/firebaseConfig";
 import ErrorPage from "../error_pages/ErrorPage";
-import "./LessonContainer.scss";
+import "./LessonListContainer.scss";
 
-interface ContainerProps {
+interface LessonListContainerProps {
   courseId: string;
   author: string;
 }
 
-const LessonListContainer: React.FC<ContainerProps> = ({
+const LessonListContainer: React.FC<LessonListContainerProps> = ({
   author,
   courseId,
-}: ContainerProps) => {
+}: LessonListContainerProps) => {
   const [lessonList, setLessonList] = useState<any[]>([]);
   const [isEmpty, setIsEmpty] = useState<boolean>();
 

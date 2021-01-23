@@ -12,7 +12,7 @@ import { bulb } from "ionicons/icons";
 import React from "react";
 import "./HintContainer.scss";
 
-interface ContainerProps {}
+interface HintContainerProps {}
 
 const slideOpts = {
   initialSlide: 0,
@@ -20,7 +20,7 @@ const slideOpts = {
   loop: true,
 };
 
-const HintContainer: React.FC<ContainerProps> = () => {
+const HintContainer: React.FC<HintContainerProps> = () => {
   return (
     <div className="hint-container">
       <IonSlides pager={true} options={slideOpts} style={{ height: "100%" }}>

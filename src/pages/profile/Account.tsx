@@ -21,12 +21,12 @@ import { database, storage, verifyEmail } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 import { camera } from "ionicons/icons";
 
-interface ContainerProps {}
+interface AccountPageProps {}
 interface RootState {
   user: any;
 }
 
-const Account: React.FC<ContainerProps> = () => {
+const Account: React.FC<AccountPageProps> = () => {
   const currentUser = useSelector((state: RootState) => state.user);
 
   async function verifyUser() {

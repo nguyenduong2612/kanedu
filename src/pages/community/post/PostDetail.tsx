@@ -14,9 +14,9 @@ interface MatchParams {
   post_id: string;
 }
 
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
+interface PostDetailPageProps extends RouteComponentProps<MatchParams> {}
 
-const PostDetail: React.FC<ContainerProps> = ({ match }) => {
+const PostDetail: React.FC<PostDetailPageProps> = ({ match }) => {
   return (
     <IonPage>
       <IonHeader>

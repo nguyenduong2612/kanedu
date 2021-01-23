@@ -22,79 +22,45 @@ import {
 } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import { database } from "../../config/firebaseConfig";
+import useAllQuestion from "../../hooks/lesson/useAllQuestion";
+import useTabbar from "../../hooks/useTabbar";
 import "./Testing.scss";
-
-interface ContainerProps {}
-interface MatchParams {
-  course_id: string;
-  lesson_id: string;
-}
-
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
 
 const slideOpts = {
   initialSlide: 0,
   speed: 400,
   loop: false,
 };
+interface MatchParams {
+  course_id: string;
+  lesson_id: string;
+}
 
-const Testing: React.FC<ContainerProps> = ({ match }) => {
+interface TestingPageProps extends RouteComponentProps<MatchParams> {}
+
+const Testing: React.FC<TestingPageProps> = ({ match }) => {
   const slidesRef = useRef<HTMLIonSlidesElement>(null);
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [numberOfQuestions, setNumberOfQuestions] = useState<number>(0);
+
   const [correctAnsCounter, setCorrectAnsCounter] = useState<number>(0);
   const [wrongAnsCounter, setWrongAnsCounter] = useState<number>(0);
   const [answeredCounter, setAnsweredCounter] = useState<number>(0);
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
-  useEffect(() => {
-    function hideTabbar() {
-      var tabbar = document.getElementById(`appTabBar`);
-      if (tabbar) tabbar.style.bottom = "-60px";
-      var fabbtn = document.getElementById(`appFabBtn`);
-      if (fabbtn) fabbtn.style.opacity = "0";
-    }
+  useTabbar();
 
-    hideTabbar();
-
-    return function showTabbar() {
-      var tabbar = document.getElementById(`appTabBar`);
-      if (tabbar) tabbar.style.bottom = "0";
-      var fabbtn = document.getElementById(`appFabBtn`);
-      if (fabbtn) fabbtn.style.opacity = "1";
-    };
-  }, []);
+  const courseId = match.params.course_id;
+  const lessonId = match.params.lesson_id;
+  const allQues = useAllQuestion(courseId, lessonId);
 
   useEffect(() => {
-    async function getAllQuestion() {
-      const ref = database
-        .collection("courses")
-        .doc(match.params.course_id)
-        .collection("lessons")
-        .doc(match.params.lesson_id)
-        .collection("test");
-      const docs = await ref.get();
-      setNumberOfQuestions(docs.size);
-
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
-        docs.forEach((doc) => {
-          setQuestions((questions) => [...questions, doc.data()]);
-        });
-      }
-    }
-
-    getAllQuestion();
-  }, [match.params.course_id, match.params.lesson_id]);
-
-  useEffect(() => {
-    if (answeredCounter === numberOfQuestions && answeredCounter !== 0) {
+    if (
+      answeredCounter === allQues.numberOfQuestions &&
+      answeredCounter !== 0
+    ) {
       setShowAlert(true);
     }
-  }, [answeredCounter, numberOfQuestions]);
+  }, [answeredCounter, allQues.numberOfQuestions]);
 
   const handleClickAnswer = (
     questionId: string,
@@ -140,7 +106,7 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
             <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonTitle>
-            {answeredCounter} / {numberOfQuestions}
+            {answeredCounter} / {allQues.numberOfQuestions}
           </IonTitle>
           <div className="test-result" slot="end">
             <IonRow>
@@ -173,17 +139,17 @@ const Testing: React.FC<ContainerProps> = ({ match }) => {
           cssClass="test-alert"
           onDidDismiss={() => setShowAlert(false)}
           header={"Thông báo"}
-          message={`Điểm số: ${correctAnsCounter}/${numberOfQuestions}`}
+          message={`Điểm số: ${correctAnsCounter}/${allQues.numberOfQuestions}`}
           buttons={["Xác nhận"]}
         />
         <>
-          {questions.length > 0 && (
+          {allQues.questions.length > 0 && (
             <IonSlides
               ref={slidesRef}
               options={slideOpts}
               style={{ height: "100%" }}
             >
-              {questions.map((item: any, slideIndex: number) => {
+              {allQues.questions.map((item: any, slideIndex: number) => {
                 return (
                   <IonSlide key={slideIndex}>
                     <IonContent>

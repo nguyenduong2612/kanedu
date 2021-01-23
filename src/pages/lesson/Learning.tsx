@@ -6,8 +6,9 @@ import {
   IonBackButton,
   IonButtons,
 } from "@ionic/react";
-import React, { lazy, useEffect } from "react";
+import React, { lazy } from "react";
 import { RouteComponentProps } from "react-router";
+import useTabbar from "../../hooks/useTabbar";
 
 const CardListContainer = lazy(
   () => import("../../components/containers/CardListContainer")
@@ -18,26 +19,12 @@ interface MatchParams {
   lesson_id: string;
 }
 
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
+interface LearningPageProps extends RouteComponentProps<MatchParams> {}
 
-const Learning: React.FC<ContainerProps> = ({ match }) => {
-  useEffect(() => {
-    function hideTabbar() {
-      var tabbar = document.getElementById(`appTabBar`);
-      if (tabbar) tabbar.style.bottom = "-60px";
-      var fabbtn = document.getElementById(`appFabBtn`);
-      if (fabbtn) fabbtn.style.opacity = "0";
-    }
-
-    hideTabbar();
-
-    return function showTabbar() {
-      var tabbar = document.getElementById(`appTabBar`);
-      if (tabbar) tabbar.style.bottom = "0";
-      var fabbtn = document.getElementById(`appFabBtn`);
-      if (fabbtn) fabbtn.style.opacity = "1";
-    };
-  }, []);
+const Learning: React.FC<LearningPageProps> = ({ match }) => {
+  const courseId = match.params.course_id;
+  const lessonId = match.params.lesson_id;
+  useTabbar();
 
   return (
     <IonPage>
@@ -50,8 +37,8 @@ const Learning: React.FC<ContainerProps> = ({ match }) => {
       </IonHeader>
       <IonContent fullscreen>
         <CardListContainer
-          courseId={match.params.course_id}
-          lessonId={match.params.lesson_id}
+          courseId={courseId}
+          lessonId={lessonId}
         />
       </IonContent>
     </IonPage>

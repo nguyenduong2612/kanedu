@@ -20,7 +20,8 @@ import {
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
-import { database } from "../../config/firebaseConfig";
+import useExam from "../../hooks/jlpt/useExam";
+import useTabbar from "../../hooks/useTabbar";
 import "./JlptExam.scss";
 
 const Loading: React.FC = () => {
@@ -31,83 +32,25 @@ interface MatchParams {
   id: string;
 }
 
-interface ContainerProps extends RouteComponentProps<MatchParams> {}
+interface JlptExamPageProps extends RouteComponentProps<MatchParams> {}
 
-const JlptExam: React.FC<ContainerProps> = ({ match }) => {
-  const [busy, setBusy] = useState<boolean>(true);
-
+const JlptExam: React.FC<JlptExamPageProps> = ({ match }) => {
   const [hours, setHours] = useState<number>();
   const [minutes, setMinutes] = useState<number>();
   const [seconds, setSeconds] = useState<number>();
 
-  const [level, setLevel] = useState<string>("");
-  const [part, setPart] = useState<string>("0");
-  const [title, setTitle] = useState<string>("");
-  const [audioSrc, setAudioSrc] = useState<string>("");
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [answerSheet, setAnswerSheet] = useState<number[]>([]);
-  const [submitAnswer, setSubmitAnswer] = useState<number[]>([]);
-
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
 
-  useEffect(() => {
-    function hideTabbar() {
-      var tabbar = document.getElementById(`appTabBar`);
-      if (tabbar) tabbar.style.bottom = "-60px";
-      var fabbtn = document.getElementById(`appFabBtn`);
-      if (fabbtn) fabbtn.style.opacity = "0";
-    }
-
-    hideTabbar();
-
-    return function showTabbar() {
-      var tabbar = document.getElementById(`appTabBar`);
-      if (tabbar) tabbar.style.bottom = "0";
-      var fabbtn = document.getElementById(`appFabBtn`);
-      if (fabbtn) fabbtn.style.opacity = "1";
-    };
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      let ref = database.collection("tests").doc(match.params.id);
-      let doc: any = await ref.get();
-
-      if (!doc.exists) {
-        console.log("No such document!");
-      } else {
-        setTitle(doc.data().title);
-        setAnswerSheet(doc.data().answer_sheet);
-        setLevel(doc.data().level);
-        setAudioSrc(doc.data().listening_audio);
-        let questions_docs = await ref.collection("questions").get();
-        if (questions_docs.empty) {
-          console.log("No such document!");
-        } else {
-          questions_docs.forEach((doc) => {
-            let ques = {
-              id: doc.id,
-              question: doc.data().question,
-              answer: doc.data().answer,
-              part: doc.data().part,
-            };
-            setQuestions((questions) => [...questions, ques]);
-          });
-        }
-      }
-
-      setBusy(false);
-    };
-
-    getData();
-  }, [match.params.id]);
+  useTabbar();
+  const examId = match.params.id;
+  const exam = useExam(examId);
 
   useEffect(() => {
     const setTimer = () => {
-      if (level) {
+      if (exam.level) {
         var timeLimit: number;
-        switch (level) {
+        switch (exam.level) {
           case "5":
             timeLimit = Date.now() + 6300000;
             break;
@@ -130,7 +73,9 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
 
           var distance = timeLimit - now;
 
-          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
           var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -150,41 +95,55 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
     };
 
     setTimer();
-  }, [level]);
+  }, [exam.level]);
 
   useEffect(() => {
     setTimeout(function () {
-      onChangePart("0");
+      let allQues = document.getElementsByClassName(`ques`);
+      Array.prototype.forEach.call(allQues, function (ques) {
+        if (ques) {
+          ques.style.display = "none";
+        }
+      });
+  
+      let showQues = document.getElementsByClassName(`part-0`);
+      Array.prototype.forEach.call(showQues, function (ques) {
+        if (ques) {
+          ques.style.display = "block";
+        }
+      });
     }, 500);
   }, []);
 
   const handleChangeAnswer = (newValue: number, i: number) => {
-    let temp = [...submitAnswer];
+    let temp = [...exam.submitAnswer];
     temp[i] = newValue;
 
-    setSubmitAnswer(temp);
+    exam.setSubmitAnswer(temp);
   };
 
   const handleSubmitExam = () => {
     if (
-      submitAnswer.filter((answer) => answer !== undefined).length ===
-      answerSheet.length
+      exam.submitAnswer.filter((answer) => answer !== undefined).length ===
+      exam.answerSheet.length
     ) {
       let submitBtn = document.getElementById(`submit-btn`);
       submitBtn?.classList.add("button-disabled");
 
       var score: number = 0;
 
-      for (let i = 0; i < answerSheet.length; i++) {
-        let correctBtn = document.getElementById(`q-${i}-a-${answerSheet[i]}`);
+      for (let i = 0; i < exam.answerSheet.length; i++) {
+        let correctBtn = document.getElementById(
+          `q-${i}-a-${exam.answerSheet[i]}`
+        );
 
         correctBtn?.classList.add("ion-color");
         correctBtn?.classList.add("ion-color-success");
-        if (submitAnswer[i] === answerSheet[i]) {
+        if (exam.submitAnswer[i] === exam.answerSheet[i]) {
           score++;
         }
       }
-      setAlertMessage(`Điểm số: ${score}/${answerSheet.length}`);
+      setAlertMessage(`Điểm số: ${score}/${exam.answerSheet.length}`);
       setShowAlert(true);
     } else {
       setAlertMessage("Bạn chưa hoàn thành bài kiểm tra");
@@ -193,7 +152,7 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
   };
 
   const onChangePart = (part: string) => {
-    setPart(part);
+    exam.setPart(part);
     let allQues = document.getElementsByClassName(`ques`);
     Array.prototype.forEach.call(allQues, function (ques) {
       if (ques) {
@@ -230,11 +189,11 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
               Nộp bài
             </IonButton>
           </IonButtons>
-          <IonTitle>{title}</IonTitle>
+          <IonTitle>{exam.title}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        {busy ? (
+        {exam.busy ? (
           <Loading />
         ) : (
           <>
@@ -248,12 +207,12 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
             />
             <IonSegment
               scrollable
-              value={part}
+              value={exam.part}
               color="primary"
               className="part-segment"
               onIonChange={(e: any) => onChangePart(e.detail.value!)}
             >
-              {["4", "5"].includes(level) ? (
+              {["4", "5"].includes(exam.level) ? (
                 <>
                   <IonSegmentButton value="0">
                     <IonLabel>言語知識・読解</IonLabel>
@@ -278,15 +237,15 @@ const JlptExam: React.FC<ContainerProps> = ({ match }) => {
             </IonSegment>
 
             <IonList>
-              {part === "2" && (
+              {exam.part === "2" && (
                 <div className="audio-wrapper">
                   <audio className="listening-audio" controls>
-                    <source src={audioSrc} />
+                    <source src={exam.audioSrc} />
                   </audio>
                 </div>
               )}
 
-              {questions.map((q, i) => {
+              {exam.questions.map((q, i) => {
                 return (
                   <IonRadioGroup
                     key={i}

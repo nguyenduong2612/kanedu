@@ -13,8 +13,6 @@ import React, { useEffect, useState } from "react";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import "./Dict.scss";
 
-interface ContainerProps {}
-
 const client = algoliasearch(
   String(process.env.REACT_APP_ALGOLIA_APP_ID),
   String(process.env.REACT_APP_ALGOLIA_SEARCH_API_KEY)
@@ -60,7 +58,9 @@ const SearchResult: React.FC<SearchResultProps> = ({
   );
 };
 
-const Dict: React.FC<ContainerProps> = () => {
+interface DictPageProps {}
+
+const Dict: React.FC<DictPageProps> = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResult, setSearchResult] = useState<object[]>([]);
 
