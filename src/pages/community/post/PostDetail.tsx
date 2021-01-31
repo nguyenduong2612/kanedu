@@ -31,9 +31,9 @@ import React, { useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { useSelector } from "react-redux";
 import { database } from "../../../config/firebaseConfig";
-import usePost from "../../../hooks/community/usePost";
 import useTabbar from "../../../hooks/useTabbar";
 import "./PostDetail.scss";
+import usePostDetail from "../../../hooks/community/usePostDetail";
 
 interface PostDetailProps extends RouteComponentProps<MatchParams> {}
 interface RootState {
@@ -48,7 +48,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   const currentUser = useSelector((state: RootState) => state.user);
 
   const postId = match.params.post_id;
-  const post = usePost(postId);
+  const post = usePostDetail(postId);
   useTabbar();
 
   const [commentInput, setCommentInput] = useState<string>("");
