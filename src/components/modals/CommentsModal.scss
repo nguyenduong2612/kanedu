@@ -19,6 +19,7 @@
     .modal-title {
       position: sticky;
       top: 0;
+      font-size: 14px;
       padding-top: 5px;
       background: var(--ion-background-color, #fff);
       ion-button {
@@ -27,7 +28,7 @@
     }
   }
   .comment-wrapper {
-    font-size: 14px;
+    font-size: 13px;
     margin: 15px 20px;
     border-bottom: 1px solid #bbb;
   }

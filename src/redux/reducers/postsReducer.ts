@@ -1,11 +1,19 @@
 const initialState = {
   favoritePosts: [],
+  allPosts: []
 };
 
 export function setFavoritePost(post_id: string) {
   return {
     type: "SET_FAVORITE_POST",
     payload: post_id,
+  };
+}
+
+export function addPostToPostList(post: any) {
+  return {
+    type: "ADD_POST",
+    payload: post,
   };
 }
 
@@ -31,6 +39,11 @@ export function postsReducer(state = initialState, action: any) {
           ...state.favoritePosts.slice(action.payload + 1),
         ],
       };
+      case "ADD_POST":
+        return {
+          ...state,
+          allPosts: [...state.allPosts, action.payload],
+        };
     default:
       return state;
   }

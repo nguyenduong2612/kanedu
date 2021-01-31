@@ -1,0 +1,18 @@
+.post-comment-wrapper {
+  font-size: 13px;
+  margin: 15px 20px;
+  border-bottom: 1px solid #bbb;
+}
+.post-info p {
+  font-size: 12.5px;
+}
+.post-comment-input {
+  border-top: 1px solid #bbb;
+  font-size: 14px;
+  ion-button {
+    margin: 0;
+  }
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}

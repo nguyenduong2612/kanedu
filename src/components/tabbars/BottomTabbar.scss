@@ -34,6 +34,8 @@
 }
 
 #appFabBtn {
-  opacity: 1;
-  transition: opacity 0.3s;
+  width: 56px;
+  height: 56px;
+  transition: width 0.25s;
+  transition: height 0.25s;
 }

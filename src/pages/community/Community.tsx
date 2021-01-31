@@ -13,7 +13,7 @@ import {
   IonInfiniteScrollContent,
 } from "@ionic/react";
 import React, { useEffect, useState, lazy } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { database } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 
@@ -24,6 +24,7 @@ import ErrorPage from "../../components/error_pages/ErrorPage";
 import Refresher from "../../components/Refresher";
 import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
 import { Post } from "../../modals/Post";
+import { addPostToPostList } from "../../redux/reducers/postsReducer";
 
 const PostContainer = lazy(
   () => import("../../components/containers/PostContainer")
@@ -36,11 +37,13 @@ interface RootState {
 }
 
 const Community: React.FC<CommunityPageProps> = () => {
+  const dispatch = useDispatch();
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
-  const [postList, setPostList] = useState<any[]>([]);
+  //const [postList, setPostList] = useState<any[]>([]);
 
   const currentUser = useSelector((state: RootState) => state.user);
+  const postList = useSelector((state: RootState) => state.posts).allPosts;
 
   useEffect(() => {
     async function loadPost() {
@@ -52,16 +55,18 @@ const Community: React.FC<CommunityPageProps> = () => {
         return;
       } else {
         docs.forEach((doc) => {
-          setPostList((postList) => [
-            ...postList,
-            { data: doc.data(), id: doc.id },
-          ]);
+          // setPostList((postList) => [
+          //   ...postList,
+          //   { data: doc.data(), id: doc.id },
+          // ]);
+
+          dispatch(addPostToPostList({ data: doc.data(), id: doc.id }))
         });
       }
     }
 
     loadPost();
-  }, []);
+  }, [dispatch]);
 
   const loadNextPost = async () => {
     const lastLoadedPost = postList[postList.length - 1];
@@ -73,10 +78,11 @@ const Community: React.FC<CommunityPageProps> = () => {
       .limit(6)
       .get();
     next.forEach((doc) => {
-      setPostList((postList) => [
-        ...postList,
-        { data: doc.data(), id: doc.id },
-      ]);
+      // setPostList((postList) => [
+      //   ...postList,
+      //   { data: doc.data(), id: doc.id },
+      // ]);
+      dispatch(addPostToPostList({ data: doc.data(), id: doc.id }))
     });
   };
 
@@ -105,7 +111,8 @@ const Community: React.FC<CommunityPageProps> = () => {
 
       if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
-      setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
+      //setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
+      dispatch(addPostToPostList({ data: post, id: res.id }))
       toast("Đăng thành công");
       setShowPopover(false);
       window.location.reload();
@@ -167,7 +174,7 @@ const Community: React.FC<CommunityPageProps> = () => {
                     size="default"
                     onClick={() => setShowPopover(true)}
                   >
-                    <p>Đặt câu hỏi</p>
+                    <b>Đặt câu hỏi</b>
                   </IonButton>
 
                   <SendQuestionPopup
@@ -182,12 +189,12 @@ const Community: React.FC<CommunityPageProps> = () => {
 
           <div style={{ backgroundColor: "#ddd" }}>
             {postList
-              .filter((post) => post !== undefined)
+              .filter((post: any) => post !== undefined)
               .map((post: any, index: number) => {
                 return (
                   <PostContainer
                     key={index}
-                    postData={post}
+                    postId={post.id}
                     username={currentUser.user.name}
                   />
                 );
