@@ -16,7 +16,7 @@ import {
 import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 import React, { useState } from "react";
 import { toast } from "../../utils/toast";
-import { reauthenticate, changePassword } from "../../config/firebaseConfig";
+import { reauthenticate, changePassword } from "../../helpers/firebaseHelper";
 import { useSelector } from "react-redux";
 
 interface RootState {

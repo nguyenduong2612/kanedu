@@ -26,7 +26,7 @@ function useCourse(courseId: string) {
         setName(doc.data().name);
         setAuthor(doc.data().author);
         setAuthorId(doc.data().author_id);
-        setCountFollowers(doc.data().followed_by?.length);
+        setCountFollowers(doc.data().followers);
 
         var courseIndex = courseList.courses
           .map((course: any) => {

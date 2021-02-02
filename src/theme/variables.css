@@ -26,6 +26,7 @@ ion-item-divider {
   /* font-size */
   --ion-font-size-13: min(13px, 3.5vw);
   --ion-font-size-16: min(16px, 4.5vw);
+  --ion-font-size-18: min(18px, 5vw);
   --ion-font-size-20: min(20px, 5.5vw);
   --ion-font-size-24: min(24px, 6.5vw);
   --ion-font-size-32: min(32px, 8.5vw);

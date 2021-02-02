@@ -14,11 +14,13 @@ import {
   IonIcon,
   IonTextarea,
 } from "@ionic/react";
+import * as firebase from "firebase/app";
 import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { algoliaUpdateCourse } from "../../config/algoliaConfig";
+import { algoliaUpdateCourse } from "../../helpers/algoliaHelper";
 import { database } from "../../config/firebaseConfig";
+import { Course } from "../../modals/Course";
 import { setMyCourses } from "../../redux/reducers/coursesReducer";
 import { toast } from "../../utils/toast";
 
@@ -37,28 +39,28 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
   const handleCreateCourse = async () => {
     if (titleInput.trim() === "") toast("Hãy nhập tên khóa học");
     else {
-      let course = {
+      let course: Course = {
+        id: "",
         author: currentUser.user.name,
         author_id: currentUser.user.uid,
         name: titleInput,
         description: desInput,
         created_at: Date.now(),
+        followers: 0,
       };
 
       const res = await database.collection("courses").add(course);
+      if (await algoliaUpdateCourse(course, res.id))
+        console.log("add algolia ok");
 
-      if (await algoliaUpdateCourse(course, res.id)) console.log("add algolia ok");
+      const userRef = database.collection("users").doc(currentUser.user.uid);
+      userRef.update({
+        created_courses: firebase.firestore.FieldValue.arrayUnion(res.id),
+      });
 
-      dispatch(
-        setMyCourses({
-          id: res.id,
-          author: course.author,
-          author_id: course.author_id,
-          name: course.name,
-          description: course.description,
-          created_at: course.created_at,
-        })
-      );
+      course.id = res.id;
+
+      dispatch(setMyCourses(course));
       toast("Tạo khóa học thành công");
 
       setTitleInput("");

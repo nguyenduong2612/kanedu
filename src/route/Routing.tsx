@@ -24,6 +24,7 @@ import Login from "../pages/login/Login";
 import Account from "../pages/profile/Account";
 import ChangePassword from "../pages/profile/ChangePassword";
 import UserProfile from "../pages/profile/UserProfile";
+import MyProfile from "../pages/profile/MyProfile";
 import Register from "../pages/register/Register";
 import Search from "../pages/search/Search";
 
@@ -50,7 +51,7 @@ const Routing: React.FC = () => {
       <Route path="/register" component={Register} exact />
       <Route path="/settings" component={Settings} exact />
       <Route path="/search" component={Search} exact />
-      <Route path="/account" component={Account} exact />
+      <Route path="/my-profile/account-settings" component={Account} exact />
       <Route path="/change-password" component={ChangePassword} exact />
       <Route path="/community" component={Community} exact />
       <Route path="/community/:post_id" component={PostDetail} exact />
@@ -59,6 +60,7 @@ const Routing: React.FC = () => {
       <Route path="/jlpt/:id" component={JlptExam} exact />
       <Route path="/home" component={Home} exact />
       <Route path="/home/my-courses" component={MyCourse} exact />
+      <Route path="/my-profile" component={MyProfile} exact />
       <Route path="/users/:uid" component={UserProfile} exact />
       <Route
         path="/home/following-courses"

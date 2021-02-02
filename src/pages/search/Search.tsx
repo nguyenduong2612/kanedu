@@ -11,14 +11,9 @@ import {
   IonSegment,
   IonSegmentButton,
 } from "@ionic/react";
-import algoliasearch from "algoliasearch";
 import React, { useState, useEffect } from "react";
 import ErrorPage from "../../components/error_pages/ErrorPage";
-
-const client = algoliasearch(
-  String(process.env.REACT_APP_ALGOLIA_APP_ID),
-  String(process.env.REACT_APP_ALGOLIA_SEARCH_API_KEY)
-);
+import { algoliaClient } from "../../config/algoliaConfig";
 
 const placeholderSelect = (searchIndex: string) => {
   if (searchIndex === "courses") {
@@ -102,7 +97,7 @@ const Search: React.FC<SearchPageProps> = () => {
       if (searchTerm.trim() === "") {
         return;
       } else {
-        const index = client.initIndex(searchIndex);
+        const index = algoliaClient.initIndex(searchIndex);
 
         index.search(searchTerm).then(({ hits }) => {
           setSearchResult(hits);

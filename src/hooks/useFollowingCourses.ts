@@ -22,14 +22,8 @@ function useFollowingCourses() {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
-          let course = {
-            id: doc.id,
-            author: doc.data().author,
-            author_id: doc.data().author_id,
-            name: doc.data().name,
-            description: doc.data().description,
-            followers: doc.data().followed_by?.length,
-          };
+          let course = doc.data();
+          course.id = doc.id;
           dispatch(setFollowingCourses(course));
         });
       }

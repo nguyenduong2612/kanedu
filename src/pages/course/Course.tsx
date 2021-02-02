@@ -34,7 +34,7 @@ import {
 import { toast } from "../../utils/toast";
 import "./Course.scss";
 import ShareModal from "../../components/modals/ShareModal";
-import { algoliaUpdatePost } from "../../config/algoliaConfig";
+import { algoliaUpdatePost } from "../../helpers/algoliaHelper";
 import Refresher from "../../components/Refresher";
 import useCourse from "../../hooks/course/useCourse";
 import { Post } from "../../modals/Post";
@@ -80,6 +80,14 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
         currentUser.user.uid
       ),
     });
+    ref.update({
+      followers: firebase.firestore.FieldValue.increment(1),
+    });
+
+    let userRef = database.collection("users").doc(currentUser.user.uid);
+    userRef.update({
+      following_courses: firebase.firestore.FieldValue.arrayUnion(courseId),
+    });
 
     course.setIsFollowed(true);
     setShowPopover(false);
@@ -93,6 +101,14 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       followed_by: firebase.firestore.FieldValue.arrayRemove(
         currentUser.user.uid
       ),
+    });
+    ref.update({
+      followers: firebase.firestore.FieldValue.increment(-1),
+    });
+
+    let userRef = database.collection("users").doc(currentUser.user.uid);
+    userRef.update({
+      following_courses: firebase.firestore.FieldValue.arrayRemove(courseId),
     });
 
     course.setFollowingCourseIndex(-1);
@@ -184,8 +200,8 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
           <IonItem lines="none">
             <IonIcon icon={heart}></IonIcon>
             <IonText style={{ marginLeft: 10 }}>
-              {course.countFollowers ? course.countFollowers : 0} người
-              theo dõi khóa học này
+              {course.countFollowers ? course.countFollowers : 0} người theo dõi
+              khóa học này
             </IonText>
           </IonItem>
           <IonItem lines="none">
@@ -197,10 +213,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
         <IonItemDivider mode="md">
           <IonLabel color="dark">Danh sách bài học</IonLabel>
         </IonItemDivider>
-        <LessonListContainer
-          author={course.author}
-          courseId={courseId}
-        />
+        <LessonListContainer author={course.author} courseId={courseId} />
       </IonContent>
 
       <ShareModal

@@ -11,15 +11,19 @@ import {
   IonItemDivider,
   IonItemGroup,
   IonText,
-  IonMenuButton,
   IonIcon,
+  IonBackButton,
+  IonButtons,
 } from "@ionic/react";
 import React from "react";
 import { useSelector } from "react-redux";
 import "./Account.scss";
-import { database, storage, verifyEmail } from "../../config/firebaseConfig";
+import { database, storage } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 import { camera } from "ionicons/icons";
+import Refresher from "../../components/Refresher";
+import { addAchievement } from "../../helpers/achievementHelper";
+import { verifyEmail } from "../../helpers/firebaseHelper";
 
 interface AccountPageProps {}
 interface RootState {
@@ -55,6 +59,8 @@ const Account: React.FC<AccountPageProps> = () => {
           .doc(currentUser.user.uid)
           .update({ profileURL: await fileRef.getDownloadURL() });
 
+        await addAchievement(currentUser, "RjNEtQwBqgVHWdihJO9h", 5);
+
         window.location.reload();
       } catch (err) {
         console.error(err);
@@ -66,16 +72,15 @@ const Account: React.FC<AccountPageProps> = () => {
     <IonPage id="main">
       <IonHeader>
         <IonToolbar className="toolbar">
-          <IonMenuButton
-            slot="start"
-            className="menu-btn"
-            color="light"
-          ></IonMenuButton>
+          <IonButtons slot="start">
+            <IonBackButton color="light" text="" defaultHref="/my-profile" />
+          </IonButtons>
           <IonTitle>Tài khoản</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen className="account-settings">
+        <Refresher />
         <IonList>
           <IonItemGroup>
             <div className="avatar-wrapper">

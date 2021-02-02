@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { database, getCurrentUser } from "../config/firebaseConfig";
+import { database } from "../config/firebaseConfig";
+import { getCurrentUser } from "../helpers/firebaseHelper";
 
 import { setCurrentUser } from "../redux/reducers/userReducer";
 
@@ -10,7 +11,7 @@ interface RootState {
 
 function useCurrentUser() {
   const [busy, setBusy] = useState<boolean>(true);
-  
+
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
@@ -23,14 +24,9 @@ function useCurrentUser() {
         if (!doc.exists) {
           console.log("No such document!");
         } else {
-          let currentUser = {
-            uid: doc.id,
-            email: doc.data().email,
-            name: doc.data().name,
-            birthday: doc.data().birthday,
-            profileURL: doc.data().profileURL,
-            verified: user.emailVerified,
-          };
+          let currentUser = doc.data();
+          currentUser.uid = doc.id;
+          currentUser.verified = user.emailVerified;
           dispatch(setCurrentUser(currentUser));
         }
       } else {
@@ -43,8 +39,8 @@ function useCurrentUser() {
   return {
     busy,
     setBusy,
-    user
-  }
+    user,
+  };
 }
 
 export default useCurrentUser;

@@ -9,6 +9,8 @@ import {
   IonList,
   IonCol,
   IonRow,
+  IonGrid,
+  IonItemDivider,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
@@ -37,14 +39,8 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
-          let course = {
-            id: doc.id,
-            author: doc.data().author,
-            author_id: doc.data().author_id,
-            name: doc.data().name,
-            description: doc.data().description,
-            followers: doc.data().followed_by?.length,
-          };
+          let course = doc.data();
+          course.id = doc.id;
           setCourses((courses) => [...courses, course]);
         });
       }
@@ -80,26 +76,28 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
           <IonButtons slot="start">
             <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
-          <IonTitle>Trang cá nhân</IonTitle>
+          <IonTitle>Hồ sơ</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <div className="user-info">
-          <IonRow className="row">
-            <IonCol size="2" className="col">
-              <div className="image-wrapper">
+        <IonGrid className="user-info">
+          <IonRow>
+            <IonCol size="9">
+              <h3 className="username">{userInfo.name}</h3>
+            </IonCol>
+            <IonCol size="3">
+              <div className="avatar-wrapper">
                 <img
-                  alt="profile-avatar"
-                  id="profile-avatar"
+                  alt="avatar"
+                  className="user-profile"
                   src={userInfo.profileURL}
                 />
               </div>
             </IonCol>
-            <IonCol size="10" className="col">
-              <p className="profile-name">{userInfo.name}</p>
-            </IonCol>
           </IonRow>
-        </div>
+        </IonGrid>
+
+        <IonItemDivider mode="md" />
 
         {courses.length > 0 ? (
           <IonList>

@@ -20,7 +20,7 @@ import {
 } from "@ionic/react";
 import { logoFacebook, logoGoogle } from "ionicons/icons";
 import React, { useState } from "react";
-import { signupUser } from "../../config/firebaseConfig";
+import { signupUser } from "../../helpers/firebaseHelper";
 import { toast } from "../../utils/toast";
 import "./Register.scss";
 

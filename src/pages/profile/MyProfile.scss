@@ -1,0 +1,49 @@
+.user-info {
+  padding: 15px 15px 0;
+  .username {
+    margin-top: 0;
+    font-size: var(--ion-font-size-20);
+    font-weight: bold;
+  }
+  .level {
+    margin: 7px 0;
+    font-size: var(--ion-font-size-13);
+    color: grey;
+  }
+  .exp-bar {
+    width: 85%;
+    border-radius: 15px;
+    height: 5px;
+  }
+  .avatar-wrapper {
+    position: relative;
+    width: fit-content;
+    margin: auto;
+    .user-profile {
+      border-radius: 50%;
+      margin-bottom: 20px;
+      width: 100px;
+    }
+  }
+}
+
+.user-data {
+  .part-title {
+    padding-left: 15px !important;
+    font-size:  var(--ion-font-size-16);
+  }
+  .statistics {
+    ion-row {
+      padding: 10px 5px;
+      ion-col {
+        .statistics-div {
+          margin: 0 3px 10px;
+          padding: 10px 15px;
+          border-radius: 10px;
+          border: 2px solid #ddd;
+          font-size: var(--ion-font-size-13);
+        }
+      }
+    }
+  }
+}

@@ -12,6 +12,7 @@ import {
   IonInfiniteScroll,
   IonInfiniteScrollContent,
 } from "@ionic/react";
+import * as firebase from "firebase/app";
 import React, { useEffect, useState, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { database } from "../../config/firebaseConfig";
@@ -19,7 +20,7 @@ import { toast } from "../../utils/toast";
 
 import "../../theme/app.css";
 import "./Community.scss";
-import { algoliaUpdatePost } from "../../config/algoliaConfig";
+import { algoliaUpdatePost } from "../../helpers/algoliaHelper";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import Refresher from "../../components/Refresher";
 import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
@@ -108,8 +109,12 @@ const Community: React.FC<CommunityPageProps> = () => {
       };
 
       const res = await database.collection("posts").add(post);
-
       if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
+
+      const userRef = database.collection("users").doc(currentUser.user.uid);
+      userRef.update({
+        created_posts: firebase.firestore.FieldValue.arrayUnion(res.id),
+      });
 
       //setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
       dispatch(addPostToPostList({ data: post, id: res.id }))

@@ -23,7 +23,7 @@ import {
   forgotPassword,
   loginUser,
   loginWithFacebook,
-} from "../../config/firebaseConfig";
+} from "../../helpers/firebaseHelper";
 import { toast } from "../../utils/toast";
 import { logoFacebook, logoGoogle } from "ionicons/icons";
 import ForgotPasswordPopup from "../../components/popups/ForgotPasswordPopup";

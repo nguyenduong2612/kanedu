@@ -28,9 +28,11 @@ import {
   logOut,
   language,
   languageOutline,
+  medalOutline,
+  medal,
 } from "ionicons/icons";
 import "./SideMenu.scss";
-import { signoutUser } from "../../config/firebaseConfig";
+import { signoutUser } from "../../helpers/firebaseHelper";
 
 interface SidemenuContainerProps {}
 
@@ -52,8 +54,8 @@ const appPages: AppPage[] = [
     mdIcon: home,
   },
   {
-    title: "Tài khoản",
-    url: "/account",
+    title: "Hồ sơ",
+    url: "/my-profile",
     iosIcon: personOutline,
     mdIcon: person,
   },
@@ -74,6 +76,12 @@ const appPages: AppPage[] = [
     url: "/community",
     iosIcon: peopleOutline,
     mdIcon: people,
+  },
+  {
+    title: "Bảng xếp hạng",
+    url: "/ranking",
+    iosIcon: medalOutline,
+    mdIcon: medal,
   },
   {
     title: "Cài đặt",
