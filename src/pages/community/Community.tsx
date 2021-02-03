@@ -61,7 +61,7 @@ const Community: React.FC<CommunityPageProps> = () => {
           //   { data: doc.data(), id: doc.id },
           // ]);
 
-          dispatch(addPostToPostList({ data: doc.data(), id: doc.id }))
+          dispatch(addPostToPostList({ data: doc.data(), id: doc.id }));
         });
       }
     }
@@ -83,7 +83,7 @@ const Community: React.FC<CommunityPageProps> = () => {
       //   ...postList,
       //   { data: doc.data(), id: doc.id },
       // ]);
-      dispatch(addPostToPostList({ data: doc.data(), id: doc.id }))
+      dispatch(addPostToPostList({ data: doc.data(), id: doc.id }));
     });
   };
 
@@ -117,7 +117,7 @@ const Community: React.FC<CommunityPageProps> = () => {
       });
 
       //setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
-      dispatch(addPostToPostList({ data: post, id: res.id }))
+      dispatch(addPostToPostList({ data: post, id: res.id }));
       toast("Đăng thành công");
       setShowPopover(false);
       window.location.reload();
@@ -214,7 +214,12 @@ const Community: React.FC<CommunityPageProps> = () => {
           </div>
         </IonContent>
       ) : (
-        <ErrorPage>Vui lòng xác nhận email của bạn</ErrorPage>
+        <ErrorPage>
+          Vui lòng xác thực email của bạn
+          <IonButton routerLink="/my-profile/account-settings" fill="clear">
+            Chuyển tới trang tài khoản
+          </IonButton>
+        </ErrorPage>
       )}
     </IonPage>
   );

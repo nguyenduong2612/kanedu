@@ -5,5 +5,5 @@ export interface Course {
   name: string;
   description: string;
   created_at: number;
-  followers: number;
+  followed_by: Array<string>;
 }

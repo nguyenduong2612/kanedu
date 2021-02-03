@@ -46,7 +46,7 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
         name: titleInput,
         description: desInput,
         created_at: Date.now(),
-        followers: 0,
+        followed_by: [],
       };
 
       const res = await database.collection("courses").add(course);

@@ -17,8 +17,9 @@ import {
   IonGrid,
   IonRow,
   IonProgressBar,
+  IonItem,
 } from "@ionic/react";
-import { settings, settingsOutline } from "ionicons/icons";
+import { medalOutline, settings, settingsOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CourseContainer from "../../components/containers/CourseContainer";
@@ -125,14 +126,22 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
                   </IonCol>
                   <IonCol size="6">
                     <div className="statistics-div">
-                      <b>{currentUser.user.created_courses.length}</b>
+                      <b>
+                        {currentUser.user.created_courses
+                          ? currentUser.user.created_courses.length
+                          : 0}
+                      </b>
                       <br />
                       <span style={{ color: "#aaa" }}>Số khóa học đã tạo</span>
                     </div>
                   </IonCol>
                   <IonCol size="6">
                     <div className="statistics-div">
-                      <b>{currentUser.user.created_posts.length}</b>
+                      <b>
+                        {currentUser.user.created_posts
+                          ? currentUser.user.created_posts.length
+                          : 0}
+                      </b>
                       <br />
                       <span style={{ color: "#aaa" }}>Số bài đăng đã tạo</span>
                     </div>
@@ -141,7 +150,34 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
               </IonGrid>
 
               <IonGrid className="achievements">
-                <IonRow className="part-title">Thành tích</IonRow>
+                <IonRow className="part-title">Thành tựu</IonRow>
+                <IonList>
+                  {currentUser.user.achievements &&
+                    currentUser.user.achievements.map(
+                      (achievement: any, index: number) => {
+                        return (
+                          <IonItem key={index}>
+                            <IonRow className="achievement-row">
+                              <IonCol size="2">
+                                <IonIcon
+                                  className="achievement-icon"
+                                  icon={medalOutline}
+                                ></IonIcon>
+                              </IonCol>
+                              <IonCol size="10">
+                                <span className="achievement-name">
+                                  {achievement.name}
+                                </span>
+                                <span className="achievement-des">
+                                  {achievement.description}
+                                </span>
+                              </IonCol>
+                            </IonRow>
+                          </IonItem>
+                        );
+                      }
+                    )}
+                </IonList>
               </IonGrid>
             </>
           ) : (
@@ -156,7 +192,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
                         name={course.name}
                         author={course.author}
                         description={course.description}
-                        followers={course.followers}
+                        followers={course.followed_by.length}
                       />
                     );
                   })}

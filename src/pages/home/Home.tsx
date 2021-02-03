@@ -107,7 +107,7 @@ const Home: React.FC = () => {
                       name={course.name}
                       author={course.author}
                       description={course.description}
-                      followers={course.followers}
+                      followers={course.followed_by.length}
                     />
                   );
                 })
@@ -148,7 +148,7 @@ const Home: React.FC = () => {
                       name={course.name}
                       author={course.author}
                       description={course.description}
-                      followers={course.followers}
+                      followers={course.followed_by.length}
                     />
                   );
                 })

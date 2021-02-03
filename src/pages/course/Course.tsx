@@ -80,9 +80,6 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
         currentUser.user.uid
       ),
     });
-    ref.update({
-      followers: firebase.firestore.FieldValue.increment(1),
-    });
 
     let userRef = database.collection("users").doc(currentUser.user.uid);
     userRef.update({
@@ -101,9 +98,6 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       followed_by: firebase.firestore.FieldValue.arrayRemove(
         currentUser.user.uid
       ),
-    });
-    ref.update({
-      followers: firebase.firestore.FieldValue.increment(-1),
     });
 
     let userRef = database.collection("users").doc(currentUser.user.uid);

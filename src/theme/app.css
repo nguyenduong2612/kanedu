@@ -62,3 +62,14 @@ ion-refresher.refresher-native {
 .ion-page {
   padding-bottom: 65px;
 }
+
+.alert-message {
+  text-align: center;
+}
+.alert-message > img {
+  width: 75%;
+  margin: auto;
+}
+.alert-message > p {
+  margin-bottom: 0;
+}

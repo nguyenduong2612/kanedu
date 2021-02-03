@@ -51,17 +51,17 @@ const Account: React.FC<AccountPageProps> = () => {
       const fileRef = storageRef.child("users_avatar/" + fileName);
 
       //console.log(avatar);
-      toast("Thay đổi ảnh đại diện thành công");
       try {
+        toast("Thay đổi ảnh đại diện thành công");
         await fileRef.put(avatar);
         await database
           .collection("users")
           .doc(currentUser.user.uid)
           .update({ profileURL: await fileRef.getDownloadURL() });
 
-        await addAchievement(currentUser, "RjNEtQwBqgVHWdihJO9h", 5);
+        if (!await addAchievement(currentUser, "RjNEtQwBqgVHWdihJO9h")) window.location.reload();
 
-        window.location.reload();
+        //window.location.reload();
       } catch (err) {
         console.error(err);
       }

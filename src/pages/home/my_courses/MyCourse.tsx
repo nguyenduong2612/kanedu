@@ -45,7 +45,7 @@ const MyCourse: React.FC<MyCoursePageProps> = () => {
                   name={course.name}
                   author={course.author}
                   description={course.description}
-                  followers={course.followers}
+                  followers={course.followed_by.length}
                 />
               );
             })}

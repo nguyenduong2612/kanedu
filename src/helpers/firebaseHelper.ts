@@ -45,6 +45,8 @@ export async function loginWithFacebook() {
           email: data.user.email,
           name: data.user.displayName,
           profileURL: data.user.photoURL,
+          achievements: [],
+          exp: 0,
         };
         const doc = await database.collection("users").doc(data.user.uid).get();
         if (!doc.exists) {
@@ -79,6 +81,8 @@ export async function signupUser(
       name,
       birthday,
       profileURL,
+      achievements: [],
+      exp: 0,
     };
     if (algoliaUpdateUser(user, res.user?.uid)) console.log("add algolia ok");
 
