@@ -8,3 +8,11 @@
     left: unset !important;
   }
 }
+
+.course-info {
+  margin-top: 10px;
+  .course-info__text {
+    font-size: 14px;
+    margin-left: 10px;
+  }
+}

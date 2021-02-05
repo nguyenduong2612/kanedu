@@ -143,7 +143,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                       src={post.profileURL}
                     />
                   </div>
-                  <div style={{ paddingLeft: 10 }}>
+                  <div style={{ paddingLeft: 10, color: "initial" }}>
                     <p>{post.postData.author}</p>
                     <p>
                       {moment(post.postData.created_at).locale("vi").fromNow()}
@@ -151,9 +151,10 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                   </div>
                 </IonRow>
 
-                <IonRow style={{ padding: "10px 0", color: "initial" }}>
+                <IonRow style={{ paddingTop: 10, color: "initial" }}>
                   <p className="post-text">{post.postData.content}</p>
-                  <br></br>
+                </IonRow>
+                <IonRow style={{ padding: "10px 0", color: "initial" }}>
                   {post.postData.sharedLink && (
                     <IonButton href={post.postData.sharedLink} fill="outline">
                       Tham gia
@@ -220,7 +221,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
               })}
             </IonList>
           </IonContent>
-          
+
           <IonItem lines="none" className="post-comment-input">
             <IonInput
               value={commentInput}

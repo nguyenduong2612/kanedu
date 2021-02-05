@@ -2,8 +2,14 @@
   height: 40%;
 }
 
-.main-menu {
+.lesson-info {
   height: 60%;
+  .lesson-info__title {
+    font-size: var(--ion-font-size-20);
+  }
+  .lesson-info__size {
+    font-size: var(--ion-font-size-13);
+  }
   .menu-button {
     width: 85%;
     margin: auto;
@@ -17,6 +23,7 @@
       text-align: center;
       padding-bottom: 15px;
       margin: 0;
+      font-size: var(--ion-font-size-13);
     }
   }
 }

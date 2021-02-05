@@ -57,7 +57,7 @@ const Register: React.FC = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className="landing-page page-container">
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonButtons slot="start">
@@ -69,7 +69,7 @@ const Register: React.FC = () => {
       <IonLoading message="Vui lòng đợi" duration={0} isOpen={busy} />
       <IonContent fullscreen>
         <IonList className="signup-wrapper">
-          <IonLabel color="medium">Đăng nhập sử dụng tài khoản đã có</IonLabel>
+          <IonLabel className="signup-wrapper__text" color="medium">Đăng nhập sử dụng tài khoản đã có</IonLabel>
           <IonRow>
             <IonCol size="6">
               <IonCard className="social-login-btn" button={true} mode="md">
@@ -91,7 +91,7 @@ const Register: React.FC = () => {
             </IonCol>
           </IonRow>
 
-          <IonLabel color="medium">Hoặc đăng ký tài khoản mới</IonLabel>
+          <IonLabel className="signup-wrapper__text" color="medium">Hoặc đăng ký tài khoản mới</IonLabel>
           <IonItem>
             <IonLabel position="floating">Họ tên</IonLabel>
             <IonInput
@@ -145,7 +145,7 @@ const Register: React.FC = () => {
           </IonItem>
           <IonButton
             style={{ marginTop: 35 }}
-            size="large"
+            size="default"
             expand="block"
             mode="ios"
             onClick={signup}

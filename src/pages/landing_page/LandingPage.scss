@@ -17,10 +17,11 @@
   height: 75%;
   .slide-wrapper {
     width: 80%;
-    margin: auto;
-    max-width: 45vh;
+    margin: 0 auto;
+    max-width: 40vh;
     .lp-title {
       margin-top: 30px;
+      margin-bottom: 0;
     }
   }
 }
@@ -30,6 +31,26 @@
   margin: 5px auto 0;
   font-size: 14px;
   .btn-text {
-    font-size: 18px;
+    font-size: var(--ion-font-size-16);
+  }
+}
+
+.landing-page {
+  padding: 0;
+  margin: 20px auto !important;
+  box-shadow: 1px 3px 20px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+}
+.landing-page__background {
+  background-image: linear-gradient(#f0ecfb, #b786e0);
+  height: 100vh;
+}
+
+@media only screen and (max-width: 600px) {
+  .landing-page {
+    padding: 0;
+    margin: 0 auto !important;
+    box-shadow: 1px 3px 20px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 0px;
   }
 }

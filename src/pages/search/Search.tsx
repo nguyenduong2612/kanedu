@@ -14,6 +14,7 @@ import {
 import React, { useState, useEffect } from "react";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import { algoliaClient } from "../../config/algoliaConfig";
+import "./Search.scss";
 
 const placeholderSelect = (searchIndex: string) => {
   if (searchIndex === "courses") {

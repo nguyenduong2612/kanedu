@@ -136,7 +136,8 @@ const PostContainer: React.FC<PostContainerProps> = ({ postId, username }) => {
 
               <IonRow>
                 <p className="post-text">{post.postData.content}</p>
-                <br></br>
+              </IonRow>
+              <IonRow>
                 {post.postData.sharedLink && (
                   <IonButton href={post.postData.sharedLink} fill="outline">
                     Tham gia

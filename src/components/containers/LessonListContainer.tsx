@@ -52,7 +52,13 @@ const LessonListContainer: React.FC<LessonListContainerProps> = ({
                 <IonCard mode="md" className="lesson-wrapper">
                   <IonCardHeader>
                     <IonCardTitle>
-                      <b>{lesson.data().title}</b>
+                      <span className="lesson-wrapper__title">
+                        {lesson.data().title}
+                      </span>
+                      <br />
+                      <span className="lesson-wrapper__size">
+                        {lesson.data().numberOfCards} từ vựng
+                      </span>
                     </IonCardTitle>
                   </IonCardHeader>
                 </IonCard>

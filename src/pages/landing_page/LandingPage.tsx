@@ -22,7 +22,9 @@ interface LandingPageProps {}
 
 const LandingPage: React.FC<LandingPageProps> = () => {
   return (
-    <IonPage className="page-container">
+    <>
+    <div className="landing-page__background"></div>
+    <IonPage className="landing-page page-container">
       <IonContent fullscreen>
         <div className="logo-wrapper">
           <h1 className="logo">Kanedu</h1>
@@ -61,7 +63,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
 
         <IonList className="lp-btn">
           <IonButton
-            size="large"
+            size="default"
             expand="block"
             mode="ios"
             routerLink="/register"
@@ -70,7 +72,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
           </IonButton>
           <IonButton
             style={{ marginTop: 5 }}
-            size="large"
+            size="default"
             expand="block"
             mode="ios"
             fill="clear"
@@ -81,6 +83,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
         </IonList>
       </IonContent>
     </IonPage>
+    </>
   );
 };
 

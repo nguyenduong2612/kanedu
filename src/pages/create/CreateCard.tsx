@@ -69,45 +69,49 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
 
   const createTest = async (ref: any, res: any) => {
     const docs = await ref.get();
-    const answerBank: object[] = []
+    const answerBank: object[] = [];
 
     /* Create answer bank */
     docs.forEach((doc: any) => {
       let newAnswer = { id: doc.id, text: doc.data().meaning };
-      answerBank.push(newAnswer)
+      answerBank.push(newAnswer);
     });
 
     /* Create question with 1 correct and 3 random answers */
-    docs.forEach(async(doc: any) => {
-      let tempAnswerBank = [...answerBank]
+    docs.forEach(async (doc: any) => {
+      let tempAnswerBank = [...answerBank];
 
-      let question = { id: doc.id, text: doc.data().keyword }
-      let correctIndex = tempAnswerBank.findIndex((answer: any) => answer.id === question.id)
-      let correctAnswer = tempAnswerBank[correctIndex]
+      let question = { id: doc.id, text: doc.data().keyword };
+      let correctIndex = tempAnswerBank.findIndex(
+        (answer: any) => answer.id === question.id
+      );
+      let correctAnswer = tempAnswerBank[correctIndex];
 
-      const answers: object[] = []
+      const answers: object[] = [];
 
       answers.push(correctAnswer);
-      tempAnswerBank.splice(correctIndex, 1)
+      tempAnswerBank.splice(correctIndex, 1);
 
       for (let i = 0; i < 3; i++) {
-        let randomIndex: number = Math.floor(Math.random() * tempAnswerBank.length)
+        let randomIndex: number = Math.floor(
+          Math.random() * tempAnswerBank.length
+        );
         let randomAnswer: object = tempAnswerBank[randomIndex];
         answers.push(randomAnswer);
-        tempAnswerBank.splice(randomIndex, 1)
+        tempAnswerBank.splice(randomIndex, 1);
       }
 
-      answers.sort(() => Math.random() - 0.5);    // Shuffle
+      answers.sort(() => Math.random() - 0.5); // Shuffle
 
       /* Add to database */
-      console.log({question: question, answers: answers})
+      console.log({ question: question, answers: answers });
       await database
         .collection("courses")
         .doc(match.params.course_id)
         .collection("lessons")
         .doc(res.id)
         .collection("test")
-        .add({question: question, answers: answers})
+        .add({ question: question, answers: answers });
     });
   };
 
@@ -119,7 +123,11 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
         .collection("courses")
         .doc(match.params.course_id)
         .collection("lessons")
-        .add({ title: titleInput, created_at: Date.now() });
+        .add({
+          title: titleInput,
+          created_at: Date.now(),
+          numberOfCards: cardList.length,
+        });
 
       const ref = database
         .collection("courses")

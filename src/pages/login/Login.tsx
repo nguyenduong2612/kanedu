@@ -68,7 +68,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <IonPage className="landing-page page-container">
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonButtons slot="start">
@@ -80,7 +80,9 @@ const Login: React.FC = () => {
       <IonLoading message="Vui lòng đợi" duration={0} isOpen={busy} />
       <IonContent fullscreen>
         <IonList className="login-wrapper">
-          <IonLabel color="medium">Đăng nhập sử dụng tài khoản đã có</IonLabel>
+          <IonLabel className="login-wrapper__text" color="medium">
+            Đăng nhập sử dụng tài khoản đã có
+          </IonLabel>
           <IonRow>
             <IonCol size="6">
               <IonCard className="social-login-btn" button={true} mode="md">
@@ -107,7 +109,9 @@ const Login: React.FC = () => {
             </IonCol>
           </IonRow>
 
-          <IonLabel color="medium">Hoặc đăng nhập với email</IonLabel>
+          <IonLabel className="login-wrapper__text" color="medium">
+            Hoặc đăng nhập với email
+          </IonLabel>
           <IonItem>
             <IonLabel position="floating">Email</IonLabel>
             <IonInput
@@ -128,7 +132,7 @@ const Login: React.FC = () => {
 
           <IonButton
             style={{ marginTop: 35 }}
-            size="large"
+            size="default"
             expand="block"
             mode="ios"
             onClick={login}

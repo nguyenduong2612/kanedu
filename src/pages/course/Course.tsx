@@ -184,23 +184,23 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
 
       <IonContent fullscreen>
         <Refresher />
-        <IonList style={{ marginTop: 10 }}>
+        <IonList className="course-info">
           <IonItem lines="none">
             <IonIcon icon={personCircle}></IonIcon>
-            <IonText style={{ marginLeft: 10 }}>
+            <IonText className="course-info__text">
               Được tạo bởi {course.author}
             </IonText>
           </IonItem>
           <IonItem lines="none">
             <IonIcon icon={heart}></IonIcon>
-            <IonText style={{ marginLeft: 10 }}>
+            <IonText className="course-info__text">
               {course.countFollowers ? course.countFollowers : 0} người theo dõi
               khóa học này
             </IonText>
           </IonItem>
           <IonItem lines="none">
             <IonIcon icon={shareSocial}></IonIcon>
-            <IonText style={{ marginLeft: 10 }}>0 lượt chia sẻ</IonText>
+            <IonText className="course-info__text">0 lượt chia sẻ</IonText>
           </IonItem>
         </IonList>
 

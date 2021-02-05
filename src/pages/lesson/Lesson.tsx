@@ -53,7 +53,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
               defaultHref={`/courses/${courseId}`}
             />
           </IonButtons>
-          <IonTitle>{lesson.name}</IonTitle>
+          <IonTitle>{lesson.title}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -65,14 +65,14 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
             lessonId={match.params.lesson_id}
           />
         </div>
-        <div className="main-menu">
+        <div className="lesson-info">
           <IonGrid>
             <IonRow className="padding-x">
-              <h1>{lesson.name}</h1>
+              <h1 className="lesson-info__title">{lesson.title}</h1>
             </IonRow>
             <IonRow className="padding-x">
-              <p>
-                {lesson.author} | {lesson.numberOfCards} thẻ
+              <p className="lesson-info__size">
+              {lesson.numberOfCards} từ vựng
               </p>
             </IonRow>
             <IonRow>

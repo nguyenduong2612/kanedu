@@ -2,12 +2,19 @@
   width: 90%;
   max-width: 768px;
   margin: 15px auto;
+  .login-wrapper__text {
+    font-size: var(--ion-font-size-14);
+  }
+  input {
+    font-size: var(--ion-font-size-14) !important;
+  }
   .social-login-btn {
     min-height: 70px;
+    border-bottom: 3px solid var(--ion-color-primary-tint);
     ion-title {
-      margin-top: 23px;
+      margin-top: 24px;
       margin-left: 48px;
-      font-size: 16px;
+      font-size: var(--ion-font-size-14);
       padding: 0;
     }
     ion-icon {
