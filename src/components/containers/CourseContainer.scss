@@ -1,4 +1,26 @@
 .course-wrapper {
   width: 100%;
-  margin: 10px 2px;
+  margin: 10px 7px 20px;
+  .course-wrapper__author {
+    font-size: var(--ion-font-size-13);
+    .course-wrapper__author-avatar {
+      border-radius: 50%;
+      width: 95%;
+      max-width: 30px;
+      margin-right: 8px;
+    }
+    span {
+      position: absolute;
+      top: 8px;
+    }
+  }
+  .course-wrapper__title {
+    padding-top: 10px;
+    font-size: var(--ion-font-size-20);
+  }
+  .course-wrapper__des {
+    font-size: var(--ion-font-size-13);
+    color: gray;
+    padding: 0 20px 13px;
+  }
 }

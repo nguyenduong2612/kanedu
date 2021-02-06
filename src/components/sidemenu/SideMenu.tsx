@@ -119,7 +119,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                     ios={appPage.iosIcon}
                     md={appPage.mdIcon}
                   />
-                  <IonLabel color="light">{appPage.title}</IonLabel>
+                  <IonLabel className="sidemenu__label" color="light">{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
@@ -139,7 +139,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                 ios={logOutOutline}
                 md={logOut}
               />
-              <IonLabel color="light">Đăng xuất</IonLabel>
+              <IonLabel className="sidemenu__label" color="light">Đăng xuất</IonLabel>
             </IonItem>
           </IonMenuToggle>
         </IonList>

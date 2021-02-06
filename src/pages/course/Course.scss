@@ -6,6 +6,9 @@
     position: absolute;
     top: 55px !important;
     left: unset !important;
+    ion-item {
+      font-size: var(--ion-font-size-14);
+    }
   }
 }
 

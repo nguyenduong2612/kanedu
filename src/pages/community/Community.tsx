@@ -179,7 +179,7 @@ const Community: React.FC<CommunityPageProps> = () => {
                     size="default"
                     onClick={() => setShowPopover(true)}
                   >
-                    <b>Đặt câu hỏi</b>
+                    <span>Đặt câu hỏi</span>
                   </IonButton>
 
                   <SendQuestionPopup
@@ -215,7 +215,7 @@ const Community: React.FC<CommunityPageProps> = () => {
         </IonContent>
       ) : (
         <ErrorPage>
-          Vui lòng xác thực email của bạn
+          Vui lòng xác thực email của bạn<br />
           <IonButton routerLink="/my-profile/account-settings" fill="clear">
             Chuyển tới trang tài khoản
           </IonButton>

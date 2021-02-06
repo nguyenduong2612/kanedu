@@ -44,6 +44,7 @@ const MyCourse: React.FC<MyCoursePageProps> = () => {
                   id={course.id}
                   name={course.name}
                   author={course.author}
+                  author_id={course.author_id}
                   description={course.description}
                   followers={course.followed_by.length}
                 />

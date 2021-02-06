@@ -5,13 +5,13 @@ import {
   IonToolbar,
   IonList,
   IonSearchbar,
-  IonItem,
   IonMenuButton,
   IonLabel,
   IonSegment,
   IonSegmentButton,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
+import SearchItemContainer from "../../components/containers/SearchItemContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import { algoliaClient } from "../../config/algoliaConfig";
 import "./Search.scss";
@@ -43,37 +43,18 @@ const SearchResult: React.FC<SearchResultProps> = ({
         searchResult.length !== 0 ? (
           <IonList lines="none">
             {searchResult.map((item: any, index: number) => {
-              if (searchIndex === "courses") {
-                return (
-                  <IonItem
-                    routerLink={`/courses/${item.objectID}`}
-                    key={index}
-                    mode="ios"
-                  >
-                    {item.name}
-                  </IonItem>
-                );
-              } else if (searchIndex === "posts") {
-                return (
-                  <IonItem
-                    routerLink={`/community/${item.objectID}`}
-                    key={index}
-                    mode="ios"
-                  >
-                    {item.title}
-                  </IonItem>
-                ); //TODO
+              if (searchIndex === "posts") {
+                var page = "community";
               } else {
-                return (
-                  <IonItem
-                    routerLink={`/users/${item.objectID}`}
-                    key={index}
-                    mode="ios"
-                  >
-                    {item.name}
-                  </IonItem>
-                );
+                page = searchIndex;
               }
+              return (
+                <SearchItemContainer
+                  key={index}
+                  page={page}
+                  searchItem={item}
+                />
+              );
             })}
           </IonList>
         ) : (

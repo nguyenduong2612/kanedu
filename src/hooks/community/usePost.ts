@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { database, storage } from "../../config/firebaseConfig";
+import { database } from "../../config/firebaseConfig";
+import { fetchUserAvatar } from "../../helpers/firebaseHelper";
 
 interface RootState {
   posts: any;
@@ -32,12 +33,7 @@ function usePost(postId: string) {
 
   useEffect(() => {
     async function getProfileURL() {
-      const storageRef = storage.ref();
-
-      const fileName = `${postData.author_id}`;
-      const fileRef = storageRef.child("users_avatar/" + fileName);
-
-      setProfileURL(await fileRef.getDownloadURL());
+      setProfileURL(await fetchUserAvatar(postData.author_id));
     }
 
     if (favoritePosts.includes(postId)) setIsFavorited(true);

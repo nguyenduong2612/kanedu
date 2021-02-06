@@ -3,7 +3,7 @@ import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
 import { toast } from "../utils/toast";
-import { database } from "../config/firebaseConfig";
+import { database, storage } from "../config/firebaseConfig";
 import { algoliaUpdateUser } from "./algoliaHelper";
 
 export function getCurrentUser() {
@@ -171,4 +171,13 @@ export async function changePassword(password: string) {
     });
 
   return res;
+}
+
+export async function fetchUserAvatar(userId: string) {
+  const storageRef = storage.ref();
+
+  const fileName = `${userId}`;
+  const fileRef = storageRef.child("users_avatar/" + fileName);
+
+  return await fileRef.getDownloadURL();
 }

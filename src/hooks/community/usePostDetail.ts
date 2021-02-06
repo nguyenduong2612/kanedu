@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { database, storage } from "../../config/firebaseConfig";
+import { database } from "../../config/firebaseConfig";
+import { fetchUserAvatar } from "../../helpers/firebaseHelper";
 
 interface RootState {
   posts: any;
@@ -35,12 +36,7 @@ function usePostDetail(postId: string) {
 
   useEffect(() => {
     async function getProfileURL() {
-      const storageRef = storage.ref();
-
-      const fileName = `${postData.author_id}`;
-      const fileRef = storageRef.child("users_avatar/" + fileName);
-
-      setProfileURL(await fileRef.getDownloadURL());
+      setProfileURL(await fetchUserAvatar(postData.author_id));
     }
 
     if (favoritePosts.includes(postId)) setIsFavorited(true);
@@ -52,7 +48,7 @@ function usePostDetail(postId: string) {
         .collection("comments");
       const docs = await ref.orderBy("created_at").get();
       if (docs.empty) {
-        return
+        return;
       } else {
         docs.forEach((doc) => {
           setCommentList((commentList) => [
@@ -63,14 +59,14 @@ function usePostDetail(postId: string) {
       }
     }
 
-    if (!postData) return
+    if (!postData) return;
 
     getProfileURL();
     getAllComment();
 
     setLikes(postData.likes);
     setComments(postData.comments);
-  }, [postData, favoritePosts, postId])
+  }, [postData, favoritePosts, postId]);
 
   return {
     postData,
@@ -84,7 +80,7 @@ function usePostDetail(postId: string) {
     comments,
     setComments,
     commentList,
-    setCommentList
+    setCommentList,
   };
 }
 
