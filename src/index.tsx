@@ -2,12 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createStore } from 'redux';
+import { createStore } from "redux";
 import { Provider } from "react-redux";
 
-import rootReducer from './redux/reducers/rootReducer';
+import rootReducer from "./redux/reducers/rootReducer";
+import { isPlatform, setupConfig } from "@ionic/react";
+import { pageAnimation } from "./utils/pageAnimation";
 
 const store = createStore(rootReducer);
+
+if (!isPlatform("desktop")) {
+  setupConfig({
+    navAnimation: pageAnimation,
+  });
+}
 
 ReactDOM.render(
   <Provider store={store}>
