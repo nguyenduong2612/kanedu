@@ -26,12 +26,14 @@ import {
 } from "ionicons/icons";
 import moment from "moment";
 import "moment/locale/vi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import useTabbar from "../../../hooks/useTabbar";
 import "./PostDetail.scss";
 import {
+  clearComments,
+  getComments,
   likePost,
   saveComment,
   unlikePost,
@@ -55,6 +57,13 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   const dispatch = useDispatch();
 
   useTabbar();
+  useEffect(() => {
+    dispatch(getComments(postId));
+
+    return function clearCmts() {
+      dispatch(clearComments);
+    };
+  }, [dispatch, postId]);
 
   const [commentInput, setCommentInput] = useState<string>("");
 
