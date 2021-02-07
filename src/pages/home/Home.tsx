@@ -31,12 +31,10 @@ const CourseContainer = lazy(
 
 interface RootState {
   courses: any;
-  my_courses: any;
-  user: any;
 }
 
 const Home: React.FC = () => {
-  const courseList = useSelector((state: RootState) => state.courses);
+  const { createdCourses, followingCourses } = useSelector((state: RootState) => state.courses);
 
   const [showNotiModal, setShowNotiModal] = useState<boolean>(false);
 
@@ -74,8 +72,8 @@ const Home: React.FC = () => {
       <IonContent fullscreen>
         <Refresher />
         <IonList>
-          {courseList.courses.length === 0 &&
-            courseList.my_courses.length === 0 && <HintContainer />}
+          {createdCourses.length === 0 &&
+            followingCourses.length === 0 && <HintContainer />}
             
           <div className="section-wrapper">
             <IonItemDivider mode="md">
@@ -96,8 +94,8 @@ const Home: React.FC = () => {
                 </IonLabel>
               </IonButton>
             </IonItemDivider>
-            {courseList.courses.length > 0 ? (
-              courseList.courses
+            {followingCourses.length > 0 ? (
+              followingCourses
                 .slice(0, 2)
                 .map((course: any, index: number) => {
                   return (
@@ -138,8 +136,8 @@ const Home: React.FC = () => {
                 </IonLabel>
               </IonButton>
             </IonItemDivider>
-            {courseList.my_courses.length > 0 ? (
-              courseList.my_courses
+            {createdCourses.length > 0 ? (
+              createdCourses
                 .slice(0, 2)
                 .map((course: any, index: number) => {
                   return (

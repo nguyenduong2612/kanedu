@@ -45,10 +45,12 @@ import Routing from "./route/Routing";
 import BottomTabbar from "./components/tabbars/BottomTabbar";
 
 // hooks
-import useFollowingCourses from "./hooks/useFollowingCourses";
-import useMyCourses from "./hooks/useMyCourses";
-import useFavoritePosts from "./hooks/useFavoritePosts";
 import useCurrentUser from "./hooks/useCurrentUser";
+import {
+  getCreatedCourses,
+  getFollowingCourses,
+} from "./redux/courses/courses.actions";
+import { getPosts } from "./redux/post/post.actions";
 
 // Capacitor plugins
 const { StatusBar, Keyboard } = Plugins;
@@ -63,9 +65,13 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   const currentUser = useCurrentUser();
-  useFollowingCourses();
-  useMyCourses();
-  useFavoritePosts();
+  // useFavoritePosts();
+
+  useEffect(() => {
+    dispatch(getCreatedCourses(currentUser.user.uid));
+    dispatch(getFollowingCourses(currentUser.user.uid));
+    dispatch(getPosts(currentUser.user.uid));
+  }, [dispatch, currentUser.user.uid]);
 
   useEffect(() => {
     console.log(getPlatforms());
@@ -105,16 +111,16 @@ const App: React.FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <IonApp>
-        {currentUser.busy ? (
+        {currentUser.isLoading ? (
           <Loading />
         ) : (
           <IonReactRouter>
-            {currentUser.user.logged_in ? (
+            {currentUser.isLoggedin ? (
               <IonSplitPane contentId="main">
                 <SideMenu />
 
                 <IonContent fullscreen id="main" style={{ maxWidth: 800 }}>
-                  <IonFab vertical="bottom" horizontal="center" >
+                  <IonFab vertical="bottom" horizontal="center">
                     {showFabButton && (
                       <IonFabButton onClick={handleShowModal} id="appFabBtn">
                         <IonIcon icon={add} size="large" />

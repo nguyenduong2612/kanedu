@@ -21,7 +21,7 @@ interface RootState {
 }
 
 const CreateLesson: React.FC<CreateLessonPageProps> = () => {
-  const courseList = useSelector((state: RootState) => state.courses);
+  const { createdCourses } = useSelector((state: RootState) => state.courses);
 
   return (
     <IonPage>
@@ -36,7 +36,7 @@ const CreateLesson: React.FC<CreateLessonPageProps> = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonItem lines="none"><IonLabel>Khóa học của tôi</IonLabel></IonItem>
-        {courseList.my_courses.map((course: any, index: number) => {
+        {createdCourses.map((course: any, index: number) => {
           return (
             <IonItem
               key={index}

@@ -1,44 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { database } from "../config/firebaseConfig";
-import { getCurrentUser } from "../helpers/firebaseHelper";
+import { onAuthStateChanged } from "../helpers/firebaseHelper";
 
-import { setCurrentUser } from "../redux/reducers/userReducer";
+import {
+  setCurrentUserFailed,
+  setCurrentUserStarted,
+  setCurrentUserSuccess,
+} from "../redux/user/user.actions";
 
 interface RootState {
   user: any;
 }
 
 function useCurrentUser() {
-  const [busy, setBusy] = useState<boolean>(true);
-
-  const user = useSelector((state: RootState) => state.user);
+  const { user, isLoggedin, isLoading } = useSelector(
+    (state: RootState) => state.user
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getCurrentUser().then(async (user: any) => {
-      //console.log(user)
+    dispatch(setCurrentUserStarted());
+    onAuthStateChanged().then(async (user: any) => {
       if (user) {
         //window.history.replaceState({}, '', '/')
         const doc: any = await database.collection("users").doc(user.uid).get();
         if (!doc.exists) {
-          console.log("No such document!");
+          console.log("Can't find user");
         } else {
+          console.log("login ok");
           let currentUser = doc.data();
           currentUser.uid = doc.id;
           currentUser.verified = user.emailVerified;
-          dispatch(setCurrentUser(currentUser));
+          dispatch(setCurrentUserSuccess(currentUser));
         }
       } else {
-        window.history.replaceState({}, "", "/welcome");
+        dispatch(setCurrentUserFailed());
+        //window.history.replaceState({}, "", "/welcome");
       }
-      setBusy(false);
     });
-  }, [user.user.uid, dispatch]);
+  }, [user.uid, dispatch]);
 
   return {
-    busy,
-    setBusy,
+    isLoading,
+    isLoggedin,
     user,
   };
 }

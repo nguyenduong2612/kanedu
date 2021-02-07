@@ -14,7 +14,7 @@ function useCourse(courseId: string) {
   const [followingCourseIndex, setFollowingCourseIndex] = useState<number>(-1);
   const [isFollowed, setIsFollowed] = useState<boolean>();
 
-  const courseList = useSelector((state: RootState) => state.courses);
+  const { followingCourses } = useSelector((state: RootState) => state.courses);
 
   useEffect(() => {
     async function getInfo() {
@@ -28,7 +28,7 @@ function useCourse(courseId: string) {
         setAuthorId(doc.data().author_id);
         setCountFollowers(doc.data().followed_by.length);
 
-        var courseIndex = courseList.courses
+        var courseIndex = followingCourses
           .map((course: any) => {
             return course.id;
           })
@@ -41,7 +41,7 @@ function useCourse(courseId: string) {
     }
 
     getInfo();
-  }, [courseList.courses, courseId]);
+  }, [followingCourses, courseId]);
 
   return {
     name,

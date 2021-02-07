@@ -21,7 +21,7 @@ interface RootState {
 interface MyFollowingCoursePageProps {}
 
 const MyFollowingCourse: React.FC<MyFollowingCoursePageProps> = () => {
-  const courseList = useSelector((state: RootState) => state.courses);
+  const { followingCourses } = useSelector((state: RootState) => state.courses);
 
   return (
     <IonPage>
@@ -35,9 +35,9 @@ const MyFollowingCourse: React.FC<MyFollowingCoursePageProps> = () => {
       </IonHeader>
       <IonContent fullscreen>
         <Refresher />
-        {courseList.courses.length > 0 ? (
+        {followingCourses.length > 0 ? (
           <IonList>
-            {courseList.courses.map((course: any, index: number) => {
+            {followingCourses.map((course: any, index: number) => {
               return (
                 <CourseContainer
                   key={index}

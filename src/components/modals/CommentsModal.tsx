@@ -7,7 +7,7 @@ import "./CommentsModal.scss";
 interface CommentsModalProps {
   isOpen: boolean;
   commentCount: number;
-  commentList: any;
+  comments: any;
   handleCloseModal: () => void;
   handleSendComment: (commentInput: string) => void;
 }
@@ -15,7 +15,7 @@ interface CommentsModalProps {
 const CommentsModal: React.FC<CommentsModalProps> = ({
   isOpen,
   commentCount,
-  commentList,
+  comments,
   handleCloseModal,
   handleSendComment
 }) => {
@@ -46,14 +46,14 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
             />
           </IonButton>
         </IonItem>
-        {commentList.map((comment: any, index: number) => {
+        {comments.map((comment: any, index: number) => {
           return (
             <div className="comment-wrapper" key={index}>
-              <b>{`${comment.data.author} | 
-                          ${moment(comment.data.created_at)
+              <b>{`${comment.author} | 
+                          ${moment(comment.created_at)
                             .locale("vi")
                             .fromNow()}`}</b>
-              <p>{comment.data.content}</p>
+              <p>{comment.content}</p>
             </div>
           );
         })}

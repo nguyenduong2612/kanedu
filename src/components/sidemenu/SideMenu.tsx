@@ -11,7 +11,7 @@ import {
 } from "@ionic/react";
 
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
   logOutOutline,
@@ -32,7 +32,7 @@ import {
   medal,
 } from "ionicons/icons";
 import "./SideMenu.scss";
-import { signoutUser } from "../../helpers/firebaseHelper";
+import { signOutUser } from "../../redux/user/user.actions";
 
 interface SidemenuContainerProps {}
 
@@ -94,6 +94,11 @@ const appPages: AppPage[] = [
 const SideMenu: React.FC<SidemenuContainerProps> = () => {
   const location = useLocation();
   const currentUser = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+
+  const signout = () => {
+    dispatch(signOutUser());
+  };
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -119,7 +124,9 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                     ios={appPage.iosIcon}
                     md={appPage.mdIcon}
                   />
-                  <IonLabel className="sidemenu__label" color="light">{appPage.title}</IonLabel>
+                  <IonLabel className="sidemenu__label" color="light">
+                    {appPage.title}
+                  </IonLabel>
                 </IonItem>
               </IonMenuToggle>
             );
@@ -128,10 +135,11 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
             <IonItem />
             <IonItem
               button
-              onClick={signoutUser}
+              onClick={signout}
               routerDirection="none"
               lines="none"
               detail={false}
+              routerLink="/welcome"
             >
               <IonIcon
                 color="light"
@@ -139,7 +147,9 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                 ios={logOutOutline}
                 md={logOut}
               />
-              <IonLabel className="sidemenu__label" color="light">Đăng xuất</IonLabel>
+              <IonLabel className="sidemenu__label" color="light">
+                Đăng xuất
+              </IonLabel>
             </IonItem>
           </IonMenuToggle>
         </IonList>

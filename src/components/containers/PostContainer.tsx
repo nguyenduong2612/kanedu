@@ -10,20 +10,24 @@ import {
   IonCol,
   IonRouterLink,
 } from "@ionic/react";
-import * as firebase from "firebase/app";
 import { chatboxOutline, heartOutline, heartSharp } from "ionicons/icons";
 import moment from "moment";
 import "moment/locale/vi";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { database } from "../../config/firebaseConfig";
-import usePost from "../../hooks/community/usePost";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearComments,
+  getComments,
+  likePost,
+  saveComment,
+  unlikePost,
+} from "../../redux/post/post.actions";
 import CommentsModal from "../modals/CommentsModal";
 import "./PostContainer.scss";
 
 interface PostContainerProps {
   key: number;
-  postId: string;
+  post: any;
   username: string;
 }
 
@@ -32,85 +36,44 @@ interface RootState {
   posts: any;
 }
 
-const PostContainer: React.FC<PostContainerProps> = ({ postId, username }) => {
+const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
 
   const currentUser = useSelector((state: RootState) => state.user);
-  const post = usePost(postId);
+  const { posts, comments } = useSelector((state: RootState) => state.posts);
+  const postId = post.id;
+  const dispatch = useDispatch();
 
   const handleSendComment = async (commentInput: string) => {
     if (commentInput.trim() === "") return;
-    let comment = {
-      author: username,
-      content: commentInput,
-      created_at: Date.now(),
-    };
-
-    const res = await database
-      .collection("posts")
-      .doc(postId)
-      .collection("comments")
-      .add(comment);
-
-    let postRef = database.collection("posts").doc(postId);
-    postRef.update({
-      comments: firebase.firestore.FieldValue.increment(1),
-    });
-
-    post.setCommentList((commentList) => [
-      ...commentList,
-      { data: comment, id: res.id },
-    ]);
-    post.setComments(post.comments + 1);
+    dispatch(saveComment(username, commentInput, postId, posts));
   };
 
   const handleShowModal = () => {
     setShowCommentModal(true);
+    dispatch(getComments(postId));
   };
 
   const handleCloseModal = () => {
     setShowCommentModal(false);
+    dispatch(clearComments());
   };
 
   const handleLikePost = () => {
-    post.setIsFavorited(true);
-    post.setLikes(post.likes + 1);
-    //dispatch(setFavoritePost(post.id));
-
-    let userRef = database.collection("users").doc(currentUser.user.uid);
-    userRef.update({
-      favorite_posts: firebase.firestore.FieldValue.arrayUnion(postId),
-    });
-
-    let postRef = database.collection("posts").doc(postId);
-    postRef.update({
-      likes: firebase.firestore.FieldValue.increment(1),
-    });
+    dispatch(likePost(posts, post.id, currentUser.user.uid));
   };
 
   const handleUnlikePost = () => {
-    post.setIsFavorited(false);
-    post.setLikes(post.likes - 1);
-    //dispatch(setFavoritePost(post.id));
-
-    let ref = database.collection("users").doc(currentUser.user.uid);
-    ref.update({
-      favorite_posts: firebase.firestore.FieldValue.arrayRemove(postId),
-    });
-
-    let postRef = database.collection("posts").doc(postId);
-    postRef.update({
-      likes: firebase.firestore.FieldValue.increment(-1),
-    });
+    dispatch(unlikePost(posts, post.id, currentUser.user.uid));
   };
 
   return (
     <div>
-      {post.postData && (
+      {post && (
         <IonCard className="post-wrapper">
           <IonCardHeader>
             <IonText style={{ fontSize: 16, color: "black" }}>
-              {post.postData.title}
+              {post.title}
             </IonText>
           </IonCardHeader>
           <IonCardContent>
@@ -123,23 +86,21 @@ const PostContainer: React.FC<PostContainerProps> = ({ postId, username }) => {
                   <img
                     alt="avatar"
                     style={{ borderRadius: "50%", width: "95%", maxWidth: 50 }}
-                    src={post.profileURL}
+                    src={post.avatar}
                   />
                 </div>
                 <div style={{ paddingLeft: 10 }}>
-                  <p>{post.postData.author}</p>
-                  <p>
-                    {moment(post.postData.created_at).locale("vi").fromNow()}
-                  </p>
+                  <p>{post.author}</p>
+                  <p>{moment(post.created_at).locale("vi").fromNow()}</p>
                 </div>
               </IonRow>
 
               <IonRow>
-                <p className="post-text">{post.postData.content}</p>
+                <p className="post-text">{post.content}</p>
               </IonRow>
               <IonRow>
-                {post.postData.sharedLink && (
-                  <IonButton href={post.postData.sharedLink} fill="outline">
+                {post.sharedLink && (
+                  <IonButton href={post.sharedLink} fill="outline">
                     Tham gia
                   </IonButton>
                 )}
@@ -171,7 +132,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ postId, username }) => {
               <CommentsModal
                 isOpen={showCommentModal}
                 commentCount={post.comments}
-                commentList={post.commentList}
+                comments={comments}
                 handleCloseModal={handleCloseModal}
                 handleSendComment={handleSendComment}
               />

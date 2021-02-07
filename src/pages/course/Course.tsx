@@ -25,19 +25,17 @@ import {
 import React, { useState, lazy } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { database } from "../../config/firebaseConfig";
-import * as firebase from "firebase/app";
-import {
-  removeFollowingCourses,
-  setFollowingCourses,
-} from "../../redux/reducers/coursesReducer";
 import { toast } from "../../utils/toast";
 import "./Course.scss";
 import ShareModal from "../../components/modals/ShareModal";
-import { algoliaUpdatePost } from "../../helpers/algoliaHelper";
 import Refresher from "../../components/Refresher";
 import useCourse from "../../hooks/course/useCourse";
-import { Post } from "../../modals/Post";
+import { Post } from "../../models/Post";
+import {
+  followCourse,
+  unfollowCourse,
+} from "../../redux/courses/courses.actions";
+import { savePost } from "../../redux/post/post.actions";
 
 const LessonListContainer = lazy(
   () => import("../../components/containers/LessonListContainer")
@@ -59,6 +57,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
 
   const currentUser = useSelector((state: RootState) => state.user);
+  const { followingCourses } = useSelector((state: RootState) => state.courses);
   const courseId = match.params.id;
 
   const course = useCourse(courseId);
@@ -66,46 +65,14 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   const dispatch = useDispatch();
 
   const handleFollow = () => {
-    let newFollow = {
-      id: courseId,
-      author: course.author,
-      author_id: course.authorId,
-      name: course.name,
-    };
-    dispatch(setFollowingCourses(newFollow));
-
-    let ref = database.collection("courses").doc(courseId);
-    ref.update({
-      followed_by: firebase.firestore.FieldValue.arrayUnion(
-        currentUser.user.uid
-      ),
-    });
-
-    let userRef = database.collection("users").doc(currentUser.user.uid);
-    userRef.update({
-      following_courses: firebase.firestore.FieldValue.arrayUnion(courseId),
-    });
-
+    dispatch(followCourse(courseId, currentUser.user.uid));
     course.setIsFollowed(true);
     setShowPopover(false);
     toast("Thẽo dõi khóa học thành công");
   };
 
   const handleUnfollow = () => {
-    dispatch(removeFollowingCourses(course.followingCourseIndex));
-    let ref = database.collection("courses").doc(courseId);
-    ref.update({
-      followed_by: firebase.firestore.FieldValue.arrayRemove(
-        currentUser.user.uid
-      ),
-    });
-
-    let userRef = database.collection("users").doc(currentUser.user.uid);
-    userRef.update({
-      following_courses: firebase.firestore.FieldValue.arrayRemove(courseId),
-    });
-
-    course.setFollowingCourseIndex(-1);
+    dispatch(unfollowCourse(followingCourses, courseId, currentUser.user.uid));
     course.setIsFollowed(false);
     setShowPopover(false);
     toast("Đã bỏ theo dõi khóa học");
@@ -132,9 +99,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       created_at: Date.now(),
     };
 
-    const res = await database.collection("posts").add(post);
-
-    if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
+    dispatch(savePost(post, currentUser.user.uid));
 
     toast("Chia sẻ khóa học thành công");
     setShowShareModal(false);

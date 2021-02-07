@@ -9,23 +9,19 @@ import {
   IonRow,
   IonGrid,
   IonButton,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
+  //IonInfiniteScroll,
+  //IonInfiniteScrollContent,
 } from "@ionic/react";
-import * as firebase from "firebase/app";
-import React, { useEffect, useState, lazy } from "react";
+import React, { useState, lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { database } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 
 import "../../theme/app.css";
 import "./Community.scss";
-import { algoliaUpdatePost } from "../../helpers/algoliaHelper";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import Refresher from "../../components/Refresher";
 import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
-import { Post } from "../../modals/Post";
-import { addPostToPostList } from "../../redux/reducers/postsReducer";
+import { savePost } from "../../redux/post/post.actions";
 
 const PostContainer = lazy(
   () => import("../../components/containers/PostContainer")
@@ -41,64 +37,62 @@ const Community: React.FC<CommunityPageProps> = () => {
   const dispatch = useDispatch();
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
-  //const [postList, setPostList] = useState<any[]>([]);
-
   const currentUser = useSelector((state: RootState) => state.user);
-  const postList = useSelector((state: RootState) => state.posts).allPosts;
+  const { posts } = useSelector((state: RootState) => state.posts);
 
-  useEffect(() => {
-    async function loadPost() {
-      const ref = database.collection("posts");
-      const docs = await ref.orderBy("created_at", "desc").limit(6).get();
+  // useEffect(() => {
+  //   async function loadPost() {
+  //     const ref = database.collection("posts");
+  //     const docs = await ref.orderBy("created_at", "desc").limit(6).get();
 
-      if (docs.empty) {
-        console.log("No such document!");
-        return;
-      } else {
-        docs.forEach((doc) => {
-          // setPostList((postList) => [
-          //   ...postList,
-          //   { data: doc.data(), id: doc.id },
-          // ]);
+  //     if (docs.empty) {
+  //       console.log("No such document!");
+  //       return;
+  //     } else {
+  //       docs.forEach((doc) => {
+  //         // setPostList((postList) => [
+  //         //   ...postList,
+  //         //   { data: doc.data(), id: doc.id },
+  //         // ]);
 
-          dispatch(addPostToPostList({ data: doc.data(), id: doc.id }));
-        });
-      }
-    }
+  //         dispatch(addPostToPostList({ data: doc.data(), id: doc.id }));
+  //       });
+  //     }
+  //   }
 
-    loadPost();
-  }, [dispatch]);
+  //   loadPost();
+  // }, [dispatch]);
 
-  const loadNextPost = async () => {
-    const lastLoadedPost = postList[postList.length - 1];
+  // const loadNextPost = async () => {
+  //   const lastLoadedPost = postList[postList.length - 1];
 
-    const next = await database
-      .collection("posts")
-      .orderBy("created_at", "desc")
-      .startAfter(lastLoadedPost.data.created_at)
-      .limit(6)
-      .get();
-    next.forEach((doc) => {
-      // setPostList((postList) => [
-      //   ...postList,
-      //   { data: doc.data(), id: doc.id },
-      // ]);
-      dispatch(addPostToPostList({ data: doc.data(), id: doc.id }));
-    });
-  };
+  //   const next = await database
+  //     .collection("posts")
+  //     .orderBy("created_at", "desc")
+  //     .startAfter(lastLoadedPost.data.created_at)
+  //     .limit(6)
+  //     .get();
+  //   next.forEach((doc) => {
+  //     // setPostList((postList) => [
+  //     //   ...postList,
+  //     //   { data: doc.data(), id: doc.id },
+  //     // ]);
+  //     dispatch(addPostToPostList({ data: doc.data(), id: doc.id }));
+  //   });
+  // };
 
-  const loadData = ($event: CustomEvent<void>) => {
-    setTimeout(() => {
-      loadNextPost();
-      ($event.target as HTMLIonInfiniteScrollElement).complete();
-    }, 750);
-  };
+  // const loadData = ($event: CustomEvent<void>) => {
+  //   setTimeout(() => {
+  //     loadNextPost();
+  //     ($event.target as HTMLIonInfiniteScrollElement).complete();
+  //   }, 750);
+  // };
 
   async function handleSendQuestion(title: string, content: string) {
     if (title.trim() === "" || content.trim() === "") {
       toast("Hãy nhập tiêu đề và nội dung câu hỏi");
     } else {
-      let post: Post = {
+      let post: any = {
         author: currentUser.user.name,
         author_id: currentUser.user.uid,
         title: title,
@@ -108,19 +102,9 @@ const Community: React.FC<CommunityPageProps> = () => {
         created_at: Date.now(),
       };
 
-      const res = await database.collection("posts").add(post);
-      if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
-
-      const userRef = database.collection("users").doc(currentUser.user.uid);
-      userRef.update({
-        created_posts: firebase.firestore.FieldValue.arrayUnion(res.id),
-      });
-
-      //setPostList((postList) => [{ data: post, id: res.id }, ...postList]);
-      dispatch(addPostToPostList({ data: post, id: res.id }));
+      dispatch(savePost(post, currentUser.user.uid));
       toast("Đăng thành công");
       setShowPopover(false);
-      window.location.reload();
     }
   }
 
@@ -193,29 +177,30 @@ const Community: React.FC<CommunityPageProps> = () => {
           </IonGrid>
 
           <div style={{ backgroundColor: "#ddd" }}>
-            {postList
+            {posts
               .filter((post: any) => post !== undefined)
               .map((post: any, index: number) => {
                 return (
                   <PostContainer
                     key={index}
-                    postId={post.id}
+                    post={post}
                     username={currentUser.user.name}
                   />
                 );
               })}
 
-            <IonInfiniteScroll
+            {/* <IonInfiniteScroll
               threshold="100px"
               onIonInfinite={(e: CustomEvent<void>) => loadData(e)}
             >
               <IonInfiniteScrollContent loadingText="Đang tải thêm"></IonInfiniteScrollContent>
-            </IonInfiniteScroll>
+            </IonInfiniteScroll> */}
           </div>
         </IonContent>
       ) : (
         <ErrorPage>
-          Vui lòng xác thực email của bạn<br />
+          Vui lòng xác thực email của bạn
+          <br />
           <IonButton routerLink="/my-profile/account-settings" fill="clear">
             Chuyển tới trang tài khoản
           </IonButton>

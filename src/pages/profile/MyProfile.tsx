@@ -37,7 +37,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
   const [segmentValue, setSegmentValue] = useState<string>("statistics");
 
   const currentUser = useSelector((state: RootState) => state.user);
-  const myCourses = useSelector((state: RootState) => state.courses).my_courses;
+  const { createdCourses } = useSelector((state: RootState) => state.courses);
 
   return (
     <IonPage>
@@ -182,9 +182,9 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
             </>
           ) : (
             <>
-              {myCourses.length > 0 ? (
+              {createdCourses.length > 0 ? (
                 <IonList>
-                  {myCourses.map((course: any, index: number) => {
+                  {createdCourses.map((course: any, index: number) => {
                     return (
                       <CourseContainer
                         key={index}

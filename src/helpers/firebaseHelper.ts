@@ -6,7 +6,7 @@ import { toast } from "../utils/toast";
 import { database, storage } from "../config/firebaseConfig";
 import { algoliaUpdateUser } from "./algoliaHelper";
 
-export function getCurrentUser() {
+export function onAuthStateChanged() {
   return new Promise((resolve) => {
     const unsubcribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -62,7 +62,7 @@ export async function loginWithFacebook() {
 
 export async function signoutUser() {
   await firebase.auth().signOut();
-  window.location.replace("/");
+  //window.location.replace("/");
 }
 
 export async function signupUser(

@@ -14,15 +14,11 @@ import {
   IonIcon,
   IonTextarea,
 } from "@ionic/react";
-import * as firebase from "firebase/app";
 import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { algoliaUpdateCourse } from "../../helpers/algoliaHelper";
-import { database } from "../../config/firebaseConfig";
-import { Course } from "../../modals/Course";
-import { setMyCourses } from "../../redux/reducers/coursesReducer";
 import { toast } from "../../utils/toast";
+import { createCourse } from "../../redux/courses/courses.actions";
 
 interface CreateCoursePageProps {}
 interface RootState {
@@ -39,8 +35,7 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
   const handleCreateCourse = async () => {
     if (titleInput.trim() === "") toast("Hãy nhập tên khóa học");
     else {
-      let course: Course = {
-        id: "",
+      let course: any = {
         author: currentUser.user.name,
         author_id: currentUser.user.uid,
         name: titleInput,
@@ -49,18 +44,7 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
         followed_by: [],
       };
 
-      const res = await database.collection("courses").add(course);
-      if (await algoliaUpdateCourse(course, res.id))
-        console.log("add algolia ok");
-
-      const userRef = database.collection("users").doc(currentUser.user.uid);
-      userRef.update({
-        created_courses: firebase.firestore.FieldValue.arrayUnion(res.id),
-      });
-
-      course.id = res.id;
-
-      dispatch(setMyCourses(course));
+      dispatch(createCourse(course, currentUser.user.uid));
       toast("Tạo khóa học thành công");
 
       setTitleInput("");

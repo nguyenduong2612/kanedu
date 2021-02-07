@@ -27,48 +27,83 @@ import UserProfile from "../pages/profile/UserProfile";
 import MyProfile from "../pages/profile/MyProfile";
 import Register from "../pages/register/Register";
 import Search from "../pages/search/Search";
+import { useSelector } from "react-redux";
+
+interface RootState {
+  user: any;
+}
 
 const Routing: React.FC = () => {
+  const currentUser = useSelector((state: RootState) => state.user);
+
   return (
-    <IonRouterOutlet>
-      <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
-      <Route path="/login" component={Login} exact />
-      <Route path="/courses/:id" component={Course} exact />
-      <Route path="/courses/:course_id/:lesson_id" component={Lesson} exact />
-      <Route
-        path="/courses/:course_id/:lesson_id/study"
-        component={Learning}
-        exact
-      />
-      <Route
-        path="/courses/:course_id/:lesson_id/test"
-        component={Testing}
-        exact
-      />
-      <Route path="/course/create" component={CreateCourse} exact />
-      <Route path="/lesson/create" component={CreateLesson} exact />
-      <Route path="/lesson/create/:course_id" component={CreateCard} exact />
-      <Route path="/register" component={Register} exact />
-      <Route path="/settings" component={Settings} exact />
-      <Route path="/search" component={Search} exact />
-      <Route path="/my-profile/account-settings" component={Account} exact />
-      <Route path="/change-password" component={ChangePassword} exact />
-      <Route path="/community" component={Community} exact />
-      <Route path="/community/:post_id" component={PostDetail} exact />
-      <Route path="/dict" component={Dict} exact />
-      <Route path="/jlpt" component={Level} exact />
-      <Route path="/jlpt/:id" component={JlptExam} exact />
-      <Route path="/home" component={Home} exact />
-      <Route path="/home/my-courses" component={MyCourse} exact />
-      <Route path="/my-profile" component={MyProfile} exact />
-      <Route path="/users/:uid" component={UserProfile} exact />
-      <Route
-        path="/home/following-courses"
-        component={MyFollowingCourse}
-        exact
-      />
-      <Route path="/welcome" component={LandingPage} exact />
-    </IonRouterOutlet>
+    <>
+      {currentUser.user ? (
+        <IonRouterOutlet>
+          <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
+          <Route path="/login" component={Login} exact />
+          <Route path="/courses/:id" component={Course} exact />
+          <Route
+            path="/courses/:course_id/:lesson_id"
+            component={Lesson}
+            exact
+          />
+          <Route
+            path="/courses/:course_id/:lesson_id/study"
+            component={Learning}
+            exact
+          />
+          <Route
+            path="/courses/:course_id/:lesson_id/test"
+            component={Testing}
+            exact
+          />
+          <Route path="/course/create" component={CreateCourse} exact />
+          <Route path="/lesson/create" component={CreateLesson} exact />
+          <Route
+            path="/lesson/create/:course_id"
+            component={CreateCard}
+            exact
+          />
+          <Route path="/register" component={Register} exact />
+          <Route path="/settings" component={Settings} exact />
+          <Route path="/search" component={Search} exact />
+          <Route
+            path="/my-profile/account-settings"
+            component={Account}
+            exact
+          />
+          <Route path="/change-password" component={ChangePassword} exact />
+          <Route path="/community" component={Community} exact />
+          <Route path="/community/:post_id" component={PostDetail} exact />
+          <Route path="/dict" component={Dict} exact />
+          <Route path="/jlpt" component={Level} exact />
+          <Route path="/jlpt/:id" component={JlptExam} exact />
+          <Route path="/home" component={Home} exact />
+          <Route path="/home/my-courses" component={MyCourse} exact />
+          <Route path="/my-profile" component={MyProfile} exact />
+          <Route path="/users/:uid" component={UserProfile} exact />
+          <Route
+            path="/home/following-courses"
+            component={MyFollowingCourse}
+            exact
+          />
+          <Route path="/welcome" component={LandingPage} exact />
+        </IonRouterOutlet>
+      ) : (
+        <IonRouterOutlet>
+          <Redirect from="*" to="/welcome" />
+          <Route
+            path="/"
+            render={() => <Redirect to="/welcome" />}
+            exact={true}
+          />
+          <Route path="/welcome" component={LandingPage} exact />
+          <Route path="/login" component={Login} exact />
+          <Route path="/register" component={Register} exact />
+        </IonRouterOutlet>
+      )}
+    </>
   );
 };
 
