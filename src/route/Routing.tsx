@@ -28,6 +28,7 @@ import MyProfile from "../pages/profile/MyProfile";
 import Register from "../pages/register/Register";
 import Search from "../pages/search/Search";
 import { useSelector } from "react-redux";
+import OCR from "../pages/search/OCR";
 
 interface RootState {
   user: any;
@@ -89,6 +90,7 @@ const Routing: React.FC = () => {
             exact
           />
           <Route path="/welcome" component={LandingPage} exact />
+          <Route path="/ocr" component={OCR} exact />
         </IonRouterOutlet>
       ) : (
         <IonRouterOutlet>

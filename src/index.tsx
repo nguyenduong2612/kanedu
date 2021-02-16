@@ -8,11 +8,11 @@ import { isPlatform, setupConfig } from "@ionic/react";
 import { pageAnimation } from "./utils/pageAnimation";
 import { store } from "./redux/store";
 
-if (!isPlatform("desktop")) {
-  setupConfig({
-    navAnimation: pageAnimation,
-  });
-}
+// if (!isPlatform("desktop")) {
+//   setupConfig({
+//     navAnimation: pageAnimation,
+//   });
+// }
 
 ReactDOM.render(
   <Provider store={store}>

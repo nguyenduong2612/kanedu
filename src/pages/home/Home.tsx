@@ -13,6 +13,7 @@ import {
   IonButtons,
 } from "@ionic/react";
 import {
+  camera,
   chevronForward,
   notifications,
   notificationsOutline,
@@ -59,6 +60,13 @@ const Home: React.FC = () => {
                 slot="icon-only"
                 ios={notificationsOutline}
                 md={notifications}
+              />
+            </IonButton>
+            <IonButton routerLink="/ocr">
+              <IonIcon
+                color="light"
+                slot="icon-only"
+                icon={camera}
               />
             </IonButton>
 
