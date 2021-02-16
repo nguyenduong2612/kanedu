@@ -26,7 +26,6 @@ import {
   closeSharp,
 } from "ionicons/icons";
 import React, { useState } from "react";
-//import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { database } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
@@ -48,9 +47,6 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
   const [titleInput, setTitleInput] = useState<string>("");
   const [cardList, setCardList] = useState<any[]>([{ ...blankCard }]);
 
-  // const currentUser = useSelector((state: RootState) => state.user);
-  // const dispatch = useDispatch();
-
   const handleCardChange = (e: any, index: number, name: string) => {
     let updatedCards = [...cardList];
     updatedCards[index][name] = e.detail.value;
@@ -65,54 +61,6 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
     let updatedCards = [...cardList];
     updatedCards.splice(index, 1);
     setCardList(updatedCards);
-  };
-
-  const createTest = async (ref: any, res: any) => {
-    const docs = await ref.get();
-    const answerBank: object[] = [];
-
-    /* Create answer bank */
-    docs.forEach((doc: any) => {
-      let newAnswer = { id: doc.id, text: doc.data().meaning };
-      answerBank.push(newAnswer);
-    });
-
-    /* Create question with 1 correct and 3 random answers */
-    docs.forEach(async (doc: any) => {
-      let tempAnswerBank = [...answerBank];
-
-      let question = { id: doc.id, text: doc.data().keyword };
-      let correctIndex = tempAnswerBank.findIndex(
-        (answer: any) => answer.id === question.id
-      );
-      let correctAnswer = tempAnswerBank[correctIndex];
-
-      const answers: object[] = [];
-
-      answers.push(correctAnswer);
-      tempAnswerBank.splice(correctIndex, 1);
-
-      for (let i = 0; i < 3; i++) {
-        let randomIndex: number = Math.floor(
-          Math.random() * tempAnswerBank.length
-        );
-        let randomAnswer: object = tempAnswerBank[randomIndex];
-        answers.push(randomAnswer);
-        tempAnswerBank.splice(randomIndex, 1);
-      }
-
-      answers.sort(() => Math.random() - 0.5); // Shuffle
-
-      /* Add to database */
-      console.log({ question: question, answers: answers });
-      await database
-        .collection("courses")
-        .doc(match.params.course_id)
-        .collection("lessons")
-        .doc(res.id)
-        .collection("test")
-        .add({ question: question, answers: answers });
-    });
   };
 
   const handleSaveCards = async () => {
@@ -138,7 +86,6 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
       cardList.map(async (card: any) => {
         await ref.add(card);
       });
-      createTest(ref, res);
 
       toast("Tạo bài học thành công");
 

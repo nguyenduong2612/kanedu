@@ -4,8 +4,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 
-import { isPlatform, setupConfig } from "@ionic/react";
-import { pageAnimation } from "./utils/pageAnimation";
+// import { isPlatform, setupConfig } from "@ionic/react";
+// import { pageAnimation } from "./utils/pageAnimation";
 import { store } from "./redux/store";
 
 // if (!isPlatform("desktop")) {

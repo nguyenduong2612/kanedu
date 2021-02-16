@@ -22,7 +22,7 @@ import {
 } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import useAllQuestion from "../../hooks/lesson/useAllQuestion";
+import { database } from "../../config/firebaseConfig";
 import useTabbar from "../../hooks/useTabbar";
 import "./Testing.scss";
 
@@ -41,6 +41,7 @@ interface TestingPageProps extends RouteComponentProps<MatchParams> {}
 const Testing: React.FC<TestingPageProps> = ({ match }) => {
   const slidesRef = useRef<HTMLIonSlidesElement>(null);
 
+  const [questions, setQuestions] = useState<any[]>([]);
   const [correctAnsCounter, setCorrectAnsCounter] = useState<number>(0);
   const [wrongAnsCounter, setWrongAnsCounter] = useState<number>(0);
   const [answeredCounter, setAnsweredCounter] = useState<number>(0);
@@ -51,16 +52,68 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
 
   const courseId = match.params.course_id;
   const lessonId = match.params.lesson_id;
-  const allQues = useAllQuestion(courseId, lessonId);
 
   useEffect(() => {
-    if (
-      answeredCounter === allQues.numberOfQuestions &&
-      answeredCounter !== 0
-    ) {
+    if (answeredCounter === questions.length && answeredCounter !== 0) {
       setShowAlert(true);
     }
-  }, [answeredCounter, allQues.numberOfQuestions]);
+  }, [answeredCounter, questions]);
+
+  useEffect(() => {
+    const createTest = async () => {
+      const ref = database
+        .collection("courses")
+        .doc(courseId)
+        .collection("lessons")
+        .doc(lessonId)
+        .collection("cards");
+      const cards = await ref.get();
+      const answerBank: object[] = [];
+      const allQuestion: object[] = [];
+  
+      /* Create answer bank */
+      cards.forEach((doc: any) => {
+        let newAnswer = { id: doc.id, text: doc.data().meaning };
+        answerBank.push(newAnswer);
+      });
+  
+      /* Create question with 1 correct and 3 random answers */
+      cards.forEach(async (doc: any) => {
+        let tempAnswerBank = [...answerBank];
+  
+        let question = { id: doc.id, text: doc.data().keyword };
+        let correctIndex = tempAnswerBank.findIndex(
+          (answer: any) => answer.id === question.id
+        );
+        let correctAnswer = tempAnswerBank[correctIndex];
+  
+        const answers: object[] = [];
+  
+        answers.push(correctAnswer);
+        tempAnswerBank.splice(correctIndex, 1);
+  
+        for (let i = 0; i < 3; i++) {
+          let randomIndex: number = Math.floor(
+            Math.random() * tempAnswerBank.length
+          );
+          let randomAnswer: object = tempAnswerBank[randomIndex];
+          answers.push(randomAnswer);
+          tempAnswerBank.splice(randomIndex, 1);
+        }
+  
+        answers.sort(() => Math.random() - 0.5); // Shuffle
+  
+        /* Push to array */
+        allQuestion.push({ question: question, answers: answers });
+      });
+  
+      allQuestion.sort(() => Math.random() - 0.5); // Shuffle
+      setQuestions(allQuestion);
+    };
+
+    createTest();
+  }, [courseId, lessonId]);
+
 
   const handleClickAnswer = (
     questionId: string,
@@ -106,7 +159,7 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
             <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonTitle>
-            {answeredCounter} / {allQues.numberOfQuestions}
+            {answeredCounter} / {questions.length}
           </IonTitle>
           <div className="test-result" slot="end">
             <IonRow>
@@ -139,17 +192,17 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
           cssClass="test-alert"
           onDidDismiss={() => setShowAlert(false)}
           header={"Thông báo"}
-          message={`Điểm số: ${correctAnsCounter}/${allQues.numberOfQuestions}`}
+          message={`Điểm số: ${correctAnsCounter}/${questions.length}`}
           buttons={["Xác nhận"]}
         />
         <>
-          {allQues.questions.length > 0 && (
+          {questions.length > 0 && (
             <IonSlides
               ref={slidesRef}
               options={slideOpts}
               style={{ height: "100%" }}
             >
-              {allQues.questions.map((item: any, slideIndex: number) => {
+              {questions.map((item: any, slideIndex: number) => {
                 return (
                   <IonSlide key={slideIndex}>
                     <IonContent>
