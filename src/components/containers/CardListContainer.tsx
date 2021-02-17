@@ -35,7 +35,7 @@ const CardListContainer: React.FC<CardListContainerProps> = ({
   return (
     <>
       {cardList.length > 0 && (
-        <IonSlides options={slideOpts} style={{ height: "100%" }}>
+        <IonSlides options={slideOpts} className="card-list__slides">
           {cardList.map((card: any, index: number) => {
             return (
               <IonSlide key={index}>

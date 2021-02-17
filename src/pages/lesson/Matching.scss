@@ -1,0 +1,24 @@
+.card-row {
+  margin: 5px 0px;
+  .card-wrapper {
+    height: calc(calc(100vh - 150px) / 4);
+    overflow: hidden;
+    margin: 2px 5px;
+    padding: 0;
+    --border-radius: 10px;
+    .card-wrapper__text {
+      min-width: 140%;
+      padding: 10px;
+      p {
+        white-space: initial;
+      }
+    }
+  }
+}
+
+.alert {
+  .alert-wrapper {
+    --width: 90%;
+    --max-width: 450px;
+  }
+}

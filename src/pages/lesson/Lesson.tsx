@@ -15,10 +15,12 @@ import {
   IonCardSubtitle,
 } from "@ionic/react";
 import {
+  book,
   bookOutline,
-  bookSharp,
+  gameController,
+  gameControllerOutline,
+  pencil,
   pencilOutline,
-  pencilSharp,
 } from "ionicons/icons";
 import React, { lazy } from "react";
 import { RouteComponentProps } from "react-router";
@@ -72,10 +74,10 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
             </IonRow>
             <IonRow className="padding-x">
               <p className="lesson-info__size">
-              {lesson.numberOfCards} từ vựng
+                {lesson.numberOfCards} từ vựng
               </p>
             </IonRow>
-            <IonRow>
+            <IonRow className="lesson-info__row">
               <IonCol>
                 <IonCard
                   className="menu-button"
@@ -83,7 +85,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
                   routerLink={`/courses/${courseId}/${lessonId}/study`}
                 >
                   <IonCardHeader className="menu-icon">
-                    <IonIcon ios={bookOutline} md={bookSharp} />
+                    <IonIcon ios={bookOutline} md={book} />
                   </IonCardHeader>
                   <IonCardSubtitle className="menu-title">Học</IonCardSubtitle>
                 </IonCard>
@@ -95,10 +97,24 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
                   routerLink={`/courses/${courseId}/${lessonId}/test`}
                 >
                   <IonCardHeader className="menu-icon">
-                    <IonIcon ios={pencilOutline} md={pencilSharp} />
+                    <IonIcon ios={pencilOutline} md={pencil} />
                   </IonCardHeader>
                   <IonCardSubtitle className="menu-title">
                     Kiểm tra
+                  </IonCardSubtitle>
+                </IonCard>
+              </IonCol>
+              <IonCol>
+                <IonCard
+                  className="menu-button"
+                  button={true}
+                  routerLink={`/courses/${courseId}/${lessonId}/match`}
+                >
+                  <IonCardHeader className="menu-icon">
+                    <IonIcon ios={gameControllerOutline} md={gameController} />
+                  </IonCardHeader>
+                  <IonCardSubtitle className="menu-title">
+                    Ghép thẻ
                   </IonCardSubtitle>
                 </IonCard>
               </IonCol>

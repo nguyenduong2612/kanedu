@@ -169,7 +169,7 @@ const JlptExam: React.FC<JlptExamPageProps> = ({ match }) => {
   };
 
   return (
-    <IonPage>
+    <IonPage className="pd-0">
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonButtons slot="start">

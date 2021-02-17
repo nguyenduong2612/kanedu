@@ -10,8 +10,11 @@
   .lesson-info__size {
     font-size: var(--ion-font-size-13);
   }
+  .lesson-info__row {
+    padding: 0 10px;
+  }
   .menu-button {
-    width: 85%;
+    width: 95%;
     margin: auto;
     border-bottom: solid 5px #b589c9;
     .menu-icon {

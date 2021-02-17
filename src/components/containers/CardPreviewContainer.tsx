@@ -33,7 +33,7 @@ const CardPreviewContainer: React.FC<CardPreviewContainerProps> = ({
   return (
     <>
       {cardPreview.length > 0 && (
-        <IonSlides options={slideOpts} style={{ height: "100%" }}>
+        <IonSlides options={slideOpts} className="card-list__slides">
           {cardPreview.map((card: any, index: number) => {
             return (
               <IonSlide key={index}>

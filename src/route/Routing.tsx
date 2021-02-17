@@ -29,6 +29,7 @@ import Register from "../pages/register/Register";
 import Search from "../pages/search/Search";
 import { useSelector } from "react-redux";
 import OCR from "../pages/search/OCR";
+import Matching from "../pages/lesson/Matching";
 
 interface RootState {
   user: any;
@@ -57,6 +58,11 @@ const Routing: React.FC = () => {
           <Route
             path="/courses/:course_id/:lesson_id/test"
             component={Testing}
+            exact
+          />
+          <Route
+            path="/courses/:course_id/:lesson_id/match"
+            component={Matching}
             exact
           />
           <Route path="/course/create" component={CreateCourse} exact />

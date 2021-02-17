@@ -66,6 +66,9 @@ ion-refresher.refresher-native {
 .ion-page {
   padding-bottom: 65px;
 }
+.pd-0 {
+  padding-bottom: 0px;
+}
 
 .alert-message {
   text-align: center;
