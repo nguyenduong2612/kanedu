@@ -1,0 +1,56 @@
+.rank-number__wrapper {
+  height: 50px;
+  text-align: center;
+  .rank-number__number {
+    display: block;
+    font-size: var(--ion-font-size-36);
+    padding-top: 5px;
+    color: #aaa;
+  }
+  #rank-1 {
+    color: #ffda36;
+  }
+  #rank-2 {
+    color: #3ba3a5;
+  }
+  #rank-3 {
+    color: #cd7f32;
+  }
+}
+
+.rank-info__wrapper {
+  padding: 0 13px;
+  margin: 10px 0;
+  border-left: 2px solid #ccc;
+  .rank-info__img {
+    border-radius: 50%;
+    width: 45px;
+  }
+  .rank-info__name {
+    display: inline-block;
+    max-width: 50%;
+    position: absolute;
+    top: 2px;
+    padding-left: 15px;
+    font-size: var(--ion-font-size-14);
+  }
+  .rank-info__exp {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: var(--ion-font-size-18);
+  }
+}
+
+#rank-1-card {
+  border: 2px solid #feca36;
+}
+
+#rank-2-card {
+  border: 2px solid #3ba3a5;
+}
+
+#rank-3-card {
+  border: 2px solid #cd7f32;
+}
