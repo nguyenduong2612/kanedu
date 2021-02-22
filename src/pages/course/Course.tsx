@@ -14,6 +14,7 @@ import {
   IonItemDivider,
   IonLabel,
   IonText,
+  IonAlert,
 } from "@ionic/react";
 import {
   ellipsisVertical,
@@ -32,6 +33,7 @@ import Refresher from "../../components/Refresher";
 import useCourse from "../../hooks/course/useCourse";
 import { Post } from "../../models/Post";
 import {
+  deleteCourse,
   followCourse,
   unfollowCourse,
 } from "../../redux/courses/courses.actions";
@@ -55,9 +57,12 @@ interface CoursePageProps extends RouteComponentProps<MatchParams> {}
 const Course: React.FC<CoursePageProps> = ({ match }) => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   const currentUser = useSelector((state: RootState) => state.user);
-  const { followingCourses } = useSelector((state: RootState) => state.courses);
+  const { followingCourses, createdCourses } = useSelector(
+    (state: RootState) => state.courses
+  );
   const courseId = match.params.id;
 
   const course = useCourse(courseId);
@@ -105,6 +110,17 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
     setShowShareModal(false);
   };
 
+  const handleDeleteCourse = () => {
+    setShowAlert(true);
+    setShowPopover(false);
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(deleteCourse(createdCourses, courseId, currentUser.user.uid))
+    toast("Đã xóa khóa học");
+    window.history.back();
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -141,6 +157,21 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
                 <IonItem onClick={handleShowShareModal} lines="none">
                   Chia sẻ
                 </IonItem>
+                {createdCourses.filter((course: any) => course.id === courseId)
+                  .length > 0 && (
+                  <>
+                    <IonItem
+                      onClick={() => setShowPopover(false)}
+                      routerLink={`/edit/${courseId}`}
+                      lines="none"
+                    >
+                      Chỉnh sửa
+                    </IonItem>
+                    <IonItem onClick={handleDeleteCourse} lines="none">
+                      <span className="text--red">Xóa khóa học</span>
+                    </IonItem>
+                  </>
+                )}
               </IonList>
             </IonPopover>
           </IonButtons>
@@ -179,6 +210,21 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
         isOpen={showShareModal}
         handleCloseShareModal={handleCloseShareModal}
         handleShare={handleShare}
+      />
+      <IonAlert
+        isOpen={showAlert}
+        cssClass="alert"
+        onDidDismiss={() => setShowAlert(false)}
+        header={"Chú ý"}
+        message={`Xác nhận xóa khóa học này. Thao tác này không thể hoàn tác.`}
+        buttons={[
+          {
+            text: "Xác nhận",
+            role: "confirm",
+            cssClass: "text--red",
+            handler: handleConfirmDelete,
+          },
+        ]}
       />
     </IonPage>
   );

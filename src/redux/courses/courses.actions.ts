@@ -1,6 +1,6 @@
 import * as firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
-import { algoliaUpdateCourse } from "../../helpers/algoliaHelper";
+import { algoliaDeleteCourse, algoliaUpdateCourse } from "../../helpers/algoliaHelper";
 import { store } from "../store";
 import {
   GET_CREATED_COURSES_STARTED,
@@ -18,6 +18,9 @@ import {
   CREATE_COURSE_FAILED,
   CREATE_COURSE_STARTED,
   CREATE_COURSE_SUCCESS,
+  DELETE_COURSE_FAILED,
+  DELETE_COURSE_STARTED,
+  DELETE_COURSE_SUCCESS,
 } from "./courses.types";
 
 export const getCreatedCourses = (userId: string) => {
@@ -211,6 +214,44 @@ export const createCourse = (course: any, userId: string) => {
       dispatch(createCourseSuccess(course));
     } catch (error) {
       dispatch(createCourseFailed);
+    }
+  };
+};
+
+export const deleteCourse = (createdCourse: any, courseId: string, userId: string) => {
+  const deleteCourseStarted = () => ({
+    type: DELETE_COURSE_STARTED,
+  });
+
+  const deleteCourseSuccess = (courseIndex: number) => ({
+    type: DELETE_COURSE_SUCCESS,
+    payload: courseIndex,
+  });
+
+  const deleteCourseFailed = () => ({
+    type: DELETE_COURSE_FAILED,
+  });
+
+  return async (dispatch: typeof store.dispatch) => {
+    dispatch(deleteCourseStarted);
+    try {
+      await database.collection("courses").doc(courseId).delete();
+
+      if (await algoliaDeleteCourse(courseId))
+        console.log("delete algolia ok");
+
+      let userRef = database.collection("users").doc(userId);
+      userRef.update({
+        created_courses: firebase.firestore.FieldValue.arrayRemove(courseId),
+      });
+   
+      let courseIndex = createdCourse.findIndex(
+        (course: any) => course.id === courseId
+      );
+
+      dispatch(deleteCourseSuccess(courseIndex));
+    } catch (error) {
+      dispatch(deleteCourseFailed);
     }
   };
 };

@@ -70,13 +70,17 @@ ion-refresher.refresher-native {
   padding-bottom: 0px;
 }
 
-.alert-message {
+.achievement-popup .alert-message {
   text-align: center;
 }
-.alert-message > img {
+.achievement-popup .alert-message > img {
   width: 75%;
   margin: auto;
 }
-.alert-message > p {
+.achievement-popup .alert-message > p {
   margin-bottom: 0;
+}
+
+.text--red {
+  color: red;
 }

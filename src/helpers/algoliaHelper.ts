@@ -14,6 +14,16 @@ export async function algoliaUpdateCourse(course: any, objectID: string) {
   }
 }
 
+export async function algoliaDeleteCourse(objectID: string) {
+  try {
+    await coursesIndex.deleteObject(objectID);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 export async function algoliaUpdatePost(post: any, objectID: string) {
   try {
     await postsIndex.saveObject(Object.assign({}, { objectID }, post))

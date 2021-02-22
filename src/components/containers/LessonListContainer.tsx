@@ -1,6 +1,6 @@
 import { IonCard, IonCardHeader, IonCardTitle, IonItem } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import { database } from "../../config/firebaseConfig";
+import React from "react";
+import useAllLessons from "../../hooks/lesson/useAllLessons";
 import ErrorPage from "../error_pages/ErrorPage";
 import "./LessonListContainer.scss";
 
@@ -13,36 +13,15 @@ const LessonListContainer: React.FC<LessonListContainerProps> = ({
   author,
   courseId,
 }: LessonListContainerProps) => {
-  const [lessonList, setLessonList] = useState<any[]>([]);
-  const [isEmpty, setIsEmpty] = useState<boolean>();
-
-  useEffect(() => {
-    async function getAllLesson() {
-      const ref = database
-        .collection("courses")
-        .doc(courseId)
-        .collection("lessons");
-      const docs = await ref.orderBy("created_at", "asc").get();
-      if (docs.empty) {
-        console.log("No such document!");
-        setIsEmpty(true);
-      } else {
-        docs.forEach((doc) => {
-          setLessonList((lessonList) => [...lessonList, doc]);
-        });
-      }
-    }
-
-    getAllLesson();
-  }, [courseId]);
+  const lessons = useAllLessons(courseId);
 
   return (
     <>
-      {isEmpty ? (
+      {lessons.isEmpty ? (
         <ErrorPage>Không có bài học</ErrorPage>
       ) : (
         <div className="lesson-list-wrapper">
-          {lessonList.map((lesson: any, index: number) => {
+          {lessons.lessonList.map((lesson: any, index: number) => {
             return (
               <IonItem
                 lines="none"
@@ -53,11 +32,11 @@ const LessonListContainer: React.FC<LessonListContainerProps> = ({
                   <IonCardHeader>
                     <IonCardTitle>
                       <span className="lesson-wrapper__title">
-                        {lesson.data().title}
+                        {lesson.title}
                       </span>
                       <br />
                       <span className="lesson-wrapper__size">
-                        {lesson.data().numberOfCards} từ vựng
+                        {lesson.numberOfCards} từ vựng
                       </span>
                     </IonCardTitle>
                   </IonCardHeader>

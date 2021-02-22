@@ -30,6 +30,8 @@ import Search from "../pages/search/Search";
 import { useSelector } from "react-redux";
 import OCR from "../pages/search/OCR";
 import Matching from "../pages/lesson/Matching";
+import Ranking from "../pages/ranking/Ranking";
+import CourseEdit from "../pages/course/CourseEdit";
 
 interface RootState {
   user: any;
@@ -45,6 +47,7 @@ const Routing: React.FC = () => {
           <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
           <Route path="/login" component={Login} exact />
           <Route path="/courses/:id" component={Course} exact />
+          <Route path="/edit/:course_id/" component={CourseEdit} exact />
           <Route
             path="/courses/:course_id/:lesson_id"
             component={Lesson}
@@ -97,6 +100,7 @@ const Routing: React.FC = () => {
           />
           <Route path="/welcome" component={LandingPage} exact />
           <Route path="/ocr" component={OCR} exact />
+          <Route path="/ranking" component={Ranking} exact />
         </IonRouterOutlet>
       ) : (
         <IonRouterOutlet>

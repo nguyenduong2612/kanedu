@@ -30,6 +30,7 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
 
   const courseId = match.params.course_id;
   const lessonId = match.params.lesson_id;
+
   let clickedCards: Array<any> = [];
   const [cards, setCards] = useState<any[]>([]);
   const [correctCount, setCorrectCount] = useState<number>(0);
@@ -106,6 +107,7 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
 
     clickedCard?.classList.add("ion-color");
     clickedCard?.classList.add("ion-color-warning");
+    clickedCard?.classList.add("button-disabled");
   };
 
   const matched = () => {
@@ -118,12 +120,7 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
       matchedCard?.classList.add("ion-color");
       matchedCard?.classList.remove("ion-color-warning");
       matchedCard?.classList.add("ion-color-success");
-      // let answerBtns = document.getElementsByClassName(
-      //   `ion-color-success`
-      // );
-      // Array.prototype.forEach.call(answerBtns, function (answerBtn) {
-      //   answerBtn?.classList.add("disabled");
-      // });
+      disableButton();
     }
 
     clickedCards = [];
@@ -136,8 +133,9 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
     for (let i = 0; i < clickedCards.length; i++) {
       let unmatchedCard = document.getElementById(clickedCards[i].elemId);
 
-      unmatchedCard?.classList.add("ion-color");
+      unmatchedCard?.classList.remove("button-disabled");
       unmatchedCard?.classList.remove("ion-color-warning");
+      unmatchedCard?.classList.add("ion-color");
       unmatchedCard?.classList.add("ion-color-danger");
     }
 
@@ -151,6 +149,13 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
     }, 1100);
 
     clickedCards = [];
+  };
+
+  const disableButton = () => {
+    let buttons = document.getElementsByClassName(`ion-color-success`);
+    Array.prototype.forEach.call(buttons, function (btn) {
+      btn?.classList.add("button-disabled");
+    });
   };
 
   return (

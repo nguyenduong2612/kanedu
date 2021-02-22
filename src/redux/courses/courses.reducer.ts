@@ -14,6 +14,9 @@ import {
   CREATE_COURSE_FAILED,
   CREATE_COURSE_STARTED,
   CREATE_COURSE_SUCCESS,
+  DELETE_COURSE_FAILED,
+  DELETE_COURSE_STARTED,
+  DELETE_COURSE_SUCCESS,
 } from "./courses.types";
 
 const initialState = {
@@ -109,6 +112,26 @@ export const coursesReducer = (state = initialState, action: any) => {
         isLoading: false,
       };
     case CREATE_COURSE_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case DELETE_COURSE_STARTED:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case DELETE_COURSE_SUCCESS:
+      return {
+        ...state,
+        createdCourses: [
+          ...state.createdCourses.slice(0, action.payload),
+          ...state.createdCourses.slice(action.payload + 1),
+        ],
+        isLoading: false,
+      };
+    case DELETE_COURSE_FAILED:
       return {
         ...state,
         isLoading: false,
