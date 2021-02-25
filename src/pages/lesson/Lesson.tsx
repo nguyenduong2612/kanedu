@@ -24,7 +24,8 @@ import {
 } from "ionicons/icons";
 import React, { lazy } from "react";
 import { RouteComponentProps } from "react-router";
-import Refresher from "../../components/Refresher";
+import Refresher from "../../components/utils/Refresher";
+import Skeleton from "../../components/utils/Skeleton";
 import useLesson from "../../hooks/lesson/useLesson";
 import "./Lesson.scss";
 
@@ -69,14 +70,21 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
         </div>
         <div className="lesson-info">
           <IonGrid>
-            <IonRow className="padding-x">
-              <h1 className="lesson-info__title">{lesson.title}</h1>
-            </IonRow>
-            <IonRow className="padding-x">
-              <p className="lesson-info__size">
-                {lesson.numberOfCards} từ vựng
-              </p>
-            </IonRow>
+            {lesson.isLoaded ? (
+              <>
+                <IonRow className="padding-x">
+                  <h1 className="lesson-info__title">{lesson.title}</h1>
+                </IonRow>
+                <IonRow className="padding-x">
+                  <p className="lesson-info__size">
+                    {lesson.numberOfCards} từ vựng
+                  </p>
+                </IonRow>
+              </>
+            ) : (
+              <Skeleton />
+            )}
+
             <IonRow className="lesson-info__row">
               <IonCol>
                 <IonCard

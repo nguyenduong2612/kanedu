@@ -29,7 +29,7 @@ import { RouteComponentProps } from "react-router";
 import { toast } from "../../utils/toast";
 import "./Course.scss";
 import ShareModal from "../../components/modals/ShareModal";
-import Refresher from "../../components/Refresher";
+import Refresher from "../../components/utils/Refresher";
 import useCourse from "../../hooks/course/useCourse";
 import { Post } from "../../models/Post";
 import {
@@ -38,6 +38,7 @@ import {
   unfollowCourse,
 } from "../../redux/courses/courses.actions";
 import { savePost } from "../../redux/post/post.actions";
+import Skeleton from "../../components/utils/Skeleton";
 
 const LessonListContainer = lazy(
   () => import("../../components/containers/LessonListContainer")
@@ -116,7 +117,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   };
 
   const handleConfirmDelete = () => {
-    dispatch(deleteCourse(createdCourses, courseId, currentUser.user.uid))
+    dispatch(deleteCourse(createdCourses, courseId, currentUser.user.uid));
     toast("Đã xóa khóa học");
     window.history.back();
   };
@@ -180,25 +181,29 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
 
       <IonContent fullscreen>
         <Refresher />
-        <IonList className="course-info">
-          <IonItem lines="none">
-            <IonIcon icon={personCircle}></IonIcon>
-            <IonText className="course-info__text">
-              Được tạo bởi {course.author}
-            </IonText>
-          </IonItem>
-          <IonItem lines="none">
-            <IonIcon icon={heart}></IonIcon>
-            <IonText className="course-info__text">
-              {course.countFollowers ? course.countFollowers : 0} người theo dõi
-              khóa học này
-            </IonText>
-          </IonItem>
-          <IonItem lines="none">
-            <IonIcon icon={shareSocial}></IonIcon>
-            <IonText className="course-info__text">0 lượt chia sẻ</IonText>
-          </IonItem>
-        </IonList>
+        {course.isLoaded ? (
+          <IonList className="course-info">
+            <IonItem lines="none">
+              <IonIcon icon={personCircle}></IonIcon>
+              <IonText className="course-info__text">
+                Được tạo bởi {course.author}
+              </IonText>
+            </IonItem>
+            <IonItem lines="none">
+              <IonIcon icon={heart}></IonIcon>
+              <IonText className="course-info__text">
+                {course.countFollowers ? course.countFollowers : 0} người theo
+                dõi khóa học này
+              </IonText>
+            </IonItem>
+            <IonItem lines="none">
+              <IonIcon icon={shareSocial}></IonIcon>
+              <IonText className="course-info__text">0 lượt chia sẻ</IonText>
+            </IonItem>
+          </IonList>
+        ) : (
+          <Skeleton />
+        )}
 
         <IonItemDivider mode="md">
           <IonLabel color="dark">Danh sách bài học</IonLabel>

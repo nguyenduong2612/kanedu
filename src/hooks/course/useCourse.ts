@@ -14,6 +14,8 @@ function useCourse(courseId: string) {
   const [followingCourseIndex, setFollowingCourseIndex] = useState<number>(-1);
   const [isFollowed, setIsFollowed] = useState<boolean>();
 
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
   const { followingCourses } = useSelector((state: RootState) => state.courses);
 
   useEffect(() => {
@@ -38,6 +40,8 @@ function useCourse(courseId: string) {
           setIsFollowed(true);
         }
       }
+
+      setIsLoaded(true)
     }
 
     getInfo();
@@ -50,12 +54,14 @@ function useCourse(courseId: string) {
     countFollowers,
     followingCourseIndex,
     isFollowed,
+    isLoaded,
     setName,
     setAuthor,
     setAuthorId,
     setCountFollowers,
     setFollowingCourseIndex,
-    setIsFollowed
+    setIsFollowed,
+    setIsLoaded
   }
 }
 

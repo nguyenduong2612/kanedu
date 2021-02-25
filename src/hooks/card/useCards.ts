@@ -4,6 +4,7 @@ import { database } from "../../config/firebaseConfig";
 function useCards(courseId: string, lessonId: string) {
   const [cardList, setCardList] = useState<any[]>([]);
   const [cardPreview, setCardPreview] = useState<any[]>([]);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     async function getCards() {
@@ -18,17 +19,26 @@ function useCards(courseId: string, lessonId: string) {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
-          setCardList((cardList) => [...cardList, doc]);
+          let card = {
+            id: doc.id,
+            ...doc.data()
+          }
+          setCardList((cardList) => [...cardList, card]);
         });
 
-        let previewCount = 0
+        let previewCount = 0;
         docs.forEach((doc) => {
-          previewCount++
-          setCardPreview((cardPreview) => [...cardPreview, doc]);
-          if (previewCount === 3) return
+          previewCount++;
+          let card = {
+            id: doc.id,
+            ...doc.data()
+          }
+          setCardPreview((cardPreview) => [...cardPreview, card]);
+          if (previewCount === 3) return;
         });
-
       }
+
+      setIsLoaded(true);
     }
 
     getCards();
@@ -37,8 +47,10 @@ function useCards(courseId: string, lessonId: string) {
   return {
     cardList,
     setCardList,
+    isLoaded,
     cardPreview,
-    setCardPreview
+    setCardPreview,
+    setIsLoaded
   };
 }
 

@@ -21,7 +21,7 @@ import "./Account.scss";
 import { database, storage } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
 import { camera } from "ionicons/icons";
-import Refresher from "../../components/Refresher";
+import Refresher from "../../components/utils/Refresher";
 import { addAchievement } from "../../helpers/achievementHelper";
 import { verifyEmail } from "../../helpers/firebaseHelper";
 

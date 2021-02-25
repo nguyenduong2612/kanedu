@@ -79,4 +79,27 @@
 .card-list__slides {
   height: 100%;
   background-image: linear-gradient(#b589c9, #ffffff);
+  background-size: 100% 90%;
+  background-repeat: no-repeat;
+}
+
+.learning-page__button-row {
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  bottom: -1vh;
+  text-align: center;
+  .learning-page__button {
+    height: 90px;
+    width: 130px;
+    .learning-page__button-text {
+      padding-top: 10px;
+      p {
+        font-weight: bold;
+      }
+    }
+    ion-icon {
+      font-size: 34px;
+    }
+  }
 }

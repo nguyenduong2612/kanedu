@@ -1,7 +1,8 @@
-import { IonCard, IonCardHeader, IonCardTitle, IonItem } from "@ionic/react";
+import { IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
 import React from "react";
 import useAllLessons from "../../hooks/lesson/useAllLessons";
 import ErrorPage from "../error_pages/ErrorPage";
+import Spinner from "../utils/Spinner";
 import "./LessonListContainer.scss";
 
 interface LessonListContainerProps {
@@ -19,32 +20,33 @@ const LessonListContainer: React.FC<LessonListContainerProps> = ({
     <>
       {lessons.isEmpty ? (
         <ErrorPage>Không có bài học</ErrorPage>
-      ) : (
+      ) : lessons.isLoaded ? (
         <div className="lesson-list-wrapper">
           {lessons.lessonList.map((lesson: any, index: number) => {
             return (
-              <IonItem
-                lines="none"
+              <IonCard
                 key={index}
+                mode="md"
+                className="lesson-wrapper"
                 routerLink={`/courses/${courseId}/${lesson.id}`}
               >
-                <IonCard mode="md" className="lesson-wrapper">
-                  <IonCardHeader>
-                    <IonCardTitle>
-                      <span className="lesson-wrapper__title">
-                        {lesson.title}
-                      </span>
-                      <br />
-                      <span className="lesson-wrapper__size">
-                        {lesson.numberOfCards} từ vựng
-                      </span>
-                    </IonCardTitle>
-                  </IonCardHeader>
-                </IonCard>
-              </IonItem>
+                <IonCardHeader>
+                  <IonCardTitle>
+                    <span className="lesson-wrapper__title">
+                      {lesson.title}
+                    </span>
+                    <br />
+                    <span className="lesson-wrapper__size">
+                      {lesson.numberOfCards} từ vựng
+                    </span>
+                  </IonCardTitle>
+                </IonCardHeader>
+              </IonCard>
             );
           })}
         </div>
+      ) : (
+        <Spinner />
       )}
     </>
   );

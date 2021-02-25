@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 import HintContainer from "../../components/containers/HintContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import NotificationsModal from "../../components/modals/NotificationsModal";
-import Refresher from "../../components/Refresher";
+import Refresher from "../../components/utils/Refresher";
 import "./Home.scss";
 
 const CourseContainer = lazy(

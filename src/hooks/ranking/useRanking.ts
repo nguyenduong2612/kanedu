@@ -3,6 +3,7 @@ import { database } from "../../config/firebaseConfig";
 
 function useRanking() {
   const [topten, setTopten] = useState<any[]>([]);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     async function getTopten() {
@@ -19,6 +20,8 @@ function useRanking() {
           setTopten((topten) => [...topten, user]);
         });
       }
+
+      setIsLoaded(true);
     }
 
     getTopten();
@@ -26,6 +29,7 @@ function useRanking() {
 
   return {
     topten,
+    isLoaded,
     setTopten
   };
 }

@@ -22,6 +22,7 @@ import {
 } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router";
+import Spinner from "../../components/utils/Spinner";
 import { database } from "../../config/firebaseConfig";
 import useTabbar from "../../hooks/useTabbar";
 import "./Testing.scss";
@@ -47,6 +48,7 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
   const [answeredCounter, setAnsweredCounter] = useState<number>(0);
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useTabbar();
 
@@ -70,28 +72,28 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
       const cards = await ref.get();
       const answerBank: object[] = [];
       const allQuestion: object[] = [];
-  
+
       /* Create answer bank */
       cards.forEach((doc: any) => {
         let newAnswer = { id: doc.id, text: doc.data().meaning };
         answerBank.push(newAnswer);
       });
-  
+
       /* Create question with 1 correct and 3 random answers */
       cards.forEach(async (doc: any) => {
         let tempAnswerBank = [...answerBank];
-  
+
         let question = { id: doc.id, text: doc.data().keyword };
         let correctIndex = tempAnswerBank.findIndex(
           (answer: any) => answer.id === question.id
         );
         let correctAnswer = tempAnswerBank[correctIndex];
-  
+
         const answers: object[] = [];
-  
+
         answers.push(correctAnswer);
         tempAnswerBank.splice(correctIndex, 1);
-  
+
         for (let i = 0; i < 3; i++) {
           let randomIndex: number = Math.floor(
             Math.random() * tempAnswerBank.length
@@ -100,20 +102,21 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
           answers.push(randomAnswer);
           tempAnswerBank.splice(randomIndex, 1);
         }
-  
+
         answers.sort(() => Math.random() - 0.5); // Shuffle
-  
+
         /* Push to array */
         allQuestion.push({ question: question, answers: answers });
       });
-  
+
       allQuestion.sort(() => Math.random() - 0.5); // Shuffle
       setQuestions(allQuestion);
+
+      setIsLoaded(true);
     };
 
     createTest();
   }, [courseId, lessonId]);
-
 
   const handleClickAnswer = (
     questionId: string,
@@ -196,52 +199,56 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
           buttons={["Xác nhận"]}
         />
         <>
-          {questions.length > 0 && (
-            <IonSlides
-              ref={slidesRef}
-              options={slideOpts}
-              style={{ height: "100%" }}
-            >
-              {questions.map((item: any, slideIndex: number) => {
-                return (
-                  <IonSlide key={slideIndex}>
-                    <IonContent>
-                      <div className="main-wrapper">
-                        <div className="question-wrapper">
-                          <h2>{item.question.text}</h2>
-                        </div>
+          {isLoaded ? (
+            questions.length > 0 && (
+              <IonSlides
+                ref={slidesRef}
+                options={slideOpts}
+                style={{ height: "100%" }}
+              >
+                {questions.map((item: any, slideIndex: number) => {
+                  return (
+                    <IonSlide key={slideIndex}>
+                      <IonContent>
+                        <div className="main-wrapper">
+                          <div className="question-wrapper">
+                            <h2>{item.question.text}</h2>
+                          </div>
 
-                        <div className="answers-wrapper">
-                          {item.answers.map(
-                            (answer: any, answerIndex: number) => {
-                              return (
-                                <IonButton
-                                  key={answerIndex}
-                                  id={`${slideIndex}+${answer.id}`}
-                                  className={`${slideIndex}-answer-btn answer-btn`}
-                                  onClick={() =>
-                                    handleClickAnswer(
-                                      item.question.id,
-                                      answer.id,
-                                      slideIndex
-                                    )
-                                  }
-                                  expand="block"
-                                  fill="outline"
-                                  mode="md"
-                                >
-                                  <b>{answer.text}</b>
-                                </IonButton>
-                              );
-                            }
-                          )}
+                          <div className="answers-wrapper">
+                            {item.answers.map(
+                              (answer: any, answerIndex: number) => {
+                                return (
+                                  <IonButton
+                                    key={answerIndex}
+                                    id={`${slideIndex}+${answer.id}`}
+                                    className={`${slideIndex}-answer-btn answer-btn`}
+                                    onClick={() =>
+                                      handleClickAnswer(
+                                        item.question.id,
+                                        answer.id,
+                                        slideIndex
+                                      )
+                                    }
+                                    expand="block"
+                                    fill="outline"
+                                    mode="md"
+                                  >
+                                    <b>{answer.text}</b>
+                                  </IonButton>
+                                );
+                              }
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    </IonContent>
-                  </IonSlide>
-                );
-              })}
-            </IonSlides>
+                      </IonContent>
+                    </IonSlide>
+                  );
+                })}
+              </IonSlides>
+            )
+          ) : (
+            <Spinner />
           )}
         </>
       </IonContent>

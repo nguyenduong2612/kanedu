@@ -4,6 +4,7 @@ import { database } from "../../config/firebaseConfig";
 function useAllLessons(courseId: string) {
   const [lessonList, setLessonList] = useState<any[]>([]);
   const [isEmpty, setIsEmpty] = useState<boolean>();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     async function getAllLesson() {
@@ -24,6 +25,8 @@ function useAllLessons(courseId: string) {
           setLessonList((lessonList) => [...lessonList, lesson]);
         });
       }
+
+      setIsLoaded(true);
     }
 
     getAllLesson();
@@ -32,8 +35,10 @@ function useAllLessons(courseId: string) {
   return {
     lessonList,
     isEmpty,
+    isLoaded,
     setLessonList,
     setIsEmpty,
+    setIsLoaded
   };
 }
 

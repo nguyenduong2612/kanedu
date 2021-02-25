@@ -4,6 +4,7 @@ import { database } from "../../config/firebaseConfig";
 function useLesson(courseId: string, lessonId: string) {
   const [title, setTitle] = useState<string>("");
   const [numberOfCards, setNumberOfCards] = useState<number>();
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     async function getInfo() {
@@ -16,9 +17,11 @@ function useLesson(courseId: string, lessonId: string) {
       if (!lesson.exists) {
         console.log("No such document!");
       } else {
-        setTitle(lesson.data().title)
+        setTitle(lesson.data().title);
         setNumberOfCards(lesson.data().numberOfCards);
       }
+
+      setIsLoaded(true);
     }
 
     getInfo();
@@ -27,8 +30,10 @@ function useLesson(courseId: string, lessonId: string) {
   return {
     title,
     numberOfCards,
+    isLoaded,
     setTitle,
     setNumberOfCards,
+    setIsLoaded
   };
 }
 

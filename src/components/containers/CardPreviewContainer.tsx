@@ -10,6 +10,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import useCards from "../../hooks/card/useCards";
+import Spinner from "../utils/Spinner";
 import "./CardListContainer.scss";
 
 interface CardPreviewContainerProps {
@@ -27,57 +28,63 @@ const CardPreviewContainer: React.FC<CardPreviewContainerProps> = ({
   lessonId,
 }: CardPreviewContainerProps) => {
   const flipped: boolean = false;
-  
-  const cardPreview = useCards(courseId, lessonId).cardPreview;
+
+  const { cardPreview, isLoaded } = useCards(courseId, lessonId);
 
   return (
     <>
-      {cardPreview.length > 0 && (
-        <IonSlides options={slideOpts} className="card-list__slides">
-          {cardPreview.map((card: any, index: number) => {
-            return (
-              <IonSlide key={index}>
-                <div
-                  className={
-                    flipped ? "flip-container flipped" : "flip-container"
-                  }
-                >
-                  <div className="flipper">
-                    <IonCard mode="ios" className="front card">
-                      <IonCardHeader className="keyword-wrapper">
-                        <IonCardTitle className="preview-keyword">
-                          {card.data().keyword}
-                        </IonCardTitle>
-                      </IonCardHeader>
-                    </IonCard>
+      {isLoaded ? (
+        cardPreview.length > 0 && (
+          <IonSlides options={slideOpts} className="card-list__slides">
+            {cardPreview.map((card: any, index: number) => {
+              return (
+                <IonSlide key={index}>
+                  <div
+                    className={
+                      flipped ? "flip-container flipped" : "flip-container"
+                    }
+                  >
+                    <div className="flipper">
+                      <IonCard mode="ios" className="front card">
+                        <IonCardHeader className="keyword-wrapper">
+                          <IonCardTitle className="preview-keyword">
+                            {card.keyword}
+                          </IonCardTitle>
+                        </IonCardHeader>
+                      </IonCard>
 
-                    <IonCard mode="ios" className="back card">
-                      <IonCardHeader className="back-wrapper">
-                        <IonCardTitle className="preview-keyword">{card.data().keyword}</IonCardTitle>
-                      </IonCardHeader>
+                      <IonCard mode="ios" className="back card">
+                        <IonCardHeader className="back-wrapper">
+                          <IonCardTitle className="preview-keyword">
+                            {card.keyword}
+                          </IonCardTitle>
+                        </IonCardHeader>
 
-                      <IonCardContent>
-                        <IonGrid>
-                          <IonRow>
-                            <p className="preview-detail">
-                              {card.data().detail}
-                            </p>
-                          </IonRow>
-                          <IonRow>
-                            <p className="preview-meaning">
-                              {card.data().meaning}
-                            </p>
-                          </IonRow>
-                        </IonGrid>
-                      </IonCardContent>
-                    </IonCard>
+                        <IonCardContent>
+                          <IonGrid>
+                            <IonRow>
+                              <p className="preview-detail">
+                                {card.detail}
+                              </p>
+                            </IonRow>
+                            <IonRow>
+                              <p className="preview-meaning">
+                                {card.meaning}
+                              </p>
+                            </IonRow>
+                          </IonGrid>
+                        </IonCardContent>
+                      </IonCard>
+                    </div>
                   </div>
-                </div>
-              </IonSlide>
-            );
-          })}
-          <IonSlide>Bắt đầu bài học để xem thêm</IonSlide>
-        </IonSlides>
+                </IonSlide>
+              );
+            })}
+            <IonSlide>Bắt đầu bài học để xem thêm</IonSlide>
+          </IonSlides>
+        )
+      ) : (
+        <Spinner />
       )}
     </>
   );

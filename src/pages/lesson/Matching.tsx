@@ -14,6 +14,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
+import Spinner from "../../components/utils/Spinner";
 import { database } from "../../config/firebaseConfig";
 import useTabbar from "../../hooks/useTabbar";
 import "./Matching.scss";
@@ -36,6 +37,7 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
   const [correctCount, setCorrectCount] = useState<number>(0);
 
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const init = async () => {
@@ -78,6 +80,7 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
 
       allCards.sort(() => Math.random() - 0.5); // Shuffle
       setCards(allCards);
+      setIsLoaded(true);
     };
 
     init();
@@ -179,33 +182,37 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
         />
 
         <IonGrid>
-          <IonRow className="card-row">
-            {cards.map((item: any, index: number) => {
-              return (
-                <IonCol key={index} size="4">
-                  <IonButton
-                    expand="block"
-                    mode="md"
-                    fill="outline"
-                    id={item.elemId}
-                    onClick={() => onClickCard(item.elemId, item.cardId)}
-                    className="card-wrapper"
-                  >
-                    {item.type === "keyword" ? (
-                      <div className="card-wrapper__text">
-                        <p>{item.text}</p>
-                      </div>
-                    ) : (
-                      <div className="card-wrapper__text">
-                        <p>{item.detail}</p>
-                        <p>{item.meaning}</p>
-                      </div>
-                    )}
-                  </IonButton>
-                </IonCol>
-              );
-            })}
-          </IonRow>
+          {isLoaded ? (
+            <IonRow className="card-row">
+              {cards.map((item: any, index: number) => {
+                return (
+                  <IonCol key={index} size="4">
+                    <IonButton
+                      expand="block"
+                      mode="md"
+                      fill="outline"
+                      id={item.elemId}
+                      onClick={() => onClickCard(item.elemId, item.cardId)}
+                      className="card-wrapper"
+                    >
+                      {item.type === "keyword" ? (
+                        <div className="card-wrapper__text">
+                          <p>{item.text}</p>
+                        </div>
+                      ) : (
+                        <div className="card-wrapper__text">
+                          <p>{item.detail}</p>
+                          <p>{item.meaning}</p>
+                        </div>
+                      )}
+                    </IonButton>
+                  </IonCol>
+                );
+              })}
+            </IonRow>
+          ) : (
+            <Spinner />
+          )}
         </IonGrid>
       </IonContent>
     </IonPage>

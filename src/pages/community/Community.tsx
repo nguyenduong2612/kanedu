@@ -19,7 +19,7 @@ import { toast } from "../../utils/toast";
 import "../../theme/app.css";
 import "./Community.scss";
 import ErrorPage from "../../components/error_pages/ErrorPage";
-import Refresher from "../../components/Refresher";
+import Refresher from "../../components/utils/Refresher";
 import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
 import { savePost } from "../../redux/post/post.actions";
 

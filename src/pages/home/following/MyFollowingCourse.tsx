@@ -12,7 +12,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import CourseContainer from "../../../components/containers/CourseContainer";
 import ErrorPage from "../../../components/error_pages/ErrorPage";
-import Refresher from "../../../components/Refresher";
+import Refresher from "../../../components/utils/Refresher";
 
 interface RootState {
   courses: any;

@@ -6,13 +6,10 @@ import {
   IonBackButton,
   IonButtons,
 } from "@ionic/react";
-import React, { lazy } from "react";
+import React from "react";
 import { RouteComponentProps } from "react-router";
+import CardListContainer from "../../components/containers/CardListContainer";
 import useTabbar from "../../hooks/useTabbar";
-
-const CardListContainer = lazy(
-  () => import("../../components/containers/CardListContainer")
-);
 
 interface MatchParams {
   course_id: string;
@@ -36,10 +33,7 @@ const Learning: React.FC<LearningPageProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <CardListContainer
-          courseId={courseId}
-          lessonId={lessonId}
-        />
+        <CardListContainer courseId={courseId} lessonId={lessonId} />
       </IonContent>
     </IonPage>
   );
