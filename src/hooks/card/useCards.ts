@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { database } from "../../config/firebaseConfig";
+
+interface RootState {
+  user: any;
+}
 
 function useCards(courseId: string, lessonId: string) {
   const [cardList, setCardList] = useState<any[]>([]);
   const [cardPreview, setCardPreview] = useState<any[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  const { user } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     async function getCards() {
@@ -19,10 +26,20 @@ function useCards(courseId: string, lessonId: string) {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
+          if (!user.cardStatus) {
+            var filter: any = null;
+          } else {
+            filter = user.cardStatus.filter(
+              (card: any) => card.id === doc.id
+            )[0];
+          }
+
           let card = {
             id: doc.id,
-            ...doc.data()
-          }
+            ...doc.data(),
+            status: filter ?  filter.status : "null",
+          };
+
           setCardList((cardList) => [...cardList, card]);
         });
 
@@ -31,8 +48,8 @@ function useCards(courseId: string, lessonId: string) {
           previewCount++;
           let card = {
             id: doc.id,
-            ...doc.data()
-          }
+            ...doc.data(),
+          };
           setCardPreview((cardPreview) => [...cardPreview, card]);
           if (previewCount === 3) return;
         });
@@ -42,7 +59,7 @@ function useCards(courseId: string, lessonId: string) {
     }
 
     getCards();
-  }, [courseId, lessonId]);
+  }, [courseId, lessonId, user.uid, user.cardStatus]);
 
   return {
     cardList,
@@ -50,7 +67,7 @@ function useCards(courseId: string, lessonId: string) {
     isLoaded,
     cardPreview,
     setCardPreview,
-    setIsLoaded
+    setIsLoaded,
   };
 }
 

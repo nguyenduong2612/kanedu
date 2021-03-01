@@ -93,7 +93,7 @@ const appPages: AppPage[] = [
 
 const SideMenu: React.FC<SidemenuContainerProps> = () => {
   const location = useLocation();
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const signout = () => {
@@ -104,8 +104,8 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Xin chào, {currentUser.user.name}</IonListHeader>
-          <IonNote>{currentUser.user.email}</IonNote>
+          <IonListHeader>Xin chào, {user.name}</IonListHeader>
+          <IonNote>{user.email}</IonNote>
           {appPages.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>

@@ -17,6 +17,8 @@ import React, { useState } from "react";
 import useCards from "../../hooks/card/useCards";
 import Spinner from "../utils/Spinner";
 import "./CardListContainer.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCardStatus } from "../../redux/user/user.actions";
 
 const slideOpts = {
   initialSlide: 1,
@@ -27,13 +29,34 @@ const slideOpts = {
 interface CardSlideProps {
   card: any;
   key: number;
+  lessonId: string;
+}
+
+interface RootState {
+  user: any;
 }
 
 const CardSlide: React.FC<CardSlideProps> = ({
   card,
+  lessonId,
 }: CardSlideProps) => {
   const flipped: boolean = false;
-  const [status, setStatus] = useState<string>();
+  const [status, setStatus] = useState<string>(card.status);
+
+  const { user } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch()
+
+  const onClickForget = async (cardId: string, lessonId: string) => {
+    if (status === "forget") return;
+    setStatus("forget");
+    dispatch(updateCardStatus(user, cardId, lessonId, "forget"));
+  };
+
+  const onClickRemembered = async (cardId: string, lessonId: string) => {
+    if (status === "remembered") return;
+    setStatus("remembered");
+    dispatch(updateCardStatus(user, cardId, lessonId, "remembered"));
+  };
 
   return (
     <IonSlide>
@@ -79,7 +102,7 @@ const CardSlide: React.FC<CardSlideProps> = ({
             className="learning-page__button"
             fill={status === "forget" ? "solid" : "outline"}
             color="warning"
-            onClick={() => setStatus("forget")}
+            onClick={() => onClickForget(card.id, lessonId)}
           >
             <div className="learning-page__button-text">
               <IonIcon icon={alertCircleOutline}></IonIcon>
@@ -92,7 +115,7 @@ const CardSlide: React.FC<CardSlideProps> = ({
             className="learning-page__button"
             fill={status === "remembered" ? "solid" : "outline"}
             color="success"
-            onClick={() => setStatus("remembered")}
+            onClick={() => onClickRemembered(card.id, lessonId)}
           >
             <div className="learning-page__button-text">
               <IonIcon icon={checkmarkCircleOutline}></IonIcon>
@@ -122,7 +145,9 @@ const CardListContainer: React.FC<CardListContainerProps> = ({
         cardList.length > 0 && (
           <IonSlides options={slideOpts} className="card-list__slides">
             {cardList.map((card: any, index: number) => {
-              return <CardSlide card={card} key={index} />;
+              return (
+                <CardSlide card={card} key={index} lessonId={lessonId} />
+              );
             })}
           </IonSlides>
         )

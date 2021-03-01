@@ -60,7 +60,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
   const { followingCourses, createdCourses } = useSelector(
     (state: RootState) => state.courses
   );
@@ -71,14 +71,14 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   const dispatch = useDispatch();
 
   const handleFollow = () => {
-    dispatch(followCourse(courseId, currentUser.user.uid));
+    dispatch(followCourse(courseId, user.uid));
     course.setIsFollowed(true);
     setShowPopover(false);
     toast("Thẽo dõi khóa học thành công");
   };
 
   const handleUnfollow = () => {
-    dispatch(unfollowCourse(followingCourses, courseId, currentUser.user.uid));
+    dispatch(unfollowCourse(followingCourses, courseId, user.uid));
     course.setIsFollowed(false);
     setShowPopover(false);
     toast("Đã bỏ theo dõi khóa học");
@@ -95,8 +95,8 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
 
   const handleShare = async () => {
     let post: Post = {
-      author: currentUser.user.name,
-      author_id: currentUser.user.uid,
+      author: user.name,
+      author_id: user.uid,
       title: course.name,
       sharedLink: window.location.pathname,
       likes: 0,
@@ -105,7 +105,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       created_at: Date.now(),
     };
 
-    dispatch(savePost(post, currentUser.user.uid));
+    dispatch(savePost(post, user.uid));
 
     toast("Chia sẻ khóa học thành công");
     setShowShareModal(false);
@@ -117,7 +117,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   };
 
   const handleConfirmDelete = () => {
-    dispatch(deleteCourse(createdCourses, courseId, currentUser.user.uid));
+    dispatch(deleteCourse(createdCourses, courseId, user.uid));
     toast("Đã xóa khóa học");
     window.history.back();
   };

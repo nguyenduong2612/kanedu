@@ -5,12 +5,12 @@ import {
   IonToolbar,
   IonBackButton,
   IonButtons,
+  IonTitle,
 } from "@ionic/react";
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import CardListContainer from "../../components/containers/CardListContainer";
 import useTabbar from "../../hooks/useTabbar";
-
 interface MatchParams {
   course_id: string;
   lesson_id: string;
@@ -30,6 +30,7 @@ const Learning: React.FC<LearningPageProps> = ({ match }) => {
           <IonButtons slot="start">
             <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
+          <IonTitle>Học</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

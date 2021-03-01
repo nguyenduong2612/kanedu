@@ -14,6 +14,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import ErrorPage from "../../components/error_pages/ErrorPage";
+import Spinner from "../../components/utils/Spinner";
 import { database } from "../../config/firebaseConfig";
 
 interface LevelPageProps {}
@@ -21,6 +22,7 @@ interface LevelPageProps {}
 const Level: React.FC<LevelPageProps> = () => {
   const [level, setLevel] = useState<string>("5");
   const [exams, setExams] = useState<any[]>([]);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const getExamList = async () => {
@@ -37,6 +39,8 @@ const Level: React.FC<LevelPageProps> = () => {
           setExams((exams) => [...exams, exam]);
         });
       }
+
+      setIsLoaded(true);
     };
 
     getExamList();
@@ -85,18 +89,22 @@ const Level: React.FC<LevelPageProps> = () => {
           </IonSegmentButton>
         </IonSegment>
 
-        {exams.length > 0 ? (
-          exams.map((exam: any, i: number) => {
-            return (
-              <IonList key={i}>
-                <IonItem button routerLink={`/jlpt/${exam.id}`}>
-                  <IonTitle>{exam.title}</IonTitle>
-                </IonItem>
-              </IonList>
-            );
-          })
+        {isLoaded ? (
+          exams.length > 0 ? (
+            exams.map((exam: any, i: number) => {
+              return (
+                <IonList key={i}>
+                  <IonItem button routerLink={`/jlpt/${exam.id}`}>
+                    <IonTitle>{exam.title}</IonTitle>
+                  </IonItem>
+                </IonList>
+              );
+            })
+          ) : (
+            <ErrorPage>Không có dữ liệu</ErrorPage>
+          )
         ) : (
-          <ErrorPage>Không có dữ liệu</ErrorPage>
+          <Spinner />
         )}
       </IonContent>
     </IonPage>

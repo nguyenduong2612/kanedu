@@ -39,7 +39,7 @@ interface RootState {
 const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
   const [showCommentModal, setShowCommentModal] = useState<boolean>(false);
 
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
   const { posts, comments } = useSelector((state: RootState) => state.posts);
   const postId = post.id;
   const dispatch = useDispatch();
@@ -60,11 +60,11 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
   };
 
   const handleLikePost = () => {
-    dispatch(likePost(posts, post.id, currentUser.user.uid));
+    dispatch(likePost(posts, post.id, user.uid));
   };
 
   const handleUnlikePost = () => {
-    dispatch(unlikePost(posts, post.id, currentUser.user.uid));
+    dispatch(unlikePost(posts, post.id, user.uid));
   };
 
   return (

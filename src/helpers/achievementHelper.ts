@@ -2,11 +2,11 @@ import * as firebase from "firebase/app";
 import { database } from "../config/firebaseConfig";
 import { achievementToast } from "../utils/achievementToast";
 
-export async function addAchievement(currentUser: any, achievementId: string) {
-  let userRef = database.collection("users").doc(currentUser.user.uid);
+export async function addAchievement(user: any, achievementId: string) {
+  let userRef = database.collection("users").doc(user.uid);
 
   if (
-    currentUser.user.achievements.filter(
+    user.achievements.filter(
       (achievement: any) => achievement.id === achievementId
     ).length > 0
   ) {

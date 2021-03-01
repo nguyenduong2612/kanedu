@@ -24,6 +24,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CourseContainer from "../../components/containers/CourseContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
+import Spinner from "../../components/utils/Spinner";
 import "./MyProfile.scss";
 
 interface MyProfilePageProps {}
@@ -36,7 +37,7 @@ interface RootState {
 const MyProfile: React.FC<MyProfilePageProps> = () => {
   const [segmentValue, setSegmentValue] = useState<string>("statistics");
 
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user, isLoading } = useSelector((state: RootState) => state.user);
   const { createdCourses } = useSelector((state: RootState) => state.courses);
 
   return (
@@ -64,29 +65,33 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonGrid className="user-info">
-          <IonRow>
-            <IonCol size="9">
-              <h3 className="username">{currentUser.user.name}</h3>
-              <p className="level">
-                Cấp {Math.floor(currentUser.user.exp / 100) + 1}
-              </p>
-              <IonProgressBar
-                className="exp-bar"
-                value={(currentUser.user.exp % 100) / 100}
-              ></IonProgressBar>
-            </IonCol>
-            <IonCol size="3">
-              <div className="avatar-wrapper">
-                <img
-                  alt="avatar"
-                  className="user-profile"
-                  src={currentUser.user.profileURL}
-                />
-              </div>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <IonGrid className="user-info">
+            <IonRow>
+              <IonCol size="9">
+                <h3 className="username">{user.name}</h3>
+                <p className="level">
+                  Cấp {Math.floor(user.exp / 100) + 1}
+                </p>
+                <IonProgressBar
+                  className="exp-bar"
+                  value={(user.exp % 100) / 100}
+                ></IonProgressBar>
+              </IonCol>
+              <IonCol size="3">
+                <div className="avatar-wrapper">
+                  <img
+                    alt="avatar"
+                    className="user-profile"
+                    src={user.profileURL}
+                  />
+                </div>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        )}
 
         <IonItemDivider mode="md" />
         <div className="user-data">
@@ -112,14 +117,14 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
                 <IonRow>
                   <IonCol size="6">
                     <div className="statistics-div">
-                      <b>{Math.floor(currentUser.user.exp / 100) + 1}</b>
+                      <b>{Math.floor(user.exp / 100) + 1}</b>
                       <br />
                       <span style={{ color: "#aaa" }}>Cấp</span>
                     </div>
                   </IonCol>
                   <IonCol size="6">
                     <div className="statistics-div">
-                      <b>{currentUser.user.exp}</b>
+                      <b>{user.exp}</b>
                       <br />
                       <span style={{ color: "#aaa" }}>Điểm kinh nghiệm</span>
                     </div>
@@ -127,8 +132,8 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
                   <IonCol size="6">
                     <div className="statistics-div">
                       <b>
-                        {currentUser.user.created_courses
-                          ? currentUser.user.created_courses.length
+                        {user.created_courses
+                          ? user.created_courses.length
                           : 0}
                       </b>
                       <br />
@@ -138,8 +143,8 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
                   <IonCol size="6">
                     <div className="statistics-div">
                       <b>
-                        {currentUser.user.created_posts
-                          ? currentUser.user.created_posts.length
+                        {user.created_posts
+                          ? user.created_posts.length
                           : 0}
                       </b>
                       <br />
@@ -152,8 +157,8 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
               <IonGrid className="achievements">
                 <IonRow className="part-title">Thành tựu</IonRow>
                 <IonList>
-                  {currentUser.user.achievements &&
-                    currentUser.user.achievements.map(
+                  {user.achievements &&
+                    user.achievements.map(
                       (achievement: any, index: number) => {
                         return (
                           <IonItem key={index}>

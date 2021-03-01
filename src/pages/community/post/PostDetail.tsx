@@ -49,9 +49,8 @@ interface MatchParams {
 }
 
 const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
-  const currentUser = useSelector((state: RootState) => state.user);
-
   const postId = match.params.post_id;
+  const { user } = useSelector((state: RootState) => state.user);
   const { posts, comments } = useSelector((state: RootState) => state.posts);
   const post = posts.find((post: any) => post.id === postId);
   const dispatch = useDispatch();
@@ -74,15 +73,15 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
 
   const handleSendComment = async (commentInput: string) => {
     if (commentInput.trim() === "") return;
-    dispatch(saveComment(currentUser.user.name, commentInput, postId, posts));
+    dispatch(saveComment(user.name, commentInput, postId, posts));
   };
 
   const handleLikePost = () => {
-    dispatch(likePost(posts, post.id, currentUser.user.uid));
+    dispatch(likePost(posts, post.id, user.uid));
   };
 
   const handleUnlikePost = () => {
-    dispatch(unlikePost(posts, post.id, currentUser.user.uid));
+    dispatch(unlikePost(posts, post.id, user.uid));
   };
 
   return (

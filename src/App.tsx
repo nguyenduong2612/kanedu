@@ -64,14 +64,16 @@ const App: React.FC = () => {
   const [showFabButton, setShowFabButton] = useState<boolean>(true);
   const dispatch = useDispatch();
 
-  const currentUser = useCurrentUser();
+  const { user, isLoggedin, isLoading } = useCurrentUser();
   // useFavoritePosts();
 
   useEffect(() => {
-    dispatch(getCreatedCourses(currentUser.user.uid));
-    dispatch(getFollowingCourses(currentUser.user.uid));
-    dispatch(getPosts(currentUser.user.uid));
-  }, [dispatch, currentUser.user.uid]);
+    if (user.uid) {
+      dispatch(getCreatedCourses(user.uid));
+      dispatch(getFollowingCourses(user.uid));
+      dispatch(getPosts(user.uid));
+    }
+  }, [dispatch, user.uid]);
 
   useEffect(() => {
     console.log(getPlatforms());
@@ -111,11 +113,11 @@ const App: React.FC = () => {
   return (
     <Suspense fallback={<Loading />}>
       <IonApp>
-        {currentUser.isLoading ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <IonReactRouter>
-            {currentUser.isLoggedin ? (
+            {isLoggedin ? (
               <IonSplitPane contentId="main">
                 <SideMenu />
 

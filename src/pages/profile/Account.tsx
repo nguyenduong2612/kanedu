@@ -31,7 +31,7 @@ interface RootState {
 }
 
 const Account: React.FC<AccountPageProps> = () => {
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
 
   async function verifyUser() {
     const res = await verifyEmail();
@@ -47,7 +47,7 @@ const Account: React.FC<AccountPageProps> = () => {
     if (avatar) {
       const storageRef = storage.ref();
 
-      const fileName = `${currentUser.user.uid}`;
+      const fileName = `${user.uid}`;
       const fileRef = storageRef.child("users_avatar/" + fileName);
 
       //console.log(avatar);
@@ -56,10 +56,10 @@ const Account: React.FC<AccountPageProps> = () => {
         await fileRef.put(avatar);
         await database
           .collection("users")
-          .doc(currentUser.user.uid)
+          .doc(user.uid)
           .update({ profileURL: await fileRef.getDownloadURL() });
 
-        if (!await addAchievement(currentUser, "RjNEtQwBqgVHWdihJO9h")) window.location.reload();
+        if (!await addAchievement(user, "RjNEtQwBqgVHWdihJO9h")) window.location.reload();
 
         //window.location.reload();
       } catch (err) {
@@ -87,7 +87,7 @@ const Account: React.FC<AccountPageProps> = () => {
               <img
                 alt="avatar"
                 className="profile-img"
-                src={currentUser.user.profileURL}
+                src={user.profileURL}
                 width="100"
                 height="100"
               />
@@ -104,7 +104,7 @@ const Account: React.FC<AccountPageProps> = () => {
             />
 
             <IonItem lines="none">
-              <b className="username">{currentUser.user.name}</b>
+              <b className="username">{user.name}</b>
             </IonItem>
             <IonItemDivider mode="md" />
           </IonItemGroup>
@@ -112,11 +112,11 @@ const Account: React.FC<AccountPageProps> = () => {
           <IonItemGroup>
             <IonItem lines="none">
               <IonLabel>Email</IonLabel>
-              <p style={{ color: "#aaa" }}>{currentUser.user.email}</p>
+              <p style={{ color: "#aaa" }}>{user.email}</p>
             </IonItem>
             <IonItem lines="none">
               <IonLabel>Ngày sinh</IonLabel>
-              <p style={{ color: "#aaa" }}>{currentUser.user.birthday}</p>
+              <p style={{ color: "#aaa" }}>{user.birthday}</p>
             </IonItem>
             <IonItem lines="none" routerLink="/change-password">
               <IonLabel>Thay đổi mật khẩu</IonLabel>
@@ -125,7 +125,7 @@ const Account: React.FC<AccountPageProps> = () => {
           </IonItemGroup>
 
           <IonItemGroup>
-            {currentUser.user.verified ? (
+            {user.verified ? (
               <IonItem lines="none">
                 <IonLabel>Xác thực email</IonLabel>
                 <IonText color="success">Đã xác thực</IonText>

@@ -29,22 +29,22 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
   const [titleInput, setTitleInput] = useState<string>("");
   const [desInput, setDesInput] = useState<string>("");
 
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const handleCreateCourse = async () => {
     if (titleInput.trim() === "") toast("Hãy nhập tên khóa học");
     else {
       let course: any = {
-        author: currentUser.user.name,
-        author_id: currentUser.user.uid,
+        author: user.name,
+        author_id: user.uid,
         name: titleInput,
         description: desInput,
         created_at: Date.now(),
         followed_by: [],
       };
 
-      dispatch(createCourse(course, currentUser.user.uid));
+      dispatch(createCourse(course, user.uid));
       toast("Tạo khóa học thành công");
 
       setTitleInput("");

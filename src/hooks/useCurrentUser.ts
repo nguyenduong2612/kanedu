@@ -25,6 +25,11 @@ function useCurrentUser() {
       if (user) {
         //window.history.replaceState({}, '', '/')
         const doc: any = await database.collection("users").doc(user.uid).get();
+        const cardStatusSnap: any = await database
+          .collection("users")
+          .doc(user.uid)
+          .collection("cardStatus")
+          .get();
         if (!doc.exists) {
           console.log("Can't find user");
         } else {
@@ -32,6 +37,13 @@ function useCurrentUser() {
           let currentUser = doc.data();
           currentUser.uid = doc.id;
           currentUser.verified = user.emailVerified;
+          currentUser.cardStatus = await Promise.all(
+            cardStatusSnap.docs.map(async (card: any) => ({
+              id: card.id,
+              ...card.data(),
+            }))
+          );
+
           dispatch(setCurrentUserSuccess(currentUser));
         }
       } else {

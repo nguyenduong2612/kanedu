@@ -38,11 +38,11 @@ interface RootState {
 }
 
 const Routing: React.FC = () => {
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
 
   return (
     <>
-      {currentUser.user ? (
+      {user ? (
         <IonRouterOutlet>
           <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
           <Route path="/login" component={Login} exact />

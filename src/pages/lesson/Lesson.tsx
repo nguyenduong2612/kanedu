@@ -13,6 +13,7 @@ import {
   IonCardHeader,
   IonIcon,
   IonCardSubtitle,
+  IonProgressBar,
 } from "@ionic/react";
 import {
   book,
@@ -43,7 +44,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
   const courseId = match.params.course_id;
   const lessonId = match.params.lesson_id;
 
-  const lesson = useLesson(courseId, lessonId);
+  const lesson: any = useLesson(courseId, lessonId);
 
   return (
     <IonPage>
@@ -80,53 +81,100 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
                     {lesson.numberOfCards} từ vựng
                   </p>
                 </IonRow>
+
+                <IonRow className="lesson-info__row">
+                  <IonCol>
+                    <IonCard
+                      className="menu-button"
+                      button={true}
+                      routerLink={`/courses/${courseId}/${lessonId}/study`}
+                    >
+                      <IonCardHeader className="menu-icon">
+                        <IonIcon ios={bookOutline} md={book} />
+                      </IonCardHeader>
+                      <IonCardSubtitle className="menu-title">
+                        Học
+                      </IonCardSubtitle>
+                    </IonCard>
+                  </IonCol>
+                  <IonCol>
+                    <IonCard
+                      className="menu-button"
+                      button={true}
+                      routerLink={`/courses/${courseId}/${lessonId}/test`}
+                    >
+                      <IonCardHeader className="menu-icon">
+                        <IonIcon ios={pencilOutline} md={pencil} />
+                      </IonCardHeader>
+                      <IonCardSubtitle className="menu-title">
+                        Kiểm tra
+                      </IonCardSubtitle>
+                    </IonCard>
+                  </IonCol>
+                  <IonCol>
+                    <IonCard
+                      className="menu-button"
+                      button={true}
+                      routerLink={`/courses/${courseId}/${lessonId}/match`}
+                    >
+                      <IonCardHeader className="menu-icon">
+                        <IonIcon
+                          ios={gameControllerOutline}
+                          md={gameController}
+                        />
+                      </IonCardHeader>
+                      <IonCardSubtitle className="menu-title">
+                        Ghép thẻ
+                      </IonCardSubtitle>
+                    </IonCard>
+                  </IonCol>
+                </IonRow>
+
+                <IonGrid style={{ padding: "25px 0" }}>
+                  <IonRow className="padding-x">
+                    <IonCol size="3">
+                      <span>Đã thuộc</span>
+                    </IonCol>
+                    <IonCol size="7">
+                      <IonProgressBar
+                        className="lesson-info__progress-bar"
+                        value={lesson.progress}
+                      ></IonProgressBar>
+                    </IonCol>
+                    <IonCol size="2">
+                      <span>
+                        {lesson.progress * lesson.numberOfCards}/
+                        {lesson.numberOfCards}
+                      </span>
+                    </IonCol>
+                  </IonRow>
+                  {/* <IonRow className="padding-x">
+                    <IonCol size="3">
+                      <span>Kiểm tra</span>
+                    </IonCol>
+                    <IonCol size="7">
+                      <IonProgressBar
+                        className="lesson-info__progress-bar"
+                        value={0.5}
+                      ></IonProgressBar>
+                    </IonCol>
+                    <IonCol size="2">
+                      <span>123</span>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow className="padding-x">
+                    <IonCol size="3">
+                      <span>Ghép thẻ</span>
+                    </IonCol>
+                    <IonCol size="9">
+                      <span>30 giây</span>
+                    </IonCol>
+                  </IonRow> */}
+                </IonGrid>
               </>
             ) : (
               <Skeleton />
             )}
-
-            <IonRow className="lesson-info__row">
-              <IonCol>
-                <IonCard
-                  className="menu-button"
-                  button={true}
-                  routerLink={`/courses/${courseId}/${lessonId}/study`}
-                >
-                  <IonCardHeader className="menu-icon">
-                    <IonIcon ios={bookOutline} md={book} />
-                  </IonCardHeader>
-                  <IonCardSubtitle className="menu-title">Học</IonCardSubtitle>
-                </IonCard>
-              </IonCol>
-              <IonCol>
-                <IonCard
-                  className="menu-button"
-                  button={true}
-                  routerLink={`/courses/${courseId}/${lessonId}/test`}
-                >
-                  <IonCardHeader className="menu-icon">
-                    <IonIcon ios={pencilOutline} md={pencil} />
-                  </IonCardHeader>
-                  <IonCardSubtitle className="menu-title">
-                    Kiểm tra
-                  </IonCardSubtitle>
-                </IonCard>
-              </IonCol>
-              <IonCol>
-                <IonCard
-                  className="menu-button"
-                  button={true}
-                  routerLink={`/courses/${courseId}/${lessonId}/match`}
-                >
-                  <IonCardHeader className="menu-icon">
-                    <IonIcon ios={gameControllerOutline} md={gameController} />
-                  </IonCardHeader>
-                  <IonCardSubtitle className="menu-title">
-                    Ghép thẻ
-                  </IonCardSubtitle>
-                </IonCard>
-              </IonCol>
-            </IonRow>
           </IonGrid>
         </div>
       </IonContent>

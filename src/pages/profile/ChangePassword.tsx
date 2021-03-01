@@ -30,7 +30,7 @@ const ChangePassword: React.FC<ChangePasswordPageProps> = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
 
   const handleChangePassword = async () => {
     if (
@@ -45,7 +45,7 @@ const ChangePassword: React.FC<ChangePasswordPageProps> = () => {
       return toast("Mật khẩu xác nhận không trùng khớp");
     }
 
-    if (await reauthenticate(currentUser.user.email, oldPassword)) {
+    if (await reauthenticate(user.email, oldPassword)) {
       await changePassword(newPassword);
       window.history.back();
     } else {

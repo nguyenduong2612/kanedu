@@ -3,6 +3,8 @@ import {
   SET_CURRENT_USER_SUCCESS,
   SET_CURRENT_USER_FAILED,
   SIGN_OUT_USER_SUCCESS,
+  UPDATE_CARD_STATUS_SUCCESS,
+  SET_CARD_STATUS_SUCCESS,
 } from "./user.types";
 
 const initialState = {
@@ -12,6 +14,7 @@ const initialState = {
 };
 
 export const userReducer = (state = initialState, action: any) => {
+  let newState: any = { ...state };
   switch (action.type) {
     case SET_CURRENT_USER_STARTED:
       return {
@@ -34,6 +37,13 @@ export const userReducer = (state = initialState, action: any) => {
         isLoading: false,
         isLoggedin: false,
       };
+
+    case UPDATE_CARD_STATUS_SUCCESS:
+      newState.user.cardStatus[action.payload].status = action.status;
+      return newState;
+    case SET_CARD_STATUS_SUCCESS:
+      newState.user.cardStatus.push(action.payload);
+      return newState;
     default:
       return state;
   }

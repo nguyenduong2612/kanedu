@@ -37,7 +37,7 @@ const Community: React.FC<CommunityPageProps> = () => {
   const dispatch = useDispatch();
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
-  const currentUser = useSelector((state: RootState) => state.user);
+  const { user } = useSelector((state: RootState) => state.user);
   const { posts } = useSelector((state: RootState) => state.posts);
 
   // useEffect(() => {
@@ -93,8 +93,8 @@ const Community: React.FC<CommunityPageProps> = () => {
       toast("Hãy nhập tiêu đề và nội dung câu hỏi");
     } else {
       let post: any = {
-        author: currentUser.user.name,
-        author_id: currentUser.user.uid,
+        author: user.name,
+        author_id: user.uid,
         title: title,
         content: content,
         likes: 0,
@@ -102,7 +102,7 @@ const Community: React.FC<CommunityPageProps> = () => {
         created_at: Date.now(),
       };
 
-      dispatch(savePost(post, currentUser.user.uid));
+      dispatch(savePost(post, user.uid));
       toast("Đăng thành công");
       setShowPopover(false);
     }
@@ -136,7 +136,7 @@ const Community: React.FC<CommunityPageProps> = () => {
         </IonToolbar>
       </IonHeader>
 
-      {currentUser.user.verified ? (
+      {user.verified ? (
         <IonContent
           fullscreen
           scrollEvents={true}
@@ -150,7 +150,7 @@ const Community: React.FC<CommunityPageProps> = () => {
                   <img
                     alt="user-avatar"
                     id="community-avatar"
-                    src={currentUser.user.profileURL}
+                    src={user.profileURL}
                   />
                 </div>
               </IonCol>
@@ -184,7 +184,7 @@ const Community: React.FC<CommunityPageProps> = () => {
                   <PostContainer
                     key={index}
                     post={post}
-                    username={currentUser.user.name}
+                    username={user.name}
                   />
                 );
               })}

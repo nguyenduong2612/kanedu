@@ -57,7 +57,11 @@ export const getPosts = (userId: string) => {
         snap.docs.map(async (post) => ({
           id: post.id,
           avatar: await fetchUserAvatar(post.data().author_id),
-          isFavorited: favoritedPost.includes(post.id) ? true : false,
+          isFavorited: favoritedPost
+            ? favoritedPost.includes(post.id)
+            ? true
+            : false
+            : false,
           ...post.data(),
         }))
       );
