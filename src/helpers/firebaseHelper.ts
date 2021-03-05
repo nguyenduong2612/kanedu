@@ -4,7 +4,6 @@ import "firebase/auth";
 import "firebase/storage";
 import { toast } from "../utils/toast";
 import { database, storage } from "../config/firebaseConfig";
-import { algoliaUpdateUser } from "./algoliaHelper";
 
 export function onAuthStateChanged() {
   return new Promise((resolve) => {
@@ -84,7 +83,7 @@ export async function signupUser(
       achievements: [],
       exp: 0,
     };
-    if (algoliaUpdateUser(user, res.user?.uid)) console.log("add algolia ok");
+    // if (algoliaUpdateUser(user, res.user?.uid)) console.log("add algolia ok");
 
     await database.collection("users").doc(res.user?.uid).set(user);
 

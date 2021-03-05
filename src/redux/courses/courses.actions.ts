@@ -1,6 +1,5 @@
 import * as firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
-import { algoliaDeleteCourse, algoliaUpdateCourse } from "../../helpers/algoliaHelper";
 import { store } from "../store";
 import {
   GET_CREATED_COURSES_STARTED,
@@ -202,8 +201,8 @@ export const createCourse = (course: any, userId: string) => {
     dispatch(createCourseStarted);
     try {
       const res = await database.collection("courses").add(course);
-      if (await algoliaUpdateCourse(course, res.id))
-        console.log("add algolia ok");
+      // if (await algoliaUpdateCourse(course, res.id))
+      //   console.log("add algolia ok");
 
       const userRef = database.collection("users").doc(userId);
       userRef.update({
@@ -237,8 +236,8 @@ export const deleteCourse = (createdCourse: any, courseId: string, userId: strin
     try {
       await database.collection("courses").doc(courseId).delete();
 
-      if (await algoliaDeleteCourse(courseId))
-        console.log("delete algolia ok");
+      // if (await algoliaDeleteCourse(courseId))
+      //   console.log("delete algolia ok");
 
       let userRef = database.collection("users").doc(userId);
       userRef.update({

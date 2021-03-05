@@ -17,7 +17,7 @@ import {
   IonIcon,
 } from "@ionic/react";
 import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Plugins } from "@capacitor/core";
 import { useSelector } from "react-redux";
 import { toast } from "../../utils/toast";

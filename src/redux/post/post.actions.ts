@@ -1,6 +1,5 @@
 import * as firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
-import { algoliaUpdatePost } from "../../helpers/algoliaHelper";
 import { fetchUserAvatar } from "../../helpers/firebaseHelper";
 import { store } from "../store";
 import {
@@ -90,7 +89,7 @@ export const savePost = (post: any, userId: string) => {
     dispatch(savePostStarted);
     try {
       const res = await database.collection("posts").add(post);
-      if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
+      // if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
       const userRef = database.collection("users").doc(userId);
       userRef.update({
