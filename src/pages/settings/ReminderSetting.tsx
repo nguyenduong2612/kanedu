@@ -19,7 +19,7 @@ import {
 import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 import React, { useState } from "react";
 import { Plugins } from "@capacitor/core";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "../../utils/toast";
 import { setReminder } from "../../redux/user/user.actions";
 const { LocalNotifications } = Plugins;
@@ -39,18 +39,21 @@ const ReminderSetting: React.FC<ReminderSettingPageProps> = () => {
     user.reminder ? user.reminder.time : "00:00"
   );
 
+  const dispatch = useDispatch();
+
   const handleSaveReminderSetting = () => {
     console.log(remindAt);
     if (isTurnOn) {
       setLocalNotification();
-      let reminder: object = {
-        isTurnOn,
-        time: remindAt,
-      };
-      setReminder(user.uid, reminder);
     } else {
       cancelLocalNotification();
     }
+    let reminder = {
+      isTurnOn,
+      time: remindAt,
+    };
+    dispatch(setReminder(user.uid, reminder));
+    window.history.back();
 
     toast("Đã thiết lập nhắc nhở");
   };

@@ -84,17 +84,16 @@ export const updateCardStatus = (
   };
 };
 
-export const setReminder = (userId: string, reminder: object) => {
-  const setReminderSuccess = (reminder: object) => ({
+export const setReminder = (userId: string, reminder: any) => {
+  const setReminderSuccess = (reminder: any) => ({
     type: SET_REMINDER_SUCCESS,
     payload: reminder,
   });
 
   return async (dispatch: typeof store.dispatch) => {
     try {
-      console.log(reminder)
       let ref: any = database.collection("users").doc(userId);
-      await ref.set({ reminder });
+      await ref.set({ reminder }, { merge: true });
 
       dispatch(setReminderSuccess(reminder));
     } catch (error) {
