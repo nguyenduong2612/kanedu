@@ -9,7 +9,8 @@ import {
   IonButtons,
   IonList,
   IonLabel,
-  IonButton,
+  IonItemGroup,
+  IonItemDivider,
 } from "@ionic/react";
 import React from "react";
 //import notifications from '../../utils/Notifications';
@@ -17,10 +18,10 @@ import React from "react";
 interface SettingPageProps {}
 
 const Settings: React.FC<SettingPageProps> = () => {
-  async function setLocalNoti() {
-    // document.body.classList.toggle("dark", event.detail.checked);
-    //await notifications.schedule("123123123")
-  }
+  // async function setLocalNoti() {
+  //   document.body.classList.toggle("dark", event.detail.checked);
+  //   await notifications.schedule("123123123")
+  // }
 
   return (
     <IonPage>
@@ -34,10 +35,22 @@ const Settings: React.FC<SettingPageProps> = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonList>
-          <IonItem>
+          <IonItemGroup>
+            {/* <IonItem>
             <IonLabel>Local Notifications</IonLabel>
             <IonButton onClick={setLocalNoti} />
-          </IonItem>
+          </IonItem> */}
+
+            <IonItem lines="none">
+              <IonLabel>Thiết lập mục tiêu</IonLabel>
+            </IonItem>
+            <IonItemDivider mode="md" />
+
+            <IonItem lines="none" routerLink="/settings/reminder">
+              <IonLabel>Thông báo nhắc nhở</IonLabel>
+            </IonItem>
+            <IonItemDivider mode="md" />
+          </IonItemGroup>
         </IonList>
       </IonContent>
     </IonPage>

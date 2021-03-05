@@ -21,9 +21,11 @@ import {
   closeSharp,
 } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import Spinner from "../../components/utils/Spinner";
 import { database } from "../../config/firebaseConfig";
+import { addAchievement } from "../../helpers/achievementHelper";
 import useTabbar from "../../hooks/useTabbar";
 import "./Testing.scss";
 
@@ -37,10 +39,15 @@ interface MatchParams {
   lesson_id: string;
 }
 
+interface RootState {
+  user: any;
+}
+
 interface TestingPageProps extends RouteComponentProps<MatchParams> {}
 
 const Testing: React.FC<TestingPageProps> = ({ match }) => {
   const slidesRef = useRef<HTMLIonSlidesElement>(null);
+  const { user } = useSelector((state: RootState) => state.user);
 
   const [questions, setQuestions] = useState<any[]>([]);
   const [correctAnsCounter, setCorrectAnsCounter] = useState<number>(0);
@@ -60,6 +67,12 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
       setShowAlert(true);
     }
   }, [answeredCounter, questions]);
+
+  useEffect(() => {
+    if (correctAnsCounter === questions.length && questions.length !== 0)  {
+      addAchievement(user, "1qibqGgQ4nppkFDH6nEe");
+    }
+  }, [correctAnsCounter, user, questions]);
 
   useEffect(() => {
     const createTest = async () => {

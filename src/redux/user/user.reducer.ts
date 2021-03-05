@@ -5,6 +5,7 @@ import {
   SIGN_OUT_USER_SUCCESS,
   UPDATE_CARD_STATUS_SUCCESS,
   SET_CARD_STATUS_SUCCESS,
+  SET_REMINDER_SUCCESS,
 } from "./user.types";
 
 const initialState = {
@@ -44,6 +45,9 @@ export const userReducer = (state = initialState, action: any) => {
     case SET_CARD_STATUS_SUCCESS:
       newState.user.cardStatus.push(action.payload);
       return newState;
+    case SET_REMINDER_SUCCESS:
+      newState.user.reminder = action.payload;
+      return newState
     default:
       return state;
   }

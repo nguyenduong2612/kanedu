@@ -4,7 +4,6 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonItem,
   IonBackButton,
   IonButtons,
   IonList,
@@ -65,33 +64,31 @@ const CourseEdit: React.FC<CourseEditPageProps> = ({ match }) => {
             <div className="lesson-list-wrapper">
               {lessons.lessonList.map((lesson: any, index: number) => {
                 return (
-                  <IonItem lines="none" key={index}>
-                    <IonCard mode="md" className="lesson-wrapper">
-                      <IonCardHeader>
-                        <IonCardTitle>
-                          <span className="lesson-wrapper__title">
-                            {lesson.title}
-                          </span>
-                          <br />
-                          <span className="lesson-wrapper__size">
-                            {lesson.numberOfCards} từ vựng
-                          </span>
-                        </IonCardTitle>
+                  <IonCard mode="md" className="lesson-wrapper" key={index}>
+                    <IonCardHeader>
+                      <IonCardTitle>
+                        <span className="lesson-wrapper__title">
+                          {lesson.title}
+                        </span>
+                        <br />
+                        <span className="lesson-wrapper__size">
+                          {lesson.numberOfCards} từ vựng
+                        </span>
+                      </IonCardTitle>
 
-                        <IonButton
-                          fill="clear"
-                          onClick={() => handleDeleteLesson(lesson.id)}
-                          className="lesson-wrapper__delete-btn"
-                        >
-                          <IonIcon
-                            slot="icon-only"
-                            color="danger"
-                            icon={trashOutline}
-                          ></IonIcon>
-                        </IonButton>
-                      </IonCardHeader>
-                    </IonCard>
-                  </IonItem>
+                      <IonButton
+                        fill="clear"
+                        onClick={() => handleDeleteLesson(lesson.id)}
+                        className="lesson-wrapper__delete-btn"
+                      >
+                        <IonIcon
+                          slot="icon-only"
+                          color="danger"
+                          icon={trashOutline}
+                        ></IonIcon>
+                      </IonButton>
+                    </IonCardHeader>
+                  </IonCard>
                 );
               })}
             </div>

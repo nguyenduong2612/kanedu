@@ -33,7 +33,6 @@ function useCurrentUser() {
         if (!doc.exists) {
           console.log("Can't find user");
         } else {
-          console.log("login ok");
           let currentUser = doc.data();
           currentUser.uid = doc.id;
           currentUser.verified = user.emailVerified;

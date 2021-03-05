@@ -32,6 +32,7 @@ import OCR from "../pages/search/OCR";
 import Matching from "../pages/lesson/Matching";
 import Ranking from "../pages/ranking/Ranking";
 import CourseEdit from "../pages/course/CourseEdit";
+import ReminderSetting from "../pages/settings/ReminderSetting";
 
 interface RootState {
   user: any;
@@ -77,6 +78,7 @@ const Routing: React.FC = () => {
           />
           <Route path="/register" component={Register} exact />
           <Route path="/settings" component={Settings} exact />
+          <Route path="/settings/reminder" component={ReminderSetting} exact />
           <Route path="/search" component={Search} exact />
           <Route
             path="/my-profile/account-settings"

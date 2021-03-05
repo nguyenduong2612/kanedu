@@ -59,7 +59,7 @@ const Account: React.FC<AccountPageProps> = () => {
           .doc(user.uid)
           .update({ profileURL: await fileRef.getDownloadURL() });
 
-        if (!await addAchievement(user, "RjNEtQwBqgVHWdihJO9h")) window.location.reload();
+        if (!await addAchievement(user, "RjNEtQwBqgVHWdihJO9h", "reload")) window.location.reload();
 
         //window.location.reload();
       } catch (err) {

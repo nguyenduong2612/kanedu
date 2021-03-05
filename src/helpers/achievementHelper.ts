@@ -2,7 +2,7 @@ import * as firebase from "firebase/app";
 import { database } from "../config/firebaseConfig";
 import { achievementToast } from "../utils/achievementToast";
 
-export async function addAchievement(user: any, achievementId: string) {
+export async function addAchievement(user: any, achievementId: string, action?: string) {
   let userRef = database.collection("users").doc(user.uid);
 
   if (
@@ -24,7 +24,7 @@ export async function addAchievement(user: any, achievementId: string) {
       exp: firebase.firestore.FieldValue.increment(achievement.exp),
     });
 
-    achievementToast(achievement, "reload");
+    achievementToast(achievement, action);
 
     return true;
   }
