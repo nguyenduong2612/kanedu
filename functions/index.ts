@@ -76,3 +76,28 @@ exports.algoliaUsersSync = functions.firestore
       return usersIndex.saveObject(Object.assign({}, { objectID }, data));
     }
   });
+
+exports.detectText = functions.https.onCall(async (data, context) => {
+  const image = data.image;
+
+  // Checking attribute.
+  if (!(typeof image === 'string') || image.length === 0) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+        'one arguments "text" containing the message text to add.');
+  }
+  // Checking that the user is authenticated.
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+        'while authenticated.');
+  }
+  
+  const vision = require("@google-cloud/vision");
+  const visionClient = new vision.ImageAnnotatorClient();
+
+  const [result] = await visionClient.textDetection(data.image);
+  const detections = result.textAnnotations;
+
+  return detections;
+});

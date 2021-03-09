@@ -1,4 +1,4 @@
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
 import { fetchUserAvatar } from "../../helpers/firebaseHelper";
 import { store } from "../store";

@@ -1,4 +1,4 @@
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
 import { store } from "../store";
 import {
