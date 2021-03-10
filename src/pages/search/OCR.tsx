@@ -24,7 +24,7 @@ interface PageProps {}
 const { Camera } = Plugins;
 
 const OCR: React.FC<PageProps> = () => {
-  const [ocrResult, setOcrResult] = useState<string>("");
+  const [result, setResult] = useState<any>({text: "", translation: ""});
 
   const [image, setImage] = useState<any>(
     "https://www.textures.com/system/gallery/photos/Signs/Asian%20Signs/Japanese/75622/SignsJapan0018_download600.jpg"
@@ -37,7 +37,7 @@ const OCR: React.FC<PageProps> = () => {
     detectText({ image })
       .then((result) => {
         console.log(result);
-        setOcrResult(result.data[0].description);
+        setResult(result.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -107,7 +107,14 @@ const OCR: React.FC<PageProps> = () => {
           </IonCardHeader>
 
           <IonCardContent>
-            {loading ? <IonSpinner color="primary" /> : ocrResult}
+            {loading ? (
+              <IonSpinner color="primary" />
+            ) : (
+              <>
+                <p>{result.text}</p>
+                <p>{result.translation}</p>
+              </>
+            )}
           </IonCardContent>
         </IonCard>
       </IonContent>

@@ -81,23 +81,36 @@ exports.detectText = functions.https.onCall(async (data, context) => {
   const image = data.image;
 
   // Checking attribute.
-  if (!(typeof image === 'string') || image.length === 0) {
+  if (!(typeof image === "string") || image.length === 0) {
     // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
-        'one arguments "text" containing the message text to add.');
+    throw new functions.https.HttpsError(
+      "invalid-argument",
+      "The function must be called with " +
+        'one arguments "text" containing the message text to add.'
+    );
   }
   // Checking that the user is authenticated.
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
-        'while authenticated.');
+    throw new functions.https.HttpsError(
+      "failed-precondition",
+      "The function must be called " + "while authenticated."
+    );
   }
-  
+
+  // Imports the Google Cloud client library
   const vision = require("@google-cloud/vision");
+  const { Translate } = require("@google-cloud/translate").v2;
+
+  // Create clients
   const visionClient = new vision.ImageAnnotatorClient();
+  const translateClient = new Translate();
 
-  const [result] = await visionClient.textDetection(data.image);
-  const detections = result.textAnnotations;
+  const [textRequest] = await visionClient.documentTextDetection(data.image);
+  const fullText = textRequest.textAnnotations[0];
+  const text = fullText ? fullText.description : null;
 
-  return detections;
+  const [translation] = await translateClient.translate(text, "vi");
+
+  return { text, translation };
 });
