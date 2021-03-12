@@ -33,6 +33,7 @@ import Matching from "../pages/lesson/Matching";
 import Ranking from "../pages/ranking/Ranking";
 import CourseEdit from "../pages/course/CourseEdit";
 import ReminderSetting from "../pages/settings/ReminderSetting";
+import Translate from "../pages/translate/Translate";
 
 interface RootState {
   user: any;
@@ -89,6 +90,7 @@ const Routing: React.FC = () => {
           <Route path="/community" component={Community} exact />
           <Route path="/community/:post_id" component={PostDetail} exact />
           <Route path="/dict" component={Dict} exact />
+          <Route path="/translate" component={Translate} exact />
           <Route path="/jlpt" component={Level} exact />
           <Route path="/jlpt/:id" component={JlptExam} exact />
           <Route path="/home" component={Home} exact />

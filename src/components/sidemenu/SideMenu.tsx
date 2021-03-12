@@ -30,6 +30,8 @@ import {
   languageOutline,
   medalOutline,
   medal,
+  textOutline,
+  text,
 } from "ionicons/icons";
 import "./SideMenu.scss";
 import { signOutUser } from "../../redux/user/user.actions";
@@ -70,6 +72,12 @@ const appPages: AppPage[] = [
     url: "/dict",
     iosIcon: languageOutline,
     mdIcon: language,
+  },
+  {
+    title: "Dịch",
+    url: "/translate",
+    iosIcon: textOutline,
+    mdIcon: text,
   },
   {
     title: "Cộng đồng",

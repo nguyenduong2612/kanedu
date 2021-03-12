@@ -5,12 +5,11 @@ import {
   IonTitle,
   IonToolbar,
   IonItem,
-  IonBackButton,
-  IonButtons,
   IonList,
   IonLabel,
   IonItemGroup,
   IonItemDivider,
+  IonMenuButton,
 } from "@ionic/react";
 import React from "react";
 //import notifications from '../../utils/Notifications';
@@ -27,9 +26,11 @@ const Settings: React.FC<SettingPageProps> = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="toolbar">
-          <IonButtons slot="start">
-            <IonBackButton color="light" text="" defaultHref="/" />
-          </IonButtons>
+          <IonMenuButton
+            slot="start"
+            className="menu-btn"
+            color="light"
+          ></IonMenuButton>
           <IonTitle>Cài đặt</IonTitle>
         </IonToolbar>
       </IonHeader>

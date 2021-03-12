@@ -1,5 +1,8 @@
-var algoliasearch = require("algoliasearch");
-var functions = require("firebase-functions");
+// Imports the Google Cloud client library
+const algoliasearch = require("algoliasearch");
+const functions = require("firebase-functions");
+const vision = require("@google-cloud/vision");
+const { Translate } = require("@google-cloud/translate").v2;
 
 const env = functions.config();
 
@@ -77,6 +80,9 @@ exports.algoliaUsersSync = functions.firestore
     }
   });
 
+// Create clients
+const translateClient = new Translate();
+
 exports.detectText = functions.https.onCall(async (data, context) => {
   const image = data.image;
 
@@ -98,19 +104,22 @@ exports.detectText = functions.https.onCall(async (data, context) => {
     );
   }
 
-  // Imports the Google Cloud client library
-  const vision = require("@google-cloud/vision");
-  const { Translate } = require("@google-cloud/translate").v2;
-
   // Create clients
   const visionClient = new vision.ImageAnnotatorClient();
-  const translateClient = new Translate();
 
-  const [textRequest] = await visionClient.documentTextDetection(data.image);
-  const fullText = textRequest.textAnnotations[0];
-  const text = fullText ? fullText.description : null;
+  let [textRequest] = await visionClient.documentTextDetection(data.image);
+  let fullText = textRequest.textAnnotations[0];
+  let text = fullText ? fullText.description : null;
 
-  const [translation] = await translateClient.translate(text, "vi");
+  let [translation] = await translateClient.translate(text, "vi");
 
+  return { text, translation };
+});
+
+exports.translateText = functions.https.onCall(async (data, _context) => {
+  let text = data.text;
+  let target = data.target;
+
+  let [translation] = await translateClient.translate(text, target);
   return { text, translation };
 });
