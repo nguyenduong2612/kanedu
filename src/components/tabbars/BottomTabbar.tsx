@@ -19,15 +19,23 @@ import {
 } from "ionicons/icons";
 import Routing from "../../route/Routing";
 import "./BottomTabbar.scss";
+import { useSelector } from "react-redux";
 
 interface BottomTabbarContainerProps {}
 
+interface RootState {
+  user: any;
+}
+
 const BottomTabbar: React.FC<BottomTabbarContainerProps> = () => {
-  return (
+  const { isLoggedin } = useSelector((state: RootState) => state.user);
+
+  return isLoggedin ? (
     <IonTabs>
       <IonRouterOutlet>
         <Routing />
       </IonRouterOutlet>
+
       <IonTabBar mode="md" slot="bottom" id="appTabBar">
         <IonTabButton tab="home" href="/home">
           <IonIcon ios={homeOutline} md={home} />
@@ -37,17 +45,23 @@ const BottomTabbar: React.FC<BottomTabbarContainerProps> = () => {
           <IonIcon ios={searchOutline} md={search} />
           <IonLabel>Tìm kiếm</IonLabel>
         </IonTabButton>
+
         <IonTabButton disabled></IonTabButton>
         <IonTabButton tab="community" href="/community">
           <IonIcon ios={peopleOutline} md={people} />
           <IonLabel>Cộng đồng</IonLabel>
         </IonTabButton>
+
         <IonTabButton tab="dict" href="/dict">
           <IonIcon ios={languageOutline} md={language} />
           <IonLabel>Từ điển</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>
+  ) : (
+    <IonRouterOutlet>
+      <Routing />
+    </IonRouterOutlet>
   );
 };
 

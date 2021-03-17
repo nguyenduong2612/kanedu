@@ -21,7 +21,6 @@ import {
 import { copyOutline, repeat, volumeHighOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import { Plugins } from "@capacitor/core";
-import "@capacitor-community/text-to-speech";
 import "./Translate.scss";
 import { functions } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";

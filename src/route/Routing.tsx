@@ -46,8 +46,8 @@ const Routing: React.FC = () => {
     <>
       {user ? (
         <IonRouterOutlet>
-          <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
-          <Route path="/login" component={Login} exact />
+          <Route path="/" render={() => <Redirect to="/home" />} exact />
+          <Route path="/login" render={() => <Redirect to="/home" />} exact />
           <Route path="/courses/:id" component={Course} exact />
           <Route path="/edit/:course_id/" component={CourseEdit} exact />
           <Route
@@ -77,7 +77,7 @@ const Routing: React.FC = () => {
             component={CreateCard}
             exact
           />
-          <Route path="/register" component={Register} exact />
+          <Route path="/register" render={() => <Redirect to="/home" />} />
           <Route path="/settings" component={Settings} exact />
           <Route path="/settings/reminder" component={ReminderSetting} exact />
           <Route path="/search" component={Search} exact />
@@ -112,8 +112,12 @@ const Routing: React.FC = () => {
           <Route
             path="/"
             render={() => <Redirect to="/welcome" />}
-            exact={true}
+            exact
           />
+          <Route path="/home" component={Home} exact />
+          <Route path="/search" component={Search} exact />
+          <Route path="/dict" component={Dict} exact />
+          <Route path="/translate" component={Translate} exact />
           <Route path="/welcome" component={LandingPage} exact />
           <Route path="/login" component={Login} exact />
           <Route path="/register" component={Register} exact />

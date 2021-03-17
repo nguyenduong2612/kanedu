@@ -7,6 +7,7 @@ import {
   IonButton,
 } from "@ionic/react";
 import React from "react";
+import useTabbar from "../../hooks/useTabbar";
 import "./LandingPage.scss";
 
 const slideOpts = {
@@ -21,6 +22,9 @@ const slideOpts = {
 interface LandingPageProps {}
 
 const LandingPage: React.FC<LandingPageProps> = () => {
+  
+  useTabbar();
+  
   return (
     <>
     <div className="landing-page__background"></div>
@@ -79,6 +83,15 @@ const LandingPage: React.FC<LandingPageProps> = () => {
             routerLink="/login"
           >
             <p className="btn-text">ĐĂNG NHẬP</p>
+          </IonButton>
+          <IonButton
+            size="small"
+            expand="block"
+            mode="ios"
+            fill="clear"
+            routerLink="/home"
+          >
+            <p className="btn-text" style={{ fontSize: 13 }} >Không phải bây giờ</p>
           </IonButton>
         </IonList>
       </IonContent>

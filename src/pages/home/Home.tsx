@@ -32,10 +32,14 @@ const CourseContainer = lazy(
 
 interface RootState {
   courses: any;
+  user: any;
 }
 
 const Home: React.FC = () => {
-  const { createdCourses, followingCourses } = useSelector((state: RootState) => state.courses);
+  const { createdCourses, followingCourses } = useSelector(
+    (state: RootState) => state.courses
+  );
+  const { isLoggedin } = useSelector((state: RootState) => state.user);
 
   const [showNotiModal, setShowNotiModal] = useState<boolean>(false);
 
@@ -53,36 +57,36 @@ const Home: React.FC = () => {
             color="light"
           ></IonMenuButton>
           <IonTitle>Trang chủ</IonTitle>
-          <IonButtons slot="end">
-            <IonButton onClick={() => setShowNotiModal(true)}>
-              <IonIcon
-                color="light"
-                slot="icon-only"
-                ios={notificationsOutline}
-                md={notifications}
-              />
-            </IonButton>
-            <IonButton routerLink="/ocr">
-              <IonIcon
-                color="light"
-                slot="icon-only"
-                icon={camera}
-              />
-            </IonButton>
+          {isLoggedin && (
+            <IonButtons slot="end">
+              <IonButton onClick={() => setShowNotiModal(true)}>
+                <IonIcon
+                  color="light"
+                  slot="icon-only"
+                  ios={notificationsOutline}
+                  md={notifications}
+                />
+              </IonButton>
 
-            <NotificationsModal
-              isOpen={showNotiModal}
-              handleCloseModal={handleCloseModal}
-            ></NotificationsModal>
-          </IonButtons>
+              <IonButton routerLink="/ocr">
+                <IonIcon color="light" slot="icon-only" icon={camera} />
+              </IonButton>
+
+              <NotificationsModal
+                isOpen={showNotiModal}
+                handleCloseModal={handleCloseModal}
+              ></NotificationsModal>
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <Refresher />
         <IonList>
-          {createdCourses.length === 0 &&
-            followingCourses.length === 0 && <HintContainer />}
-            
+          {createdCourses.length === 0 && followingCourses.length === 0 && (
+            <HintContainer />
+          )}
+
           <div className="section-wrapper">
             <IonItemDivider mode="md">
               <IonLabel color="dark">
@@ -103,21 +107,19 @@ const Home: React.FC = () => {
               </IonButton>
             </IonItemDivider>
             {followingCourses.length > 0 ? (
-              followingCourses
-                .slice(0, 2)
-                .map((course: any, index: number) => {
-                  return (
-                    <CourseContainer
-                      key={index}
-                      id={course.id}
-                      name={course.name}
-                      author={course.author}
-                      author_id={course.author_id}
-                      description={course.description}
-                      followers={course.followed_by.length}
-                    />
-                  );
-                })
+              followingCourses.slice(0, 2).map((course: any, index: number) => {
+                return (
+                  <CourseContainer
+                    key={index}
+                    id={course.id}
+                    name={course.name}
+                    author={course.author}
+                    author_id={course.author_id}
+                    description={course.description}
+                    followers={course.followed_by.length}
+                  />
+                );
+              })
             ) : (
               <div className="error-msg">
                 <ErrorPage>Bạn chưa theo dõi khóa học nào</ErrorPage>
@@ -145,21 +147,19 @@ const Home: React.FC = () => {
               </IonButton>
             </IonItemDivider>
             {createdCourses.length > 0 ? (
-              createdCourses
-                .slice(0, 2)
-                .map((course: any, index: number) => {
-                  return (
-                    <CourseContainer
-                      key={index}
-                      id={course.id}
-                      name={course.name}
-                      author={course.author}
-                      author_id={course.author_id}
-                      description={course.description}
-                      followers={course.followed_by.length}
-                    />
-                  );
-                })
+              createdCourses.slice(0, 2).map((course: any, index: number) => {
+                return (
+                  <CourseContainer
+                    key={index}
+                    id={course.id}
+                    name={course.name}
+                    author={course.author}
+                    author_id={course.author_id}
+                    description={course.description}
+                    followers={course.followed_by.length}
+                  />
+                );
+              })
             ) : (
               <div className="error-msg">
                 <ErrorPage>Bạn chưa tạo khóa học nào</ErrorPage>

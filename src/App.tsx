@@ -41,7 +41,6 @@ import { add } from "ionicons/icons";
 
 import SideMenu from "./components/sidemenu/SideMenu";
 import CreateModal from "./components/modals/CreateModal";
-import Routing from "./route/Routing";
 import BottomTabbar from "./components/tabbars/BottomTabbar";
 
 // hooks
@@ -117,11 +116,11 @@ const App: React.FC = () => {
           <Loading />
         ) : (
           <IonReactRouter>
-            {isLoggedin ? (
-              <IonSplitPane contentId="main">
-                <SideMenu />
+            <IonSplitPane contentId="main">
+              <SideMenu />
 
-                <IonContent fullscreen id="main" style={{ maxWidth: 800 }}>
+              <IonContent fullscreen id="main">
+                {isLoggedin && (
                   <IonFab vertical="bottom" horizontal="center">
                     {showFabButton && (
                       <IonFabButton onClick={handleShowModal} id="appFabBtn">
@@ -133,19 +132,17 @@ const App: React.FC = () => {
                       handleCloseModal={handleCloseModal}
                     />
                   </IonFab>
+                )}
 
-                  <BottomTabbar />
-                </IonContent>
+                <BottomTabbar />
+              </IonContent>
 
-                <IonContent id="right-side" fullscreen>
-                  <IonList className="ads">
-                    <IonTitle>Có thể bạn chưa biết</IonTitle>
-                  </IonList>
-                </IonContent>
-              </IonSplitPane>
-            ) : (
-              <Routing />
-            )}
+              <IonContent id="right-side" fullscreen >
+                <IonList className="ads">
+                  <IonTitle>Có thể bạn chưa biết</IonTitle>
+                </IonList>
+              </IonContent>
+            </IonSplitPane>
           </IonReactRouter>
         )}
       </IonApp>

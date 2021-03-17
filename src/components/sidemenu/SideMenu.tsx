@@ -32,6 +32,12 @@ import {
   medal,
   textOutline,
   text,
+  search,
+  searchOutline,
+  logIn,
+  logInOutline,
+  personAdd,
+  personAddOutline,
 } from "ionicons/icons";
 import "./SideMenu.scss";
 import { signOutUser } from "../../redux/user/user.actions";
@@ -99,6 +105,33 @@ const appPages: AppPage[] = [
   },
 ];
 
+const guestPages: AppPage[] = [
+  {
+    title: "Trang chủ",
+    url: "/home",
+    iosIcon: homeOutline,
+    mdIcon: home,
+  },
+  {
+    title: "Tìm kiếm",
+    url: "/search",
+    iosIcon: searchOutline,
+    mdIcon: search,
+  },
+  {
+    title: "Từ điển",
+    url: "/dict",
+    iosIcon: languageOutline,
+    mdIcon: language,
+  },
+  {
+    title: "Dịch",
+    url: "/translate",
+    iosIcon: textOutline,
+    mdIcon: text,
+  },
+];
+
 const SideMenu: React.FC<SidemenuContainerProps> = () => {
   const location = useLocation();
   const { user } = useSelector((state: RootState) => state.user);
@@ -106,15 +139,16 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
 
   const signout = () => {
     dispatch(signOutUser());
+    dispatch({type: "RESET_DATA"});
   };
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
         <IonList id="inbox-list">
-          <IonListHeader>Xin chào, {user.name}</IonListHeader>
-          <IonNote>{user.email}</IonNote>
-          {appPages.map((appPage, index) => {
+          <IonListHeader>Xin chào, {user ? user.name : "Khách"}</IonListHeader>
+          <IonNote>{user ? user.email : "Đăng nhập để sử dụng nhiều tính năng hơn"}</IonNote>
+          {(user ? appPages : guestPages).map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem
@@ -141,24 +175,56 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
           })}
           <IonMenuToggle autoHide={false}>
             <IonItem />
-            <IonItem
-              button
-              onClick={signout}
-              routerDirection="none"
-              lines="none"
-              detail={false}
-              routerLink="/welcome"
-            >
-              <IonIcon
-                color="light"
-                slot="start"
-                ios={logOutOutline}
-                md={logOut}
-              />
-              <IonLabel className="sidemenu__label" color="light">
-                Đăng xuất
-              </IonLabel>
-            </IonItem>
+            {user ? (
+              <IonItem
+                button
+                onClick={signout}
+                routerDirection="none"
+                lines="none"
+                detail={false}
+                routerLink="/welcome"
+              >
+                <IonIcon
+                  color="light"
+                  slot="start"
+                  ios={logOutOutline}
+                  md={logOut}
+                />
+                <IonLabel className="sidemenu__label" color="light">
+                  Đăng xuất
+                </IonLabel>
+              </IonItem>
+            ) : (
+              <>
+                <IonItem button lines="none" detail={false} routerLink="/login">
+                  <IonIcon
+                    color="light"
+                    slot="start"
+                    ios={logInOutline}
+                    md={logIn}
+                  />
+                  <IonLabel className="sidemenu__label" color="light">
+                    Đăng nhập
+                  </IonLabel>
+                </IonItem>
+                <IonItem
+                  button
+                  lines="none"
+                  detail={false}
+                  routerLink="/register"
+                >
+                  <IonIcon
+                    color="light"
+                    slot="start"
+                    ios={personAddOutline}
+                    md={personAdd}
+                  />
+                  <IonLabel className="sidemenu__label" color="light">
+                    Đăng ký
+                  </IonLabel>
+                </IonItem>
+              </>
+            )}
           </IonMenuToggle>
         </IonList>
       </IonContent>

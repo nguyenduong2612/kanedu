@@ -34,10 +34,6 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   console.log(email, password)
-  // })
-
   async function login() {
     if (email.trim() === "" || password.trim() === "") {
       return toast("Hãy nhập email và mật khẩu");
