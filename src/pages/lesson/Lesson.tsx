@@ -69,7 +69,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
             lessonId={match.params.lesson_id}
           />
         </div>
-        <div className="lesson-info">
+        <div className="lesson-info max-width-700">
           <IonGrid>
             {lesson.isLoaded ? (
               <>

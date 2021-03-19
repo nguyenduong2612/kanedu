@@ -68,7 +68,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <IonGrid className="user-info">
+          <IonGrid className="user-info max-width-700">
             <IonRow>
               <IonCol size="9">
                 <h3 className="username">{user.name}</h3>
@@ -96,7 +96,6 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
         <IonItemDivider mode="md" />
         <div className="user-data">
           <IonSegment
-            scrollable
             value={segmentValue}
             color="primary"
             className="part-segment"
@@ -112,7 +111,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
 
           {segmentValue === "statistics" ? (
             <>
-              <IonGrid className="statistics">
+              <IonGrid className="statistics max-width-700">
                 <IonRow className="part-title">Thống kê</IonRow>
                 <IonRow>
                   <IonCol size="6">
@@ -154,7 +153,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
                 </IonRow>
               </IonGrid>
 
-              <IonGrid className="achievements">
+              <IonGrid className="achievements max-width-700">
                 <IonRow className="part-title">Thành tựu</IonRow>
                 <IonList>
                   {user.achievements &&
@@ -188,7 +187,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
           ) : (
             <>
               {createdCourses.length > 0 ? (
-                <IonList>
+                <IonList className="max-width-700">
                   {createdCourses.map((course: any, index: number) => {
                     return (
                       <CourseContainer

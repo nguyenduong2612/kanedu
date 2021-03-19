@@ -57,7 +57,7 @@ const CourseEdit: React.FC<CourseEditPageProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList style={{ height: "85vh" }}>
+        <IonList style={{ height: "85vh" }} className="max-width-700">
           {lessons.isEmpty ? (
             <ErrorPage>Không có bài học</ErrorPage>
           ) : (

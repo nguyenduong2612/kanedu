@@ -81,7 +81,7 @@ const Account: React.FC<AccountPageProps> = () => {
 
       <IonContent fullscreen className="account-settings">
         <Refresher />
-        <IonList>
+        <IonList className="max-width-700">
           <IonItemGroup>
             <div className="avatar-wrapper">
               <img

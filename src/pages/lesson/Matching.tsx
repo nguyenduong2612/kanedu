@@ -181,7 +181,7 @@ const Matching: React.FC<MatchingPageProps> = ({ match }) => {
           buttons={["Xác nhận"]}
         />
 
-        <IonGrid>
+        <IonGrid className="max-width-700">
           {isLoaded ? (
             <IonRow className="card-row">
               {cards.map((item: any, index: number) => {

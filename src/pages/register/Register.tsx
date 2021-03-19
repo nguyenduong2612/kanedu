@@ -57,7 +57,7 @@ const Register: React.FC = () => {
   }
 
   return (
-    <IonPage className="landing-page page-container">
+    <IonPage className="page-container">
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonButtons slot="start">

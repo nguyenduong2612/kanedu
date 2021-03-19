@@ -31,7 +31,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
     <>
       {searchTerm.trim() !== "" ? (
         searchResult.length !== 0 ? (
-          <IonList>
+          <IonList className="max-width-700">
             {searchResult.slice(0, 15).map((item: any, index: number) => {
               return (
                 <IonItem

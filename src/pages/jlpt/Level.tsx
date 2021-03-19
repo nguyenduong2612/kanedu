@@ -93,7 +93,7 @@ const Level: React.FC<LevelPageProps> = () => {
           exams.length > 0 ? (
             exams.map((exam: any, i: number) => {
               return (
-                <IonList key={i}>
+                <IonList key={i} className="max-width-700">
                   <IonItem button routerLink={`/jlpt/${exam.id}`}>
                     <IonTitle>{exam.title}</IonTitle>
                   </IonItem>

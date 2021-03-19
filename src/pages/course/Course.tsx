@@ -180,35 +180,37 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       </IonHeader>
 
       <IonContent fullscreen>
-        <Refresher />
-        {course.isLoaded ? (
-          <IonList className="course-info">
-            <IonItem lines="none">
-              <IonIcon icon={personCircle}></IonIcon>
-              <IonText className="course-info__text">
-                Được tạo bởi {course.author}
-              </IonText>
-            </IonItem>
-            <IonItem lines="none">
-              <IonIcon icon={heart}></IonIcon>
-              <IonText className="course-info__text">
-                {course.countFollowers ? course.countFollowers : 0} người theo
-                dõi khóa học này
-              </IonText>
-            </IonItem>
-            <IonItem lines="none">
-              <IonIcon icon={shareSocial}></IonIcon>
-              <IonText className="course-info__text">0 lượt chia sẻ</IonText>
-            </IonItem>
-          </IonList>
-        ) : (
-          <Skeleton />
-        )}
+        <div className="max-width-700">
+          <Refresher />
+          {course.isLoaded ? (
+            <IonList className="course-info">
+              <IonItem lines="none">
+                <IonIcon icon={personCircle}></IonIcon>
+                <IonText className="course-info__text">
+                  Được tạo bởi {course.author}
+                </IonText>
+              </IonItem>
+              <IonItem lines="none">
+                <IonIcon icon={heart}></IonIcon>
+                <IonText className="course-info__text">
+                  {course.countFollowers ? course.countFollowers : 0} người theo
+                  dõi khóa học này
+                </IonText>
+              </IonItem>
+              <IonItem lines="none">
+                <IonIcon icon={shareSocial}></IonIcon>
+                <IonText className="course-info__text">0 lượt chia sẻ</IonText>
+              </IonItem>
+            </IonList>
+          ) : (
+            <Skeleton />
+          )}
 
-        <IonItemDivider mode="md">
-          <IonLabel color="dark">Danh sách bài học</IonLabel>
-        </IonItemDivider>
-        <LessonListContainer author={course.author} courseId={courseId} />
+          <IonItemDivider mode="md">
+            <IonLabel color="dark">Danh sách bài học</IonLabel>
+          </IonItemDivider>
+          <LessonListContainer author={course.author} courseId={courseId} />
+        </div>
       </IonContent>
 
       <ShareModal

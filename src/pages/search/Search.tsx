@@ -41,7 +41,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
     <>
       {searchTerm.trim() !== "" ? (
         searchResult.length !== 0 ? (
-          <IonList lines="none">
+          <IonList lines="none" className="max-width-700">
             {searchResult.map((item: any, index: number) => {
               if (searchIndex === "posts") {
                 var page = "community";
@@ -113,7 +113,6 @@ const Search: React.FC<SearchPageProps> = () => {
 
       <IonContent fullscreen>
         <IonSegment
-          scrollable
           value={searchIndex}
           color="primary"
           onIonChange={(e: any) => setSearchIndex(e.detail.value!)}

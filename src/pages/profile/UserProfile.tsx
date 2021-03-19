@@ -80,7 +80,7 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonGrid className="user-info">
+        <IonGrid className="user-info max-width-700" >
           <IonRow>
             <IonCol size="9">
               <h3 className="username">{userInfo.name}</h3>
@@ -100,7 +100,7 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         <IonItemDivider mode="md" />
 
         {courses.length > 0 ? (
-          <IonList>
+          <IonList className="max-width-700">
             {courses.map((course: any, index: number) => {
               return (
                 <CourseContainer

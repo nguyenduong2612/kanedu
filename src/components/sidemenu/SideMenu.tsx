@@ -143,7 +143,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
   };
 
   return (
-    <IonMenu contentId="main" type="overlay">
+    <IonMenu contentId="main" type="push">
       <IonContent>
         <IonList id="inbox-list">
           <IonListHeader>Xin chào, {user ? user.name : "Khách"}</IonListHeader>

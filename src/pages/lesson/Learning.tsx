@@ -11,6 +11,7 @@ import React from "react";
 import { RouteComponentProps } from "react-router";
 import CardListContainer from "../../components/containers/CardListContainer";
 import useTabbar from "../../hooks/useTabbar";
+import "./Learning.scss";
 interface MatchParams {
   course_id: string;
   lesson_id: string;
@@ -34,7 +35,9 @@ const Learning: React.FC<LearningPageProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <CardListContainer courseId={courseId} lessonId={lessonId} />
+        <div className="card-list-wrapper">
+          <CardListContainer courseId={courseId} lessonId={lessonId} />
+        </div>
       </IonContent>
     </IonPage>
   );

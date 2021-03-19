@@ -143,7 +143,7 @@ const Community: React.FC<CommunityPageProps> = () => {
           onIonScroll={(e: any) => handleScroll(e)}
         >
           <Refresher />
-          <IonGrid id="post-input-wrapper">
+          <IonGrid id="post-input-wrapper" className="max-width-700">
             <IonRow className="row">
               <IonCol size="2" className="col">
                 <div className="image-wrapper">
@@ -176,7 +176,7 @@ const Community: React.FC<CommunityPageProps> = () => {
             </IonRow>
           </IonGrid>
 
-          <div style={{ backgroundColor: "#ddd" }}>
+          <div style={{ backgroundColor: "#ddd" }} className="max-width-700">
             {posts
               .filter((post: any) => post !== undefined)
               .map((post: any, index: number) => {

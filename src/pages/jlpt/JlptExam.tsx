@@ -206,7 +206,6 @@ const JlptExam: React.FC<JlptExamPageProps> = ({ match }) => {
               buttons={["Xác nhận"]}
             />
             <IonSegment
-              scrollable
               value={exam.part}
               color="primary"
               className="part-segment"

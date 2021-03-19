@@ -11,6 +11,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonLabel,
+  IonList,
 } from "@ionic/react";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -35,22 +36,26 @@ const CreateLesson: React.FC<CreateLessonPageProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonItem lines="none"><IonLabel>Khóa học của tôi</IonLabel></IonItem>
-        {createdCourses.map((course: any, index: number) => {
-          return (
-            <IonItem
-              key={index}
-              lines="none"
-              routerLink={`/lesson/create/${course.id}`}
-            >
-              <IonCard style={{ width: "100%" }}>
-                <IonCardHeader>
-                  <IonCardTitle>{course.name}</IonCardTitle>
-                </IonCardHeader>
-              </IonCard>
-            </IonItem>
-          );
-        })}
+        <IonList className="max-width-700">
+          <IonItem lines="none">
+            <IonLabel>Khóa học của tôi</IonLabel>
+          </IonItem>
+          {createdCourses.map((course: any, index: number) => {
+            return (
+              <IonItem
+                key={index}
+                lines="none"
+                routerLink={`/lesson/create/${course.id}`}
+              >
+                <IonCard style={{ width: "100%" }}>
+                  <IonCardHeader>
+                    <IonCardTitle>{course.name}</IonCardTitle>
+                  </IonCardHeader>
+                </IonCard>
+              </IonItem>
+            );
+          })}
+        </IonList>
       </IonContent>
     </IonPage>
   );

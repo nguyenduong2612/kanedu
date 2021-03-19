@@ -74,7 +74,7 @@ const ChangePassword: React.FC<ChangePasswordPageProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList style={{ width: "95%", margin: "10px auto" }}>
+        <IonList style={{ width: "95%", margin: "10px auto" }} className="max-width-700">
           <IonItem>
             <IonLabel position="floating">Mật khẩu hiện tại</IonLabel>
             <IonInput

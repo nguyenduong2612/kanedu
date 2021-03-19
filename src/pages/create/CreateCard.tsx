@@ -115,7 +115,7 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
+        <IonList className="max-width-700">
           <IonItem>
             <IonLabel position="floating">Tên bài học</IonLabel>
             <IonInput
@@ -125,7 +125,7 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
           </IonItem>
         </IonList>
 
-        <IonList>
+        <IonList className="max-width-700">
           {cardList.map((val: any, index: number) => {
             return (
               <IonItem key={index} lines="none">

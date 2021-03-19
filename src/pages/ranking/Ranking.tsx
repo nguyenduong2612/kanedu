@@ -36,7 +36,7 @@ const Ranking: React.FC<RankingPageProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
+        <IonList className="max-width-700">
           {ranking.isLoaded ? (
             ranking.topten.map((user: any, index: number) => {
               return (

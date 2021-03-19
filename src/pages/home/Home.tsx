@@ -13,7 +13,6 @@ import {
   IonButtons,
 } from "@ionic/react";
 import {
-  camera,
   chevronForward,
   notifications,
   notificationsOutline,
@@ -68,10 +67,6 @@ const Home: React.FC = () => {
                 />
               </IonButton>
 
-              <IonButton routerLink="/ocr">
-                <IonIcon color="light" slot="icon-only" icon={camera} />
-              </IonButton>
-
               <NotificationsModal
                 isOpen={showNotiModal}
                 handleCloseModal={handleCloseModal}
@@ -82,7 +77,7 @@ const Home: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <Refresher />
-        <IonList>
+        <IonList className="max-width-700">
           {createdCourses.length === 0 && followingCourses.length === 0 && (
             <HintContainer />
           )}

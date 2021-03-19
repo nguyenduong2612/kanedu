@@ -8,8 +8,6 @@ import {
   IonSplitPane,
   IonFab,
   IonFabButton,
-  IonTitle,
-  IonList,
 } from "@ionic/react";
 
 import { IonReactRouter } from "@ionic/react-router";
@@ -116,7 +114,7 @@ const App: React.FC = () => {
           <Loading />
         ) : (
           <IonReactRouter>
-            <IonSplitPane contentId="main">
+            <IonSplitPane contentId="main" id="splitpane">
               <SideMenu />
 
               <IonContent fullscreen id="main">
@@ -137,11 +135,11 @@ const App: React.FC = () => {
                 <BottomTabbar />
               </IonContent>
 
-              <IonContent id="right-side" fullscreen >
-                <IonList className="ads">
-                  <IonTitle>Có thể bạn chưa biết</IonTitle>
-                </IonList>
-              </IonContent>
+              {/* <IonContent id="right-side" fullscreen>
+                <IonToolbar>
+                  <IonTitle style={{ fontSize: 18 }}>Có thể bạn chưa biết</IonTitle>
+                </IonToolbar>
+              </IonContent> */}
             </IonSplitPane>
           </IonReactRouter>
         )}

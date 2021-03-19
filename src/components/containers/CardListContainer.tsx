@@ -143,7 +143,7 @@ const CardListContainer: React.FC<CardListContainerProps> = ({
     <>
       {isLoaded ? (
         cardList.length > 0 && (
-          <IonSlides options={slideOpts} className="card-list__slides">
+          <IonSlides options={slideOpts} className="card-list__slides max-width-700">
             {cardList.map((card: any, index: number) => {
               return (
                 <CardSlide card={card} key={index} lessonId={lessonId} />

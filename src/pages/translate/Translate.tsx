@@ -18,7 +18,7 @@ import {
   IonCard,
   IonCardContent,
 } from "@ionic/react";
-import { copyOutline, repeat, volumeHighOutline } from "ionicons/icons";
+import { camera, copyOutline, repeat, volumeHighOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import { Plugins } from "@capacitor/core";
 import "./Translate.scss";
@@ -79,10 +79,15 @@ const Settings: React.FC<TranslatePageProps> = () => {
             color="light"
           ></IonMenuButton>
           <IonTitle>Dịch</IonTitle>
+          <IonButtons slot="end">
+            <IonButton routerLink="/ocr">
+              <IonIcon color="light" slot="icon-only" icon={camera} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
+        <IonList className="max-width-700">
           <IonItem lines="none" className="language-bar">
             <IonGrid>
               <IonRow>

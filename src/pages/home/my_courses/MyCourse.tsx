@@ -36,7 +36,7 @@ const MyCourse: React.FC<MyCoursePageProps> = () => {
       <IonContent fullscreen>
         <Refresher />
         {createdCourses.length > 0 ? (
-          <IonList>
+          <IonList className="max-width-700">
             {createdCourses.map((course: any, index: number) => {
               return (
                 <CourseContainer

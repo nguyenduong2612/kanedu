@@ -36,7 +36,7 @@ const MyFollowingCourse: React.FC<MyFollowingCoursePageProps> = () => {
       <IonContent fullscreen>
         <Refresher />
         {followingCourses.length > 0 ? (
-          <IonList>
+          <IonList className="max-width-700">
             {followingCourses.map((course: any, index: number) => {
               return (
                 <CourseContainer

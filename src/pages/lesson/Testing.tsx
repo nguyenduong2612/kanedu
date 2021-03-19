@@ -218,6 +218,7 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
                 ref={slidesRef}
                 options={slideOpts}
                 style={{ height: "100%" }}
+                className="max-width-700"
               >
                 {questions.map((item: any, slideIndex: number) => {
                   return (
