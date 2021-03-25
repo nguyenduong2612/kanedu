@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
+import { Course } from "../../models";
 import { store } from "../store";
 import {
   GET_CREATED_COURSES_STARTED,
@@ -183,14 +184,14 @@ export const unfollowCourse = (
   };
 };
 
-export const createCourse = (course: any, userId: string) => {
+export const createCourse = (courseData: any, userId: string) => {
   const createCourseStarted = () => ({
     type: CREATE_COURSE_STARTED,
   });
 
-  const createCourseSuccess = (courseIndex: number) => ({
+  const createCourseSuccess = (course: Course) => ({
     type: CREATE_COURSE_SUCCESS,
-    payload: courseIndex,
+    payload: course,
   });
 
   const createCourseFailed = () => ({
@@ -200,7 +201,7 @@ export const createCourse = (course: any, userId: string) => {
   return async (dispatch: typeof store.dispatch) => {
     dispatch(createCourseStarted);
     try {
-      const res = await database.collection("courses").add(course);
+      const res = await database.collection("courses").add(courseData);
       // if (await algoliaUpdateCourse(course, res.id))
       //   console.log("add algolia ok");
 
@@ -209,8 +210,11 @@ export const createCourse = (course: any, userId: string) => {
         created_courses: firebase.firestore.FieldValue.arrayUnion(res.id),
       });
 
-      course.id = res.id;
-      dispatch(createCourseSuccess(course));
+      let newCourse = {
+        id: res.id,
+        ...courseData
+      }
+      dispatch(createCourseSuccess(newCourse));
     } catch (error) {
       dispatch(createCourseFailed);
     }

@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
 import { fetchUserAvatar } from "../../helpers/firebaseHelper";
+import { Post } from "../../models";
 import { store } from "../store";
 import {
   GET_POSTS_STARTED,
@@ -71,12 +72,12 @@ export const getPosts = (userId: string) => {
   };
 };
 
-export const savePost = (post: any, userId: string) => {
+export const savePost = (postData: any, userId: string) => {
   const savePostStarted = () => ({
     type: SAVE_POST_STARTED,
   });
 
-  const savePostSuccess = (post: any) => ({
+  const savePostSuccess = (post: Post) => ({
     type: SAVE_POST_SUCCESS,
     payload: post,
   });
@@ -88,22 +89,28 @@ export const savePost = (post: any, userId: string) => {
   return async (dispatch: typeof store.dispatch) => {
     dispatch(savePostStarted);
     try {
-      const res = await database.collection("posts").add(post);
+      const res = await database.collection("posts").add(postData);
       // if (await algoliaUpdatePost(post, res.id)) console.log("add algolia ok");
 
       const userRef = database.collection("users").doc(userId);
       userRef.update({
         created_posts: firebase.firestore.FieldValue.arrayUnion(res.id),
       });
-      dispatch(savePostSuccess(post));
-      window.location.reload();
+
+      let newPost = {
+        id: res.id,
+        avatar: await fetchUserAvatar(userId),
+        isFavorited: false,
+        ...postData
+      }
+      dispatch(savePostSuccess(newPost));
     } catch (error) {
       dispatch(savePostFailed);
     }
   };
 };
 
-export const likePost = (posts: any, postId: string, userId: string) => {
+export const likePost = (posts: Post[], postId: string, userId: string) => {
   const likePostStarted = () => ({
     type: LIKE_POST_STARTED,
   });
@@ -130,7 +137,7 @@ export const likePost = (posts: any, postId: string, userId: string) => {
         likes: firebase.firestore.FieldValue.increment(1),
       });
 
-      let postIndex = posts.findIndex((post: any) => post.id === postId);
+      let postIndex = posts.findIndex((post: Post) => post.id === postId);
       dispatch(likePostSuccess(postIndex));
     } catch (error) {
       dispatch(likePostFailed);
@@ -138,7 +145,7 @@ export const likePost = (posts: any, postId: string, userId: string) => {
   };
 };
 
-export const unlikePost = (posts: any, postId: string, userId: string) => {
+export const unlikePost = (posts: Post[], postId: string, userId: string) => {
   const unlikePostStarted = () => ({
     type: UNLIKE_POST_STARTED,
   });
@@ -214,7 +221,7 @@ export const saveComment = (
   author: string,
   content: string,
   postId: string,
-  posts: any
+  posts: Post[]
 ) => {
   const saveCommentStarted = () => ({
     type: SAVE_COMMENT_STARTED,

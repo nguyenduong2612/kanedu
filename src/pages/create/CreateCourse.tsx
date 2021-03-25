@@ -35,7 +35,7 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
   const handleCreateCourse = async () => {
     if (titleInput.trim() === "") toast("Hãy nhập tên khóa học");
     else {
-      let course: any = {
+      let courseData = {
         author: user.name,
         author_id: user.uid,
         name: titleInput,
@@ -44,7 +44,7 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
         followed_by: [],
       };
 
-      dispatch(createCourse(course, user.uid));
+      dispatch(createCourse(courseData, user.uid));
       toast("Tạo khóa học thành công");
 
       setTitleInput("");

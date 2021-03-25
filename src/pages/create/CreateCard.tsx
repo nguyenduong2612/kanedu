@@ -28,6 +28,7 @@ import {
 import React, { useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { database } from "../../config/firebaseConfig";
+import { Card } from "../../models";
 import { toast } from "../../utils/toast";
 import "./CreateLesson.scss";
 
@@ -39,16 +40,17 @@ interface CreateCardPageProps extends RouteComponentProps<MatchParams> {}
 
 const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
   const blankCard = {
+    id: "",
     detail: "",
     keyword: "",
     meaning: "",
     other: "",
   };
   const [titleInput, setTitleInput] = useState<string>("");
-  const [cardList, setCardList] = useState<any[]>([{ ...blankCard }]);
+  const [cardList, setCardList] = useState<Card[]>([{ ...blankCard }]);
 
   const handleCardChange = (e: any, index: number, name: string) => {
-    let updatedCards = [...cardList];
+    let updatedCards: any = [...cardList];
     updatedCards[index][name] = e.detail.value;
     setCardList(updatedCards);
   };
@@ -83,7 +85,7 @@ const CreateCard: React.FC<CreateCardPageProps> = ({ match }) => {
         .collection("lessons")
         .doc(res.id)
         .collection("cards");
-      cardList.map(async (card: any) => {
+      cardList.map(async (card: Card) => {
         await ref.add(card);
       });
 

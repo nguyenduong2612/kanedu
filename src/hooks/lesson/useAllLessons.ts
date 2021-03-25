@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { database } from "../../config/firebaseConfig";
+import { Lesson } from "../../models";
 
 function useAllLessons(courseId: string) {
-  const [lessonList, setLessonList] = useState<any[]>([]);
+  const [lessonList, setLessonList] = useState<Lesson[]>([]);
   const [isEmpty, setIsEmpty] = useState<boolean>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -18,10 +19,13 @@ function useAllLessons(courseId: string) {
         setIsEmpty(true);
       } else {
         docs.forEach((doc) => {
-          let lesson = {
+          let lesson: Lesson = {
             id: doc.id,
-            ...doc.data(),
+            numberOfCards: doc.data().numberOfCards,
+            title: doc.data().title,
+            created_at: doc.data().created_at
           };
+
           setLessonList((lessonList) => [...lessonList, lesson]);
         });
       }

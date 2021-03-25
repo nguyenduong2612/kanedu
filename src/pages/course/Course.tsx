@@ -31,7 +31,6 @@ import "./Course.scss";
 import ShareModal from "../../components/modals/ShareModal";
 import Refresher from "../../components/utils/Refresher";
 import useCourse from "../../hooks/course/useCourse";
-import { Post } from "../../models/Post";
 import {
   deleteCourse,
   followCourse,
@@ -94,7 +93,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   };
 
   const handleShare = async () => {
-    let post: Post = {
+    let postData = {
       author: user.name,
       author_id: user.uid,
       title: course.name,
@@ -105,7 +104,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       created_at: Date.now(),
     };
 
-    dispatch(savePost(post, user.uid));
+    dispatch(savePost(postData, user.uid));
 
     toast("Chia sẻ khóa học thành công");
     setShowShareModal(false);

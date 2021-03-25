@@ -38,6 +38,7 @@ import {
   saveComment,
   unlikePost,
 } from "../../../redux/post/post.actions";
+import { Post } from "../../../models";
 
 interface PostDetailProps extends RouteComponentProps<MatchParams> {}
 interface RootState {
@@ -52,7 +53,8 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   const postId = match.params.post_id;
   const { user } = useSelector((state: RootState) => state.user);
   const { posts, comments } = useSelector((state: RootState) => state.posts);
-  const post = posts.find((post: any) => post.id === postId);
+  
+  const post = posts.find((post: Post) => post.id === postId);
   const dispatch = useDispatch();
 
   useTabbar();

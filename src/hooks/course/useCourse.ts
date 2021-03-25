@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { database } from "../../config/firebaseConfig";
+import { Course } from "../../models";
 
 interface RootState {
   courses: any;
@@ -31,7 +32,7 @@ function useCourse(courseId: string) {
         setCountFollowers(doc.data().followed_by.length);
 
         var courseIndex = followingCourses
-          .map((course: any) => {
+          .map((course: Course) => {
             return course.id;
           })
           .indexOf(courseId);

@@ -17,6 +17,7 @@ import { RouteComponentProps } from "react-router";
 import CourseContainer from "../../components/containers/CourseContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import { database } from "../../config/firebaseConfig";
+import { Course } from "../../models";
 import "./UserProfile.scss";
 
 interface MatchParams {
@@ -26,7 +27,7 @@ interface MatchParams {
 interface UserProfilePageProps extends RouteComponentProps<MatchParams> {}
 
 const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
-  const [courses, setCourses] = useState<any[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [userInfo, setUserInfo] = useState<any>({});
 
   useEffect(() => {
@@ -39,8 +40,15 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
-          let course = doc.data();
-          course.id = doc.id;
+          let course: Course = {
+            id: doc.id,
+            author: doc.data().author,
+            author_id: doc.data().author_id,
+            name: doc.data().name,
+            description: doc.data().description,
+            created_at: doc.data().created_at,
+            followed_by: doc.data().followed_by,
+          };
           setCourses((courses) => [...courses, course]);
         });
       }
@@ -80,7 +88,7 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonGrid className="user-info max-width-700" >
+        <IonGrid className="user-info max-width-700">
           <IonRow>
             <IonCol size="9">
               <h3 className="username">{userInfo.name}</h3>

@@ -92,7 +92,7 @@ const Community: React.FC<CommunityPageProps> = () => {
     if (title.trim() === "" || content.trim() === "") {
       toast("Hãy nhập tiêu đề và nội dung câu hỏi");
     } else {
-      let post: any = {
+      let postData = {
         author: user.name,
         author_id: user.uid,
         title: title,
@@ -102,7 +102,7 @@ const Community: React.FC<CommunityPageProps> = () => {
         created_at: Date.now(),
       };
 
-      dispatch(savePost(post, user.uid));
+      dispatch(savePost(postData, user.uid));
       toast("Đăng thành công");
       setShowPopover(false);
     }

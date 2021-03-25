@@ -42,7 +42,7 @@ const SearchResult: React.FC<SearchResultProps> = ({
       {searchTerm.trim() !== "" ? (
         searchResult.length !== 0 ? (
           <IonList lines="none" className="max-width-700">
-            {searchResult.map((item: any, index: number) => {
+            {searchResult.map((item: object, index: number) => {
               if (searchIndex === "posts") {
                 var page = "community";
               } else {

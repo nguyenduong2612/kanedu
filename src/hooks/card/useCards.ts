@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { database } from "../../config/firebaseConfig";
+import { Card } from "../../models";
 
 interface RootState {
   user: any;
 }
 
 function useCards(courseId: string, lessonId: string) {
-  const [cardList, setCardList] = useState<any[]>([]);
-  const [cardPreview, setCardPreview] = useState<any[]>([]);
+  const [cardList, setCardList] = useState<Card[]>([]);
+  const [cardPreview, setCardPreview] = useState<Card[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const { user } = useSelector((state: RootState) => state.user);
@@ -30,13 +31,16 @@ function useCards(courseId: string, lessonId: string) {
             var filter: any = null;
           } else {
             filter = user.cardStatus.filter(
-              (card: any) => card.id === doc.id
+              (card: Card) => card.id === doc.id
             )[0];
           }
 
-          let card = {
+          let card: Card = {
             id: doc.id,
-            ...doc.data(),
+            keyword: doc.data().keyword,
+            meaning: doc.data().meaning,
+            detail:  doc.data().detail,
+            other: doc.data().other,
             status: filter ?  filter.status : "null",
           };
 
@@ -46,9 +50,12 @@ function useCards(courseId: string, lessonId: string) {
         let previewCount = 0;
         docs.forEach((doc) => {
           previewCount++;
-          let card = {
+          let card: Card = {
             id: doc.id,
-            ...doc.data(),
+            keyword: doc.data().keyword,
+            meaning: doc.data().meaning,
+            detail:  doc.data().detail,
+            other: doc.data().other,
           };
           setCardPreview((cardPreview) => [...cardPreview, card]);
           if (previewCount === 3) return;

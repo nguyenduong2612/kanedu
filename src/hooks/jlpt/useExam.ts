@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { database } from "../../config/firebaseConfig";
+import { Question } from "../../models";
 
 function useExam(examId: string) {
   const [busy, setBusy] = useState<boolean>(true);
@@ -8,7 +9,8 @@ function useExam(examId: string) {
   const [part, setPart] = useState<string>("0");
   const [title, setTitle] = useState<string>("");
   const [audioSrc, setAudioSrc] = useState<string>("");
-  const [questions, setQuestions] = useState<any[]>([]);
+
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [answerSheet, setAnswerSheet] = useState<number[]>([]);
   const [submitAnswer, setSubmitAnswer] = useState<number[]>([]);
 
@@ -29,7 +31,7 @@ function useExam(examId: string) {
           console.log("No such document!");
         } else {
           questions_docs.forEach((doc) => {
-            let ques = {
+            let ques: Question = {
               id: doc.id,
               question: doc.data().question,
               answer: doc.data().answer,
