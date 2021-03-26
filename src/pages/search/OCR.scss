@@ -1,0 +1,12 @@
+.ocr-page {
+  .ocr-row {
+    padding: 0 7px;
+    ion-col {
+      padding: 5px 10px;
+    }
+    .ocr-button {
+      --border-radius: 10px;
+      width: 100%;
+    }
+  }
+}

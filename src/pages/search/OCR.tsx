@@ -10,26 +10,30 @@ import {
   IonButton,
   IonImg,
   IonCardHeader,
-  IonCardTitle,
   IonCard,
   IonCardContent,
   IonSpinner,
+  IonCardSubtitle,
+  IonCol,
+  IonRow,
 } from "@ionic/react";
 import React, { useState } from "react";
 import { functions, storage } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
+import "./OCR.scss";
 
-interface PageProps {}
+interface OcrPageProps {}
 
 const { Camera } = Plugins;
 
-const OCR: React.FC<PageProps> = () => {
-  const [result, setResult] = useState<any>({text: "", translation: ""});
+const OCR: React.FC<OcrPageProps> = () => {
+  const [result, setResult] = useState<any>({ text: "", translation: "" });
 
   const [image, setImage] = useState<any>(
     "https://www.textures.com/system/gallery/photos/Signs/Asian%20Signs/Japanese/75622/SignsJapan0018_download600.jpg"
   );
   const [loading, setLoading] = useState<boolean>(false);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   async function recognizeImage() {
     setLoading(true);
@@ -39,6 +43,7 @@ const OCR: React.FC<PageProps> = () => {
         console.log(result);
         setResult(result.data);
         setLoading(false);
+        setLoaded(true);
       })
       .catch((error) => {
         var code = error.code;
@@ -79,44 +84,53 @@ const OCR: React.FC<PageProps> = () => {
   }
 
   return (
-    <IonPage>
+    <IonPage className="ocr-page">
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonButtons slot="start">
             <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
-          <IonTitle>OCR test</IonTitle>
+          <IonTitle>Dịch bằng máy ảnh</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonImg src={image} />
-        <IonButton expand="full" onClick={captureImage} disabled={loading}>
-          Capture
-        </IonButton>
-        <IonButton
-          expand="full"
-          onClick={() => recognizeImage()}
-          disabled={loading}
-        >
-          Recognize
-        </IonButton>
-
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Result: </IonCardTitle>
-          </IonCardHeader>
-
-          <IonCardContent>
-            {loading ? (
-              <IonSpinner color="primary" />
-            ) : (
-              <>
+        <IonCard mode="ios">
+          <IonImg src={image} />
+          {loaded ? (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle style={{ fontSize: 14 }}>Kết quả</IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
                 <p>{result.text}</p>
                 <p>{result.translation}</p>
-              </>
-            )}
-          </IonCardContent>
+              </IonCardContent>
+            </>
+          ) : (
+            loading && (
+              <IonCardContent>
+                <IonSpinner color="primary" />
+              </IonCardContent>
+            )
+          )}
         </IonCard>
+
+        <IonRow className="ocr-row">
+          <IonCol size="6">
+            <IonButton className="ocr-button" onClick={captureImage} disabled={loading}>
+              Chụp hình
+            </IonButton>
+          </IonCol>
+          <IonCol size="6">
+            <IonButton
+              className="ocr-button"
+              onClick={() => recognizeImage()}
+              disabled={loading}
+            >
+              Nhận dạng
+            </IonButton>
+          </IonCol>
+        </IonRow>
       </IonContent>
     </IonPage>
   );

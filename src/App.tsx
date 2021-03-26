@@ -1,13 +1,10 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import {
   IonApp,
-  IonIcon,
   IonContent,
   IonLoading,
   IonSplitPane,
-  IonFab,
-  IonFabButton,
 } from "@ionic/react";
 
 import { IonReactRouter } from "@ionic/react-router";
@@ -34,11 +31,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/app.css";
 
-/* Ionic icons */
-import { add } from "ionicons/icons";
-
 import SideMenu from "./components/sidemenu/SideMenu";
-import CreateModal from "./components/modals/CreateModal";
 import BottomTabbar from "./components/tabbars/BottomTabbar";
 
 // hooks
@@ -50,19 +43,16 @@ import {
 import { getPosts } from "./redux/post/post.actions";
 
 // Capacitor plugins
-const { StatusBar, Keyboard } = Plugins;
+const { StatusBar } = Plugins;
 
 const Loading: React.FC = () => {
   return <IonLoading message="Vui lòng đợi" duration={0} isOpen={true} />;
 };
 
 const App: React.FC = () => {
-  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
-  const [showFabButton, setShowFabButton] = useState<boolean>(true);
   const dispatch = useDispatch();
 
-  const { user, isLoggedin, isLoading } = useCurrentUser();
-  // // useFavoritePosts();
+  const { user, isLoading } = useCurrentUser();
 
   useEffect(() => {
     if (user.uid) {
@@ -83,29 +73,8 @@ const App: React.FC = () => {
       }
     };
 
-    const toggleFabButton = () => {
-      if (Capacitor.isPluginAvailable("Keyboard")) {
-        Keyboard.addListener("keyboardWillShow", () => {
-          setShowFabButton(false);
-        });
-
-        Keyboard.addListener("keyboardWillHide", () => {
-          setShowFabButton(true);
-        });
-      }
-    };
-
     changeStatusBar();
-    toggleFabButton();
   }, [dispatch]);
-
-  const handleShowModal = () => {
-    setShowCreateModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowCreateModal(false);
-  };
 
   return (
     <Suspense fallback={<Loading />}>
@@ -121,28 +90,9 @@ const App: React.FC = () => {
               <SideMenu />
 
               <IonContent fullscreen id="main">
-                {isLoggedin && (
-                  <IonFab vertical="bottom" horizontal="center">
-                    {showFabButton && (
-                      <IonFabButton onClick={handleShowModal} id="appFabBtn">
-                        <IonIcon icon={add} size="large" />
-                      </IonFabButton>
-                    )}
-                    <CreateModal
-                      isOpen={showCreateModal}
-                      handleCloseModal={handleCloseModal}
-                    />
-                  </IonFab>
-                )}
-
                 <BottomTabbar />
               </IonContent>
 
-              {/* <IonContent id="right-side" fullscreen>
-                <IonToolbar>
-                  <IonTitle style={{ fontSize: 18 }}>Có thể bạn chưa biết</IonTitle>
-                </IonToolbar>
-              </IonContent> */}
             </IonSplitPane>
           </IonReactRouter>
         )}
