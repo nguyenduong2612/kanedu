@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { database } from "../config/firebaseConfig";
 import { onAuthStateChanged } from "../helpers/firebaseHelper";
@@ -14,13 +14,13 @@ interface RootState {
 }
 
 function useCurrentUser() {
-  const { user, isLoggedin, isLoading } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { user, isLoggedin } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(setCurrentUserStarted());
+    setIsLoading(true);
     onAuthStateChanged().then(async (user: any) => {
       if (user) {
         //window.history.replaceState({}, '', '/')
@@ -44,9 +44,11 @@ function useCurrentUser() {
           );
 
           dispatch(setCurrentUserSuccess(currentUser));
+          setIsLoading(false);
         }
       } else {
         dispatch(setCurrentUserFailed());
+        setIsLoading(false);
         //window.history.replaceState({}, "", "/welcome");
       }
     });

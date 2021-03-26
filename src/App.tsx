@@ -62,7 +62,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   const { user, isLoggedin, isLoading } = useCurrentUser();
-  // useFavoritePosts();
+  // // useFavoritePosts();
 
   useEffect(() => {
     if (user.uid) {
@@ -111,7 +111,10 @@ const App: React.FC = () => {
     <Suspense fallback={<Loading />}>
       <IonApp>
         {isLoading ? (
-          <Loading />
+          <>
+            <Loading />
+            <IonContent fullscreen id="main"></IonContent>
+          </>
         ) : (
           <IonReactRouter>
             <IonSplitPane contentId="main" id="splitpane">
