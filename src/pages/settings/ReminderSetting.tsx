@@ -118,7 +118,7 @@ const ReminderSetting: React.FC<ReminderSettingPageProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
+        <IonList className="max-width-700">
           <IonItemGroup>
             {/* <IonItem>
             <IonLabel>Local Notifications</IonLabel>

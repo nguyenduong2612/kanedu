@@ -23,6 +23,9 @@ import {
   SAVE_COMMENT_FAILED,
   SAVE_COMMENT_STARTED,
   SAVE_COMMENT_SUCCESS,
+  DELETE_POST_FAILED,
+  DELETE_POST_STARTED,
+  DELETE_POST_SUCCESS,
 } from "./post.types";
 
 export const getPosts = (userId: string) => {
@@ -109,6 +112,43 @@ export const savePost = (postData: any, userId: string) => {
     }
   };
 };
+
+export const deletePost = (posts: Post[], postId: string, userId: string) => {
+  const deletePostStarted = () => ({
+    type: DELETE_POST_STARTED,
+  });
+
+  const deletePostSuccess = (postIndex: number) => ({
+    type: DELETE_POST_SUCCESS,
+    payload: postIndex,
+  });
+
+  const deletePostFailed = () => ({
+    type: DELETE_POST_FAILED,
+  });
+
+  return async (dispatch: typeof store.dispatch) => {
+    dispatch(deletePostStarted); 
+    try {
+      await database.collection("posts").doc(postId).delete();
+
+      const userRef = database.collection("users").doc(userId);
+      userRef.update({
+        created_posts: firebase.firestore.FieldValue.arrayRemove(postId),
+      });
+
+      let postIndex = posts.findIndex(
+        (post: Post) => post.id === postId
+      );
+
+      dispatch(deletePostSuccess(postIndex));
+
+    } catch (error) {
+      dispatch(deletePostFailed);
+    }
+  }
+
+}
 
 export const likePost = (posts: Post[], postId: string, userId: string) => {
   const likePostStarted = () => ({
@@ -218,8 +258,7 @@ export const getComments = (postId: string) => {
 };
 
 export const saveComment = (
-  author: string,
-  content: string,
+  comment: any,
   postId: string,
   posts: Post[]
 ) => {
@@ -240,11 +279,6 @@ export const saveComment = (
   return async (dispatch: typeof store.dispatch) => {
     dispatch(saveCommentStarted);
     try {
-      let comment = {
-        author,
-        content,
-        created_at: Date.now(),
-      };
 
       await database
         .collection("posts")

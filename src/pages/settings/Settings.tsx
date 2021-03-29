@@ -35,14 +35,14 @@ const Settings: React.FC<SettingPageProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
+        <IonList className="max-width-700">
           <IonItemGroup>
             {/* <IonItem>
             <IonLabel>Local Notifications</IonLabel>
             <IonButton onClick={setLocalNoti} />
           </IonItem> */}
 
-            <IonItem lines="none">
+            <IonItem lines="none" routerLink="/settings/goal">
               <IonLabel>Thiết lập mục tiêu</IonLabel>
             </IonItem>
             <IonItemDivider mode="md" />

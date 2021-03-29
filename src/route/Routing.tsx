@@ -34,6 +34,7 @@ import Ranking from "../pages/ranking/Ranking";
 import CourseEdit from "../pages/course/CourseEdit";
 import ReminderSetting from "../pages/settings/ReminderSetting";
 import Translate from "../pages/translate/Translate";
+import GoalSetting from "../pages/settings/GoalSetting";
 
 interface RootState {
   user: any;
@@ -80,6 +81,7 @@ const Routing: React.FC = () => {
           <Route path="/register" render={() => <Redirect to="/home" />} />
           <Route path="/settings" component={Settings} exact />
           <Route path="/settings/reminder" component={ReminderSetting} exact />
+          <Route path="/settings/goal" component={GoalSetting} exact />
           <Route path="/search" component={Search} exact />
           <Route
             path="/my-profile/account-settings"

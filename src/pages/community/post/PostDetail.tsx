@@ -16,6 +16,7 @@ import {
   IonList,
   IonInput,
   IonItem,
+  IonAlert,
 } from "@ionic/react";
 import {
   chatboxOutline,
@@ -23,6 +24,8 @@ import {
   heartSharp,
   sendOutline,
   sendSharp,
+  trash,
+  trashOutline,
 } from "ionicons/icons";
 import moment from "moment";
 import "moment/locale/vi";
@@ -33,12 +36,14 @@ import useTabbar from "../../../hooks/useTabbar";
 import "./PostDetail.scss";
 import {
   clearComments,
+  deletePost,
   getComments,
   likePost,
   saveComment,
   unlikePost,
 } from "../../../redux/post/post.actions";
 import { Post } from "../../../models";
+import { toast } from "../../../utils/toast";
 
 interface PostDetailProps extends RouteComponentProps<MatchParams> {}
 interface RootState {
@@ -53,7 +58,10 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   const postId = match.params.post_id;
   const { user } = useSelector((state: RootState) => state.user);
   const { posts, comments } = useSelector((state: RootState) => state.posts);
-  
+
+  const [isMyPost, setIsMyPost] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
   const post = posts.find((post: Post) => post.id === postId);
   const dispatch = useDispatch();
 
@@ -61,10 +69,14 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   useEffect(() => {
     dispatch(getComments(postId));
 
+    if (post.author_id === user.uid) {
+      setIsMyPost(true);
+    }
+
     return function clearCmts() {
       dispatch(clearComments);
     };
-  }, [dispatch, postId]);
+  }, [dispatch, postId, post.author_id, user.uid]);
 
   const [commentInput, setCommentInput] = useState<string>("");
 
@@ -75,7 +87,13 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
 
   const handleSendComment = async (commentInput: string) => {
     if (commentInput.trim() === "") return;
-    dispatch(saveComment(user.name, commentInput, postId, posts));
+    let comment = {
+      author: user.name,
+      author_id: user.uid,
+      content: commentInput,
+      created_at: Date.now(),
+    }
+    dispatch(saveComment(comment, postId, posts));
   };
 
   const handleLikePost = () => {
@@ -84,6 +102,16 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
 
   const handleUnlikePost = () => {
     dispatch(unlikePost(posts, post.id, user.uid));
+  };
+
+  const handleDeletePost = () => {
+    setShowAlert(true);
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(deletePost(posts, post.id, user.uid));
+    toast("Đã xóa bài đăng");
+    window.history.back();
   };
 
   return (
@@ -96,6 +124,18 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                 <IonBackButton color="light" text="" defaultHref="/community" />
               </IonButtons>
               <IonTitle>{post.title}</IonTitle>
+              {isMyPost && (
+                <IonButtons slot="end">
+                  <IonButton onClick={handleDeletePost}>
+                    <IonIcon
+                      color="light"
+                      slot="icon-only"
+                      ios={trashOutline}
+                      md={trash}
+                    />
+                  </IonButton>
+                </IonButtons>
+              )}
             </IonToolbar>
           </IonHeader>
           <IonContent fullscreen>
@@ -210,6 +250,22 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
               />
             </IonButton>
           </IonItem>
+
+          <IonAlert
+            isOpen={showAlert}
+            cssClass="alert"
+            onDidDismiss={() => setShowAlert(false)}
+            header={"Chú ý"}
+            message={`Xác nhận xóa bài đăng này ?`}
+            buttons={[
+              {
+                text: "Xác nhận",
+                role: "confirm",
+                cssClass: "text--red",
+                handler: handleConfirmDelete,
+              },
+            ]}
+          />
         </>
       )}
     </IonPage>

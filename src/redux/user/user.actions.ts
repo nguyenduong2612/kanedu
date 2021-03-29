@@ -6,6 +6,7 @@ import {
   SET_CURRENT_USER_FAILED,
   SET_CURRENT_USER_STARTED,
   SET_CURRENT_USER_SUCCESS,
+  SET_GOAL_SUCCESS,
   SET_REMINDER_SUCCESS,
   SIGN_OUT_USER_SUCCESS,
   UPDATE_CARD_STATUS_SUCCESS,
@@ -101,3 +102,22 @@ export const setReminder = (userId: string, reminder: any) => {
     }
   };
 };
+
+export const setDailyGoal = (userId: string, goal: number) => {
+  const setGoalSuccess = (goal: number) => ({
+    type: SET_GOAL_SUCCESS,
+    payload: goal,
+  });
+
+  return async (dispatch: typeof store.dispatch) => {
+    try {
+      let ref: any = database.collection("users").doc(userId);
+      await ref.set({ goal }, { merge: true });
+
+      dispatch(setGoalSuccess(goal));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+

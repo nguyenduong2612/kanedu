@@ -46,7 +46,13 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
 
   const handleSendComment = async (commentInput: string) => {
     if (commentInput.trim() === "") return;
-    dispatch(saveComment(username, commentInput, postId, posts));
+    let comment = {
+      author: user.name,
+      author_id: user.uid,
+      content: commentInput,
+      created_at: Date.now(),
+    }
+    dispatch(saveComment(comment, postId, posts));
   };
 
   const handleShowModal = () => {

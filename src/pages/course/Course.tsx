@@ -157,8 +157,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
                 <IonItem onClick={handleShowShareModal} lines="none">
                   Chia sẻ
                 </IonItem>
-                {createdCourses.filter((course: any) => course.id === courseId)
-                  .length > 0 && (
+                {course.authorId === user.uid && (
                   <>
                     <IonItem
                       onClick={() => setShowPopover(false)}

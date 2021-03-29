@@ -18,6 +18,9 @@ import {
   SAVE_COMMENT_FAILED,
   SAVE_COMMENT_STARTED,
   SAVE_COMMENT_SUCCESS,
+  DELETE_POST_FAILED,
+  DELETE_POST_STARTED,
+  DELETE_POST_SUCCESS,
 } from "./post.types";
 
 const initialState = {
@@ -59,6 +62,26 @@ export const postReducer = (state = initialState, action: any) => {
         isLoading: false,
       };
     case SAVE_POST_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case DELETE_POST_STARTED:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case DELETE_POST_SUCCESS:
+      return {
+        ...state,
+        posts: [
+          ...state.posts.slice(0, action.payload),
+          ...state.posts.slice(action.payload + 1),
+        ],
+        isLoading: false,
+      };
+    case DELETE_POST_FAILED:
       return {
         ...state,
         isLoading: false,
@@ -123,7 +146,7 @@ export const postReducer = (state = initialState, action: any) => {
     case SAVE_COMMENT_SUCCESS:
       newState.comments.push(action.payload);
       newState.posts[action.index].comments =
-        newState.posts[action.index].comments +1;
+        newState.posts[action.index].comments + 1;
       return newState;
     case SAVE_COMMENT_FAILED:
       return {
