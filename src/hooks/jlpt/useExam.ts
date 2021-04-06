@@ -26,7 +26,7 @@ function useExam(examId: string) {
         setAnswerSheet(doc.data().answer_sheet);
         setLevel(doc.data().level);
         setAudioSrc(doc.data().listening_audio);
-        let questions_docs = await ref.collection("questions").get();
+        let questions_docs = await ref.collection("questions").orderBy("id", "asc").get();
         if (questions_docs.empty) {
           console.log("No such document!");
         } else {
