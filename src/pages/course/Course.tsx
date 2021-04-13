@@ -214,8 +214,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
             <IonItem lines="none">
               <IonIcon icon={heart}></IonIcon>
               <IonText className="course-info__text">
-                {course.followed_by.length ? course.followed_by.length : 0}{" "}
-                người theo dõi khóa học này
+                {course.followed_by.length ? course.followed_by.length : 0} người theo dõi khóa học này
               </IonText>
             </IonItem>
             <IonItem lines="none">

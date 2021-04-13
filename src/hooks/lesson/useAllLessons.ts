@@ -23,7 +23,7 @@ function useAllLessons(courseId: string) {
             id: doc.id,
             numberOfCards: doc.data().numberOfCards,
             title: doc.data().title,
-            created_at: doc.data().created_at
+            created_at: doc.data().created_at,
           };
 
           setLessonList((lessonList) => [...lessonList, lesson]);
@@ -34,6 +34,11 @@ function useAllLessons(courseId: string) {
     }
 
     getAllLesson();
+
+    return () => {
+      setIsEmpty(false);
+      setLessonList([]);
+    };
   }, [courseId]);
 
   return {
@@ -42,7 +47,7 @@ function useAllLessons(courseId: string) {
     isLoaded,
     setLessonList,
     setIsEmpty,
-    setIsLoaded
+    setIsLoaded,
   };
 }
 

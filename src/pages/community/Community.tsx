@@ -181,11 +181,7 @@ const Community: React.FC<CommunityPageProps> = () => {
               .filter((post: any) => post !== undefined)
               .map((post: any, index: number) => {
                 return (
-                  <PostContainer
-                    key={index}
-                    post={post}
-                    username={user.name}
-                  />
+                  <PostContainer key={index} post={post} username={user.name} />
                 );
               })}
 
@@ -198,13 +194,15 @@ const Community: React.FC<CommunityPageProps> = () => {
           </div>
         </IonContent>
       ) : (
-        <ErrorPage>
-          Vui lòng xác thực email của bạn
-          <br />
-          <IonButton routerLink="/my-profile/account-settings" fill="clear">
-            Chuyển tới trang tài khoản
-          </IonButton>
-        </ErrorPage>
+        <IonContent>
+          <ErrorPage>
+            Vui lòng xác thực email của bạn
+            <br />
+            <IonButton routerLink="/my-profile/account-settings" fill="clear">
+              Chuyển tới trang tài khoản
+            </IonButton>
+          </ErrorPage>
+        </IonContent>
       )}
     </IonPage>
   );
