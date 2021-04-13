@@ -1,11 +1,6 @@
 import React, { useEffect, Suspense } from "react";
 import { useDispatch } from "react-redux";
-import {
-  IonApp,
-  IonContent,
-  IonLoading,
-  IonSplitPane,
-} from "@ionic/react";
+import { IonApp, IonContent, IonLoading, IonSplitPane } from "@ionic/react";
 
 import { IonReactRouter } from "@ionic/react-router";
 import { Plugins, Capacitor } from "@capacitor/core";
@@ -36,10 +31,7 @@ import BottomTabbar from "./components/tabbars/BottomTabbar";
 
 // hooks
 import useCurrentUser from "./hooks/useCurrentUser";
-import {
-  getCreatedCourses,
-  getFollowingCourses,
-} from "./redux/courses/courses.actions";
+import { getCourses } from "./redux/courses/courses.actions";
 import { getPosts } from "./redux/post/post.actions";
 
 // Capacitor plugins
@@ -56,8 +48,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (user.uid) {
-      dispatch(getCreatedCourses(user.uid));
-      dispatch(getFollowingCourses(user.uid));
+      dispatch(getCourses(user.uid));
       dispatch(getPosts(user.uid));
     }
   }, [dispatch, user.uid]);
@@ -92,7 +83,6 @@ const App: React.FC = () => {
               <IonContent fullscreen id="main">
                 <BottomTabbar />
               </IonContent>
-
             </IonSplitPane>
           </IonReactRouter>
         )}

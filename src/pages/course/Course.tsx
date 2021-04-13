@@ -23,21 +23,21 @@ import {
   personCircle,
   shareSocial,
 } from "ionicons/icons";
-import React, { useState, lazy } from "react";
+import React, { useState, lazy, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { toast } from "../../utils/toast";
 import "./Course.scss";
 import ShareModal from "../../components/modals/ShareModal";
 import Refresher from "../../components/utils/Refresher";
-import useCourse from "../../hooks/course/useCourse";
 import {
   deleteCourse,
   followCourse,
   unfollowCourse,
 } from "../../redux/courses/courses.actions";
 import { savePost } from "../../redux/post/post.actions";
-import Skeleton from "../../components/utils/Skeleton";
+import { recommendCourses } from "../../helpers/recommenderHelper";
+import CourseListContainer from "../../components/containers/CourseListContainer";
 
 const LessonListContainer = lazy(
   () => import("../../components/containers/LessonListContainer")
@@ -59,26 +59,49 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
+  const [isFollowed, setIsFollowed] = useState<boolean>();
+  const [recommendation, setRecommendation] = useState<any[]>([]);
+
   const { user } = useSelector((state: RootState) => state.user);
-  const { followingCourses, createdCourses } = useSelector(
+  const { followingCourses, createdCourses, courses } = useSelector(
     (state: RootState) => state.courses
   );
   const courseId = match.params.id;
 
-  const course = useCourse(courseId);
+  const course = courses.filter((course: any) => course.id === courseId)[0];
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    async function getInfo() {
+      var courseIndex = followingCourses
+        .map((course: any) => {
+          return course.id;
+        })
+        .indexOf(courseId);
+      if (courseIndex !== -1) {
+        setIsFollowed(true);
+      }
+    }
+
+    function getRecommendCourses() {
+      setRecommendation(recommendCourses(course, courses));
+    }
+
+    getInfo();
+    getRecommendCourses();
+  }, [followingCourses, courses, courseId, course]);
+
   const handleFollow = () => {
     dispatch(followCourse(courseId, user.uid));
-    course.setIsFollowed(true);
+    setIsFollowed(true);
     setShowPopover(false);
     toast("Thẽo dõi khóa học thành công");
   };
 
   const handleUnfollow = () => {
     dispatch(unfollowCourse(followingCourses, courseId, user.uid));
-    course.setIsFollowed(false);
+    setIsFollowed(false);
     setShowPopover(false);
     toast("Đã bỏ theo dõi khóa học");
   };
@@ -145,7 +168,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
               onDidDismiss={() => setShowPopover(false)}
             >
               <IonList>
-                {course.isFollowed ? (
+                {isFollowed ? (
                   <IonItem onClick={handleUnfollow} lines="none">
                     Bỏ theo dõi
                   </IonItem>
@@ -157,7 +180,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
                 <IonItem onClick={handleShowShareModal} lines="none">
                   Chia sẻ
                 </IonItem>
-                {course.authorId === user.uid && (
+                {course.author_id === user.uid && (
                   <>
                     <IonItem
                       onClick={() => setShowPopover(false)}
@@ -180,34 +203,36 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       <IonContent fullscreen>
         <div className="max-width-700">
           <Refresher />
-          {course.isLoaded ? (
-            <IonList className="course-info">
-              <IonItem lines="none">
-                <IonIcon icon={personCircle}></IonIcon>
-                <IonText className="course-info__text">
-                  Được tạo bởi {course.author}
-                </IonText>
-              </IonItem>
-              <IonItem lines="none">
-                <IonIcon icon={heart}></IonIcon>
-                <IonText className="course-info__text">
-                  {course.countFollowers ? course.countFollowers : 0} người theo
-                  dõi khóa học này
-                </IonText>
-              </IonItem>
-              <IonItem lines="none">
-                <IonIcon icon={shareSocial}></IonIcon>
-                <IonText className="course-info__text">0 lượt chia sẻ</IonText>
-              </IonItem>
-            </IonList>
-          ) : (
-            <Skeleton />
-          )}
+
+          <IonList className="course-info">
+            <IonItem lines="none">
+              <IonIcon icon={personCircle}></IonIcon>
+              <IonText className="course-info__text">
+                Được tạo bởi {course.author}
+              </IonText>
+            </IonItem>
+            <IonItem lines="none">
+              <IonIcon icon={heart}></IonIcon>
+              <IonText className="course-info__text">
+                {course.followed_by.length ? course.followed_by.length : 0}{" "}
+                người theo dõi khóa học này
+              </IonText>
+            </IonItem>
+            <IonItem lines="none">
+              <IonIcon icon={shareSocial}></IonIcon>
+              <IonText className="course-info__text">0 lượt chia sẻ</IonText>
+            </IonItem>
+          </IonList>
 
           <IonItemDivider mode="md">
             <IonLabel color="dark">Danh sách bài học</IonLabel>
           </IonItemDivider>
           <LessonListContainer author={course.author} courseId={courseId} />
+
+          <IonItemDivider mode="md">
+            <IonLabel color="dark">Khóa học tương tự</IonLabel>
+          </IonItemDivider>
+          <CourseListContainer courses={recommendation} />
         </div>
       </IonContent>
 

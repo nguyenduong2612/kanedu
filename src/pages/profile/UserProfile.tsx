@@ -14,7 +14,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import CourseContainer from "../../components/containers/CourseContainer";
+import CourseListContainer from "../../components/containers/CourseListContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import { database } from "../../config/firebaseConfig";
 import { Course } from "../../models";
@@ -40,14 +40,9 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         console.log("No such document!");
       } else {
         docs.forEach((doc) => {
-          let course: Course = {
+          let course: any = {
             id: doc.id,
-            author: doc.data().author,
-            author_id: doc.data().author_id,
-            name: doc.data().name,
-            description: doc.data().description,
-            created_at: doc.data().created_at,
-            followed_by: doc.data().followed_by,
+            ...doc.data(),
           };
           setCourses((courses) => [...courses, course]);
         });
@@ -109,19 +104,7 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
 
         {courses.length > 0 ? (
           <IonList className="max-width-700">
-            {courses.map((course: any, index: number) => {
-              return (
-                <CourseContainer
-                  key={index}
-                  id={course.id}
-                  name={course.name}
-                  author={course.author}
-                  author_id={course.author_id}
-                  description={course.description}
-                  followers={course.followed_by.length}
-                />
-              );
-            })}
+            <CourseListContainer courses={courses} />
           </IonList>
         ) : (
           <ErrorPage>Không có dữ liệu</ErrorPage>

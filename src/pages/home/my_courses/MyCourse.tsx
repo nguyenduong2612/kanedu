@@ -10,7 +10,7 @@ import {
 } from "@ionic/react";
 import React from "react";
 import { useSelector } from "react-redux";
-import CourseContainer from "../../../components/containers/CourseContainer";
+import CourseListContainer from "../../../components/containers/CourseListContainer";
 import ErrorPage from "../../../components/error_pages/ErrorPage";
 import Refresher from "../../../components/utils/Refresher";
 
@@ -37,19 +37,7 @@ const MyCourse: React.FC<MyCoursePageProps> = () => {
         <Refresher />
         {createdCourses.length > 0 ? (
           <IonList className="max-width-700">
-            {createdCourses.map((course: any, index: number) => {
-              return (
-                <CourseContainer
-                  key={index}
-                  id={course.id}
-                  name={course.name}
-                  author={course.author}
-                  author_id={course.author_id}
-                  description={course.description}
-                  followers={course.followed_by.length}
-                />
-              );
-            })}
+            <CourseListContainer courses={createdCourses} />
           </IonList>
         ) : (
           <ErrorPage>Không có dữ liệu</ErrorPage>

@@ -22,7 +22,7 @@ import {
 import { medalOutline, settings, settingsOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import CourseContainer from "../../components/containers/CourseContainer";
+import CourseListContainer from "../../components/containers/CourseListContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import Spinner from "../../components/utils/Spinner";
 import "./MyProfile.scss";
@@ -188,19 +188,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
             <>
               {createdCourses.length > 0 ? (
                 <IonList className="max-width-700">
-                  {createdCourses.map((course: any, index: number) => {
-                    return (
-                      <CourseContainer
-                        key={index}
-                        id={course.id}
-                        name={course.name}
-                        author={course.author}
-                        author_id={course.author_id}
-                        description={course.description}
-                        followers={course.followed_by.length}
-                      />
-                    );
-                  })}
+                  <CourseListContainer courses={createdCourses} />
                 </IonList>
               ) : (
                 <ErrorPage>Không có dữ liệu</ErrorPage>

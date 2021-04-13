@@ -1,10 +1,7 @@
 import {
-  GET_CREATED_COURSES_STARTED,
-  GET_CREATED_COURSES_SUCCESS,
-  GET_CREATED_COURSES_FAILED,
-  GET_FOLLOWING_COURSES_SUCCESS,
-  GET_FOLLOWING_COURSES_FAILED,
-  GET_FOLLOWING_COURSES_STARTED,
+  GET_COURSES_FAILED,
+  GET_COURSES_STARTED,
+  GET_COURSES_SUCCESS,
   FOLLOW_COURSE_FAILED,
   FOLLOW_COURSE_STARTED,
   FOLLOW_COURSE_SUCCESS,
@@ -20,6 +17,7 @@ import {
 } from "./courses.types";
 
 const initialState = {
+  courses: [],
   createdCourses: [],
   followingCourses: [],
   isLoading: false,
@@ -27,38 +25,24 @@ const initialState = {
 
 export const coursesReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case GET_CREATED_COURSES_STARTED:
+    case GET_COURSES_STARTED:
       return {
         ...state,
         isLoading: true,
       };
-    case GET_CREATED_COURSES_SUCCESS:
+    case GET_COURSES_SUCCESS:
       return {
         ...state,
-        createdCourses: action.payload,
+        courses: action.payload.courses,
+        createdCourses: action.payload.createdCourses,
+        followingCourses: action.payload.followingCourses,
         isLoading: false,
       };
-    case GET_CREATED_COURSES_FAILED:
+    case GET_COURSES_FAILED:
       return {
         ...state,
+        courses: [],
         createdCourses: [],
-        isLoading: false,
-      };
-
-    case GET_FOLLOWING_COURSES_STARTED:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case GET_FOLLOWING_COURSES_SUCCESS:
-      return {
-        ...state,
-        followingCourses: action.payload,
-        isLoading: false,
-      };
-    case GET_FOLLOWING_COURSES_FAILED:
-      return {
-        ...state,
         followingCourses: [],
         isLoading: false,
       };
@@ -108,6 +92,7 @@ export const coursesReducer = (state = initialState, action: any) => {
     case CREATE_COURSE_SUCCESS:
       return {
         ...state,
+        courses: [action.payload, ...state.courses],
         createdCourses: [action.payload, ...state.createdCourses],
         isLoading: false,
       };
@@ -125,6 +110,10 @@ export const coursesReducer = (state = initialState, action: any) => {
     case DELETE_COURSE_SUCCESS:
       return {
         ...state,
+        courses: [
+          ...state.courses.slice(0, action.payload),
+          ...state.courses.slice(action.payload + 1),
+        ],
         createdCourses: [
           ...state.createdCourses.slice(0, action.payload),
           ...state.createdCourses.slice(action.payload + 1),

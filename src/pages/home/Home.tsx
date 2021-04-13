@@ -17,17 +17,14 @@ import {
   notifications,
   notificationsOutline,
 } from "ionicons/icons";
-import React, { lazy, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import CourseListContainer from "../../components/containers/CourseListContainer";
 import HintContainer from "../../components/containers/HintContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import NotificationsModal from "../../components/modals/NotificationsModal";
 import Refresher from "../../components/utils/Refresher";
 import "./Home.scss";
-
-const CourseContainer = lazy(
-  () => import("../../components/containers/CourseContainer")
-);
 
 interface RootState {
   courses: any;
@@ -102,19 +99,7 @@ const Home: React.FC = () => {
               </IonButton>
             </IonItemDivider>
             {followingCourses.length > 0 ? (
-              followingCourses.slice(0, 2).map((course: any, index: number) => {
-                return (
-                  <CourseContainer
-                    key={index}
-                    id={course.id}
-                    name={course.name}
-                    author={course.author}
-                    author_id={course.author_id}
-                    description={course.description}
-                    followers={course.followed_by.length}
-                  />
-                );
-              })
+              <CourseListContainer courses={followingCourses.slice(0, 2)} />
             ) : (
               <div className="error-msg">
                 <ErrorPage>Bạn chưa theo dõi khóa học nào</ErrorPage>
@@ -142,19 +127,7 @@ const Home: React.FC = () => {
               </IonButton>
             </IonItemDivider>
             {createdCourses.length > 0 ? (
-              createdCourses.slice(0, 2).map((course: any, index: number) => {
-                return (
-                  <CourseContainer
-                    key={index}
-                    id={course.id}
-                    name={course.name}
-                    author={course.author}
-                    author_id={course.author_id}
-                    description={course.description}
-                    followers={course.followed_by.length}
-                  />
-                );
-              })
+              <CourseListContainer courses={createdCourses.slice(0, 2)} />
             ) : (
               <div className="error-msg">
                 <ErrorPage>Bạn chưa tạo khóa học nào</ErrorPage>

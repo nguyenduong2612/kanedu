@@ -1,14 +1,12 @@
 import firebase from "firebase/app";
 import { database } from "../../config/firebaseConfig";
+import { createVector } from "../../helpers/recommenderHelper";
 import { Course } from "../../models";
 import { store } from "../store";
 import {
-  GET_CREATED_COURSES_STARTED,
-  GET_CREATED_COURSES_SUCCESS,
-  GET_CREATED_COURSES_FAILED,
-  GET_FOLLOWING_COURSES_FAILED,
-  GET_FOLLOWING_COURSES_STARTED,
-  GET_FOLLOWING_COURSES_SUCCESS,
+  GET_COURSES_FAILED,
+  GET_COURSES_STARTED,
+  GET_COURSES_SUCCESS,
   FOLLOW_COURSE_STARTED,
   FOLLOW_COURSE_SUCCESS,
   FOLLOW_COURSE_FAILED,
@@ -23,80 +21,52 @@ import {
   DELETE_COURSE_SUCCESS,
 } from "./courses.types";
 
-export const getCreatedCourses = (userId: string) => {
-  const getCreatedCoursesStarted = () => ({
-    type: GET_CREATED_COURSES_STARTED,
+export const getCourses = (userId: string) => {
+  const getCoursesStarted = () => ({
+    type: GET_COURSES_STARTED,
   });
 
-  const getCreatedCoursesSuccess = (createdCourses: Array<any>) => ({
-    type: GET_CREATED_COURSES_SUCCESS,
-    payload: [...createdCourses],
+  const getCoursesSuccess = (courseData: any) => ({
+    type: GET_COURSES_SUCCESS,
+    payload: courseData,
   });
 
-  const getCreatedCoursesFailed = () => ({
-    type: GET_CREATED_COURSES_FAILED,
+  const getCoursesFailed = () => ({
+    type: GET_COURSES_FAILED,
   });
 
   return async (dispatch: typeof store.dispatch) => {
-    dispatch(getCreatedCoursesStarted);
+    dispatch(getCoursesStarted);
     try {
-      const snap = await database
-        .collection("courses")
-        .where("author_id", "==", userId)
-        .get();
+      const snap = await database.collection("courses").get();
 
       if (snap.empty) {
-        console.log("You haven't created any courses yet");
+        console.log("No such document");
       } else {
-        const createdCourses = Promise.all(
+        const courses = await Promise.all(
           snap.docs.map(async (course) => ({
             id: course.id,
             ...course.data(),
           }))
         );
-        dispatch(getCreatedCoursesSuccess(await createdCourses));
-      }
-    } catch (error) {
-      dispatch(getCreatedCoursesFailed);
-    }
-  };
-};
 
-export const getFollowingCourses = (userId: string) => {
-  const getFollowingCoursesStarted = () => ({
-    type: GET_FOLLOWING_COURSES_STARTED,
-  });
-
-  const getFollowingCoursesSuccess = (createdCourses: Array<any>) => ({
-    type: GET_FOLLOWING_COURSES_SUCCESS,
-    payload: [...createdCourses],
-  });
-
-  const getFollowingCoursesFailed = () => ({
-    type: GET_FOLLOWING_COURSES_FAILED,
-  });
-
-  return async (dispatch: typeof store.dispatch) => {
-    dispatch(getFollowingCoursesStarted);
-    try {
-      const snap = await database
-        .collection("courses")
-        .where("followed_by", "array-contains", userId)
-        .get();
-
-      if (snap.empty) {
-        console.log("You haven't followed any courses yet");
-      } else {
-        const followingCourses = Promise.all(
-          snap.docs.map(async (course) => ({
-            id: course.id,
-            ...course.data(),
-          }))
+        const followingCourses = courses.filter((course: any) =>
+          course.followed_by.includes(userId)
         );
-        dispatch(getFollowingCoursesSuccess(await followingCourses));
+        const createdCourses = courses.filter(
+          (course: any) => course.author_id === userId
+        );
+
+        let courseData = {
+          courses,
+          followingCourses,
+          createdCourses,
+        };
+
+        dispatch(getCoursesSuccess(courseData));
       }
     } catch (error) {
-      dispatch(getFollowingCoursesFailed);
+      dispatch(getCoursesFailed);
     }
   };
 };
@@ -201,9 +171,8 @@ export const createCourse = (courseData: any, userId: string) => {
   return async (dispatch: typeof store.dispatch) => {
     dispatch(createCourseStarted);
     try {
+      courseData.vector = createVector(courseData);
       const res = await database.collection("courses").add(courseData);
-      // if (await algoliaUpdateCourse(course, res.id))
-      //   console.log("add algolia ok");
 
       const userRef = database.collection("users").doc(userId);
       userRef.update({
@@ -212,8 +181,9 @@ export const createCourse = (courseData: any, userId: string) => {
 
       let newCourse = {
         id: res.id,
-        ...courseData
-      }
+        ...courseData,
+      };
+
       dispatch(createCourseSuccess(newCourse));
     } catch (error) {
       dispatch(createCourseFailed);
@@ -221,7 +191,11 @@ export const createCourse = (courseData: any, userId: string) => {
   };
 };
 
-export const deleteCourse = (createdCourse: any, courseId: string, userId: string) => {
+export const deleteCourse = (
+  createdCourse: any,
+  courseId: string,
+  userId: string
+) => {
   const deleteCourseStarted = () => ({
     type: DELETE_COURSE_STARTED,
   });
@@ -247,7 +221,7 @@ export const deleteCourse = (createdCourse: any, courseId: string, userId: strin
       userRef.update({
         created_courses: firebase.firestore.FieldValue.arrayRemove(courseId),
       });
-   
+
       let courseIndex = createdCourse.findIndex(
         (course: any) => course.id === courseId
       );

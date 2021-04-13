@@ -3,6 +3,9 @@ export interface Course {
   author: string;
   author_id: string;
   name: string;
+  level: string;
+  skill: string;
+  category: string;
   description: string;
   created_at: number;
   followed_by: Array<string>;
