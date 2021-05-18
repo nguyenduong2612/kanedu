@@ -2,7 +2,6 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
   IonBackButton,
   IonButtons,
@@ -11,18 +10,16 @@ import {
   IonPopover,
   IonItem,
   IonList,
-  IonItemDivider,
   IonLabel,
-  IonText,
   IonAlert,
+  IonGrid,
+  IonCol,
+  IonRow,
+  IonSegment,
+  IonSegmentButton,
+  IonRouterLink,
 } from "@ionic/react";
-import {
-  ellipsisVertical,
-  ellipsisVerticalOutline,
-  heart,
-  personCircle,
-  shareSocial,
-} from "ionicons/icons";
+import { ellipsisVertical, ellipsisVerticalOutline } from "ionicons/icons";
 import React, { useState, lazy, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -58,6 +55,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
   const [showPopover, setShowPopover] = useState<boolean>(false);
   const [showShareModal, setShowShareModal] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [segmentValue, setSegmentValue] = useState<string>("lessons");
 
   const [isFollowed, setIsFollowed] = useState<boolean>();
   const [recommendation, setRecommendation] = useState<any[]>([]);
@@ -151,7 +149,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
           <IonButtons slot="start">
             <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
-          <IonTitle>{course.name}</IonTitle>
+
           <IonButtons slot="end">
             <IonButton onClick={() => setShowPopover(true)}>
               <IonIcon
@@ -201,37 +199,69 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
       </IonHeader>
 
       <IonContent fullscreen>
+        <Refresher />
+
+        <IonList className="course-info">
+          <div className="max-width-700">
+            <img
+              className="course-info__doodle3"
+              src="../../assets/images/doodle3.png"
+              alt="doodle3"
+            />
+            {/* <img
+              className="course-info__doodle4"
+              src="../../assets/images/doodle4.png"
+            /> */}
+            <div className="course-info__title">
+              <p>
+                <b>{course.name}</b>
+              </p>
+            </div>
+            <IonGrid className="course-info__detail">
+              <IonRow>
+                <IonCol size="6">
+                  <span className="course-info__text">
+                    tạo bởi{" "}
+                    <IonRouterLink color="light" href={`/users/${course.author_id}`}>
+                      <b>{course.author}</b>
+                    </IonRouterLink>
+                  </span>
+                </IonCol>
+                <IonCol size="6">
+                  <span className="course-info__text">
+                    <b>
+                      {course.followed_by.length
+                        ? course.followed_by.length
+                        : 0}
+                    </b>{" "}
+                    người theo dõi
+                  </span>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </div>
+        </IonList>
+
         <div className="max-width-700">
-          <Refresher />
+          <IonSegment
+            value={segmentValue}
+            color="primary"
+            className="course-segment"
+            onIonChange={(e: any) => setSegmentValue(e.detail.value!)}
+          >
+            <IonSegmentButton value="lessons">
+              <IonLabel>Danh sách bài học</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="recommendation">
+              <IonLabel>Khóa học tương tự</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
 
-          <IonList className="course-info">
-            <IonItem lines="none">
-              <IonIcon icon={personCircle}></IonIcon>
-              <IonText className="course-info__text">
-                Được tạo bởi {course.author}
-              </IonText>
-            </IonItem>
-            <IonItem lines="none">
-              <IonIcon icon={heart}></IonIcon>
-              <IonText className="course-info__text">
-                {course.followed_by.length ? course.followed_by.length : 0} người theo dõi khóa học này
-              </IonText>
-            </IonItem>
-            <IonItem lines="none">
-              <IonIcon icon={shareSocial}></IonIcon>
-              <IonText className="course-info__text">0 lượt chia sẻ</IonText>
-            </IonItem>
-          </IonList>
-
-          <IonItemDivider mode="md">
-            <IonLabel color="dark">Danh sách bài học</IonLabel>
-          </IonItemDivider>
-          <LessonListContainer author={course.author} courseId={courseId} />
-
-          <IonItemDivider mode="md">
-            <IonLabel color="dark">Khóa học tương tự</IonLabel>
-          </IonItemDivider>
-          <CourseListContainer courses={recommendation} />
+          {segmentValue === "lessons" ? (
+            <LessonListContainer author={course.author} courseId={courseId} />
+          ) : (
+            <CourseListContainer courses={recommendation} />
+          )}
         </div>
       </IonContent>
 

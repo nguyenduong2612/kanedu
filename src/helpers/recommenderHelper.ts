@@ -1,5 +1,6 @@
 import { create, all } from "mathjs";
-var stringSimilarity = require("string-similarity");
+// var stringSimilarity = require("string-similarity");
+var distance = require("jaro-winkler");
 
 const calcLengthProduct = (
   sourceVector: Array<number>,
@@ -51,23 +52,21 @@ const calcCosSimilarity = (source: any, des: any): number => {
     cosSimilarity += propSim * weight[prop];
   }
 
-  let descriptionSim = stringSimilarity.compareTwoStrings(
-    source["description"],
-    des["description"]
-  );
-  //console.log(descriptionSim);
+  let descriptionSim = distance(source["description"], des["description"]);
+
+  //console.log("descriptionSim: ", descriptionSim);
   cosSimilarity += descriptionSim * weight["description"];
 
   return cosSimilarity;
-}
+};
 
 export function recommendCourses(source: any, courses: Array<any>) {
   let recommendList = courses.map((course: any) => {
     return {
       ...course,
-      score: calcCosSimilarity(source.vector, course.vector)
-    }
-  })
+      score: calcCosSimilarity(source.vector, course.vector),
+    };
+  });
 
   // Sort by score
   recommendList.sort((a, b) => b.score - a.score);
@@ -105,4 +104,3 @@ export function createVector(courseData: any) {
 
   return { level, skill, category, description };
 }
-

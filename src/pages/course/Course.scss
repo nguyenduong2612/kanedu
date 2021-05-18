@@ -13,9 +13,41 @@
 }
 
 .course-info {
-  margin-top: 10px;
-  .course-info__text {
-    font-size: 14px;
-    margin-left: 10px;
+  min-height: 35vh;
+  background-color: var(--ion-color-primary);
+  .course-info__title {
+    color: #fff;
+    padding: 10vh 90px 10px 35px;
+    font-size: var(--ion-font-size-24);
+  }
+  .course-info__author {
+    padding: 0;
+    margin: 0;
+    font-size: var(--ion-font-size-14);
+    --color: #fff;
+  }
+  .course-info__detail {
+    color: #fff;
+    padding: 0 30px 15px;
+    font-size: var(--ion-font-size-14);
+  }
+  .course-info__doodle3 {
+    position: absolute;
+    width: 210px;
+    right: -140px;
+    top: -10px;
+  }
+  .course-info__doodle4 {
+    position: absolute;
+    top: -80px;
+    width: 230px;
+    transform: scaleY(-1);
+  }
+}
+
+.course-segment {
+  ion-segment-button {
+    font-size: 12px;
+    font-weight: bold;
   }
 }

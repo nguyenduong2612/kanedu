@@ -1,7 +1,10 @@
 .lesson-list-wrapper {
   padding-top: 10px;
   .lesson-wrapper {
-    margin: 15px;
+    margin: 24px;
+    ion-card-header {
+      padding-left: 3px;
+    }
     .lesson-wrapper__title {
       font-size: var(--ion-font-size-16);
       font-weight: bold;
@@ -15,6 +18,17 @@
       position: absolute;
       top: 20px;
       right: 5px;
+    }
+    .lesson-wrapper__icon-bg {
+      background-color: #f7edfc;
+      height: 98%;
+      border-radius: 8px;
+      margin: 2px;
+      text-align: center;
+      ion-icon {
+        font-size: 36px;
+        margin-top: 33px;
+      }
     }
   }
 }

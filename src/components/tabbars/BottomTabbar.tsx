@@ -61,7 +61,7 @@ const BottomTabbar: React.FC<BottomTabbarContainerProps> = () => {
 
   return isLoggedin ? (
     <>
-      <IonFab vertical="bottom" horizontal="center">
+      <IonFab id="tabbar-fab" vertical="bottom" horizontal="end">
         {showFabButton && (
           <IonFabButton onClick={handleShowModal} id="appFabBtn">
             <IonIcon icon={add} size="large" />
@@ -87,7 +87,6 @@ const BottomTabbar: React.FC<BottomTabbarContainerProps> = () => {
             <IonLabel>Tìm kiếm</IonLabel>
           </IonTabButton>
 
-          <IonTabButton disabled></IonTabButton>
           <IonTabButton tab="community" href="/community">
             <IonIcon ios={peopleOutline} md={people} />
             <IonLabel>Cộng đồng</IonLabel>
