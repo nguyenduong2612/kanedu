@@ -21,6 +21,9 @@ import {
   DELETE_POST_FAILED,
   DELETE_POST_STARTED,
   DELETE_POST_SUCCESS,
+  DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_STARTED,
+  DELETE_COMMENT_FAILED,
 } from "./post.types";
 
 const initialState = {
@@ -149,6 +152,22 @@ export const postReducer = (state = initialState, action: any) => {
         newState.posts[action.index].comments + 1;
       return newState;
     case SAVE_COMMENT_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case DELETE_COMMENT_STARTED:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case DELETE_COMMENT_SUCCESS:
+      newState.comments.splice(action.payload, 1);
+      newState.posts[action.index].comments =
+        newState.posts[action.index].comments - 1;
+      return newState;
+    case DELETE_COMMENT_FAILED:
       return {
         ...state,
         isLoading: false,

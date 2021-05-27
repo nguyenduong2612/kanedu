@@ -36,6 +36,7 @@ import useTabbar from "../../../hooks/useTabbar";
 import "./PostDetail.scss";
 import {
   clearComments,
+  deleteComment,
   deletePost,
   getComments,
   likePost,
@@ -59,7 +60,6 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   const { user } = useSelector((state: RootState) => state.user);
   const { posts, comments } = useSelector((state: RootState) => state.posts);
 
-  const [isMyPost, setIsMyPost] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
   const post = posts.find((post: Post) => post.id === postId);
@@ -68,10 +68,6 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   useTabbar();
   useEffect(() => {
     dispatch(getComments(postId));
-
-    if (post.author_id === user.uid) {
-      setIsMyPost(true);
-    }
 
     return function clearCmts() {
       dispatch(clearComments);
@@ -92,8 +88,17 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
       author_id: user.uid,
       content: commentInput,
       created_at: Date.now(),
-    }
+    };
     dispatch(saveComment(comment, postId, posts));
+  };
+
+  const handleDeleteComment = (
+    comment: any,
+    postId: string,
+    commentIndex: number
+  ) => {
+    if (comment.author_id !== user.uid) return;
+    dispatch(deleteComment(posts, postId, comment.id, commentIndex));
   };
 
   const handleLikePost = () => {
@@ -109,6 +114,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   };
 
   const handleConfirmDelete = () => {
+    if (post.author_id !== user.uid) return;
     dispatch(deletePost(posts, post.id, user.uid));
     toast("Đã xóa bài đăng");
     window.history.back();
@@ -124,7 +130,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                 <IonBackButton color="light" text="" defaultHref="/community" />
               </IonButtons>
               <IonTitle>{post.title}</IonTitle>
-              {isMyPost && (
+              {post.author_id === user.uid && (
                 <IonButtons slot="end">
                   <IonButton onClick={handleDeletePost}>
                     <IonIcon
@@ -224,6 +230,17 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                                 .locale("vi")
                                 .fromNow()}`}</b>
                     <p>{comment.content}</p>
+                    {comment.author_id === user.uid && (
+                      <IonButtons className="post-comment-delete" slot="end">
+                        <IonButton
+                          onClick={() =>
+                            handleDeleteComment(comment, postId, index)
+                          }
+                        >
+                          <IonIcon color="dark" slot="icon-only" icon={trash} />
+                        </IonButton>
+                      </IonButtons>
+                    )}
                   </div>
                 );
               })}

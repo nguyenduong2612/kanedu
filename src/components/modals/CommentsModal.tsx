@@ -1,13 +1,32 @@
-import { IonButton, IonIcon, IonInput, IonItem, IonModal } from "@ionic/react";
-import { closeOutline, closeSharp, sendOutline, sendSharp } from "ionicons/icons";
+import {
+  IonButton,
+  IonButtons,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonModal,
+} from "@ionic/react";
+import {
+  closeOutline,
+  closeSharp,
+  sendOutline,
+  sendSharp,
+  trash,
+} from "ionicons/icons";
 import moment from "moment";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Post } from "../../models";
+import { deleteComment } from "../../redux/post/post.actions";
 import "./CommentsModal.scss";
 
 interface CommentsModalProps {
   isOpen: boolean;
   commentCount: number;
   comments: any;
+  posts: Post[],
+  postId: string,
+  userId: string,
   handleCloseModal: () => void;
   handleSendComment: (commentInput: string) => void;
 }
@@ -16,16 +35,29 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
   isOpen,
   commentCount,
   comments,
+  posts,
+  postId,
+  userId,
   handleCloseModal,
-  handleSendComment
+  handleSendComment,
 }) => {
   const [commentInput, setCommentInput] = useState<string>("");
+  const dispatch = useDispatch();
 
   const onSendComment = () => {
     setCommentInput("");
     handleSendComment(commentInput);
-  }
-  
+  };
+
+  const handleDeleteComment = (
+    comment: any,
+    postId: string,
+    commentIndex: number
+  ) => {
+    if (comment.author_id !== userId) return;
+    dispatch(deleteComment(posts, postId, comment.id, commentIndex));
+  };
+
   return (
     <IonModal
       swipeToClose={true}
@@ -54,6 +86,15 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
                             .locale("vi")
                             .fromNow()}`}</b>
               <p>{comment.content}</p>
+              {comment.author_id === userId && (
+                <IonButtons className="post-comment-delete" slot="end">
+                  <IonButton
+                    onClick={() => handleDeleteComment(comment, postId, index)}
+                  >
+                    <IonIcon color="dark" slot="icon-only" icon={trash} />
+                  </IonButton>
+                </IonButtons>
+              )}
             </div>
           );
         })}

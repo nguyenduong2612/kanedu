@@ -139,6 +139,9 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
                 isOpen={showCommentModal}
                 commentCount={post.comments}
                 comments={comments}
+                posts={posts}
+                postId={postId}
+                userId={user.uid}
                 handleCloseModal={handleCloseModal}
                 handleSendComment={handleSendComment}
               />

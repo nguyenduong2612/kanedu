@@ -2,6 +2,7 @@
   font-size: 13px;
   margin: 15px 20px;
   border-bottom: 1px solid #bbb;
+  position: relative;
 }
 .post-info p {
   font-size: 12.5px;
@@ -15,4 +16,9 @@
   bottom: 0;
   position: absolute;
   width: 100%;
+}
+.post-comment-delete {
+  position: absolute;
+  top: -5px;
+  right: -10px;
 }
