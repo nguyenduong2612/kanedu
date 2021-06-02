@@ -39,8 +39,7 @@ const HintContainer: React.FC<HintContainerProps> = () => {
             <IonCardContent className="hint-content">
               <img src="../assets/images/hint1.png" alt="hint1" />
               <div className="hint-text">
-                Tìm kiếm bài học, câu hỏi, bạn bè.<br></br>Hãy bắt đầu với việc
-                tìm cho mình một khóa học phù hợp.<br></br>
+                Tìm kiếm bài học, câu hỏi, bạn bè.<br></br>Bất cứ thứ gì.<br></br>
                 <IonButton
                   fill="outline"
                   className="hint-button"

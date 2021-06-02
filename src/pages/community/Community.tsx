@@ -144,7 +144,7 @@ const Community: React.FC<CommunityPageProps> = () => {
         >
           <Refresher />
           <IonGrid id="post-input-wrapper">
-            <IonRow className="row max-width-700" >
+            <IonRow className="row max-width-700">
               <IonCol size="2" className="col">
                 <div className="image-wrapper">
                   <img
@@ -156,6 +156,7 @@ const Community: React.FC<CommunityPageProps> = () => {
               </IonCol>
               <IonCol size="10" className="col">
                 <IonButton
+                  mode="md"
                   expand="block"
                   fill="outline"
                   color="primary"

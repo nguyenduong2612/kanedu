@@ -314,6 +314,9 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
         message={`Xác nhận xóa khóa học này. Thao tác này không thể hoàn tác.`}
         buttons={[
           {
+            text: "Hủy",
+          },
+          {
             text: "Xác nhận",
             role: "confirm",
             cssClass: "text--red",

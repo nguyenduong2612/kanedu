@@ -5,7 +5,6 @@ import {
   IonTitle,
   IonToolbar,
   IonMenuButton,
-  IonItemDivider,
   IonLabel,
   IonButton,
   IonIcon,
@@ -15,13 +14,10 @@ import {
   IonProgressBar,
   IonFab,
   IonFabButton,
+  IonSegment,
+  IonSegmentButton,
 } from "@ionic/react";
-import {
-  add,
-  chevronForward,
-  notifications,
-  notificationsOutline,
-} from "ionicons/icons";
+import { add, notifications } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CourseListContainer from "../../components/containers/CourseListContainer";
@@ -43,8 +39,10 @@ const Home: React.FC = () => {
   );
   const { isLoggedin, user } = useSelector((state: RootState) => state.user);
 
+  const [segmentValue, setSegmentValue] = useState<string>("following");
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [showNotiModal, setShowNotiModal] = useState<boolean>(false);
+  const now = new Date();
 
   const handleCloseNotiModal = () => {
     setShowNotiModal(false);
@@ -71,12 +69,7 @@ const Home: React.FC = () => {
           {isLoggedin && (
             <IonButtons slot="end">
               <IonButton onClick={() => setShowNotiModal(true)}>
-                <IonIcon
-                  color="light"
-                  slot="icon-only"
-                  ios={notificationsOutline}
-                  md={notifications}
-                />
+                <IonIcon color="light" slot="icon-only" icon={notifications} />
               </IonButton>
 
               <NotificationsModal
@@ -87,80 +80,98 @@ const Home: React.FC = () => {
           )}
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <Refresher />
         <div className="max-width-700">
-          {createdCourses.length === 0 && followingCourses.length === 0 && (
+          {createdCourses.length === 0 && followingCourses.length === 0 ? (
             <HintContainer />
-          )}
-
-          {user.goal && (
-            <div className="section-wrapper">
+          ) : (
+            <div className="section-wrapper greeting">
               <IonItemGroup>
-                <IonItem lines="none" style={{ fontSize: 14 }}>
-                  <IonLabel className="goal-label">Mục tiêu hằng ngày</IonLabel>
-                  <IonProgressBar
-                    className="daily-object-bar"
-                    value={
-                      (user.dailyObject ? user.dailyObject : 0 % 100) /
-                      user.goal
-                    }
-                  ></IonProgressBar>
-                  {user.dailyObject ? user.dailyObject : 0}/{user.goal} thẻ
-                </IonItem>
+                {now.getHours() < 12 && now.getHours() > 4 ? (
+                  <h2>おはよう</h2>
+                ) : now.getHours() >= 12 && now.getHours() < 19 ? (
+                  <h2>こんにちは</h2>
+                ) : (
+                  <h2>こんばんは</h2>
+                )}
+
+                <p className="greeting__text">
+                  Chọn một khóa học để ôn tập nào
+                </p>
+                <div className="avatar-wrapper">
+                  <img
+                    alt="avatar"
+                    className="user-profile"
+                    src={user.profileURL}
+                  />
+                </div>
               </IonItemGroup>
+
+              {user.goal && (
+                <IonItemGroup>
+                  <IonItem lines="none" className="goal">
+                    <IonLabel>Mục tiêu</IonLabel>
+                    <IonProgressBar
+                      className="daily-object-bar"
+                      value={
+                        (user.dailyObject ? user.dailyObject : 0 % 100) /
+                        user.goal
+                      }
+                    ></IonProgressBar>
+                    {user.dailyObject ? user.dailyObject : 0}/{user.goal} thẻ
+                  </IonItem>
+                </IonItemGroup>
+              )}
             </div>
           )}
 
           <div className="section-wrapper">
-            <IonItemDivider mode="md">
-              <IonLabel color="dark">
-                <b>Đang theo dõi</b>
-              </IonLabel>
-              <IonButton
-                mode="ios"
-                slot="end"
-                size="small"
-                fill="clear"
-                routerLink="/home/following-courses"
-              >
-                <IonLabel>
-                  <b>
-                    Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
-                  </b>
-                </IonLabel>
-              </IonButton>
-            </IonItemDivider>
-            {followingCourses.length > 0 ? (
-              <CourseListContainer courses={followingCourses.slice(0, 2)} />
-            ) : (
-              <div className="error-msg">
-                <ErrorPage>Bạn chưa theo dõi khóa học nào</ErrorPage>
-              </div>
-            )}
-          </div>
+            <IonSegment
+              mode="md"
+              value={segmentValue}
+              color="primary"
+              className="home-segment"
+              onIonChange={(e: any) => setSegmentValue(e.detail.value!)}
+            >
+              <IonSegmentButton value="created">
+                <IonLabel>Khóa học của tôi</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="following">
+                <IonLabel>Đang theo dõi</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
 
-          <div className="section-wrapper">
-            <IonItemDivider mode="md">
-              <IonLabel color="dark">
-                <b>Khóa học của tôi</b>
-              </IonLabel>
-              <IonButton
-                mode="ios"
-                slot="end"
-                size="small"
-                fill="clear"
-                routerLink="/home/my-courses"
-              >
-                <IonLabel>
-                  <b>
-                    Xem tất cả <IonIcon icon={chevronForward}></IonIcon>
-                  </b>
-                </IonLabel>
-              </IonButton>
-            </IonItemDivider>
-            {createdCourses.length > 0 ? (
-              <CourseListContainer courses={createdCourses.slice(0, 2)} />
+            {segmentValue === "following" ? (
+              followingCourses.length > 0 ? (
+                <div className="course-list-wrapper">
+                  <CourseListContainer courses={followingCourses.slice(0, 4)} />
+                  <IonButton
+                    expand="block"
+                    color="primary"
+                    fill="clear"
+                    routerLink="/home/following-courses"
+                  >
+                    <b>Xem tất cả</b>
+                  </IonButton>
+                </div>
+              ) : (
+                <div className="error-msg">
+                  <ErrorPage>Bạn chưa theo dõi khóa học nào</ErrorPage>
+                </div>
+              )
+            ) : createdCourses.length > 0 ? (
+              <div className="course-list-wrapper">
+                <CourseListContainer courses={createdCourses.slice(0, 4)} />
+                <IonButton
+                  expand="block"
+                  color="primary"
+                  fill="clear"
+                  routerLink="/home/my-courses"
+                >
+                  <b>Xem tất cả</b>
+                </IonButton>
+              </div>
             ) : (
               <div className="error-msg">
                 <ErrorPage>Bạn chưa tạo khóa học nào</ErrorPage>

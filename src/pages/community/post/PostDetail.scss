@@ -4,6 +4,10 @@
   border-bottom: 1px solid #bbb;
   position: relative;
 }
+.post-comment-title {
+  padding: 10px 20px;
+  font-size: var(--ion-font-size-14);
+}
 .post-info p {
   font-size: 12.5px;
 }

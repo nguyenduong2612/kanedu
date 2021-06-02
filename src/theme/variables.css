@@ -22,6 +22,7 @@ ion-item-divider {
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #3171e0;
   --ion-color-primary-tint: #4c8dff; */
+  --home-segment-top: max(570px, 80vh);
 
   /* font-size */
   --ion-font-size-13: min(13px, 3.5vw);

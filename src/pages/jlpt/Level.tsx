@@ -72,8 +72,9 @@ const Level: React.FC<LevelPageProps> = () => {
           </IonButtons>
           <IonTitle>Thi thử</IonTitle>
         </IonToolbar>
-        <IonToolbar>
+        <IonToolbar mode="md">
           <IonSegment
+            mode="md"
             scrollable
             value={level}
             color="light"

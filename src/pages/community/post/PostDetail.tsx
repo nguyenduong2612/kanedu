@@ -17,15 +17,17 @@ import {
   IonInput,
   IonItem,
   IonAlert,
+  IonActionSheet,
 } from "@ionic/react";
 import {
   chatboxOutline,
+  ellipsisHorizontal,
+  ellipsisVertical,
   heartOutline,
   heartSharp,
   sendOutline,
   sendSharp,
   trash,
-  trashOutline,
 } from "ionicons/icons";
 import moment from "moment";
 import "moment/locale/vi";
@@ -60,7 +62,12 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   const { user } = useSelector((state: RootState) => state.user);
   const { posts, comments } = useSelector((state: RootState) => state.posts);
 
-  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [showDeletePostPopover, setShowDeletePostPopover] =
+    useState<boolean>(false);
+  const [showDeleteCommentPopover, setShowDeleteCommentPopover] =
+    useState<boolean>(false);
+  const [showDeletePostAlert, setShowDeletePostAlert] =
+    useState<boolean>(false);
 
   const post = posts.find((post: Post) => post.id === postId);
   const dispatch = useDispatch();
@@ -92,15 +99,6 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
     dispatch(saveComment(comment, postId, posts));
   };
 
-  const handleDeleteComment = (
-    comment: any,
-    postId: string,
-    commentIndex: number
-  ) => {
-    if (comment.author_id !== user.uid) return;
-    dispatch(deleteComment(posts, postId, comment.id, commentIndex));
-  };
-
   const handleLikePost = () => {
     dispatch(likePost(posts, post.id, user.uid));
   };
@@ -110,14 +108,24 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
   };
 
   const handleDeletePost = () => {
-    setShowAlert(true);
+    setShowDeletePostAlert(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDeletePost = () => {
     if (post.author_id !== user.uid) return;
     dispatch(deletePost(posts, post.id, user.uid));
     toast("Đã xóa bài đăng");
     window.history.back();
+  };
+
+  const handleConfirmDeleteComment = (
+    comment: any,
+    postId: string,
+    commentIndex: number
+  ) => {
+    if (comment.author_id !== user.uid) return;
+    dispatch(deleteComment(posts, postId, comment.id, commentIndex));
+    toast("Đã xóa bình luận");
   };
 
   return (
@@ -132,14 +140,26 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
               <IonTitle>{post.title}</IonTitle>
               {post.author_id === user.uid && (
                 <IonButtons slot="end">
-                  <IonButton onClick={handleDeletePost}>
+                  <IonButton onClick={() => setShowDeletePostPopover(true)}>
                     <IonIcon
                       color="light"
                       slot="icon-only"
-                      ios={trashOutline}
-                      md={trash}
+                      icon={ellipsisVertical}
                     />
                   </IonButton>
+
+                  <IonActionSheet
+                    isOpen={showDeletePostPopover}
+                    cssClass="course-detail-modal"
+                    onDidDismiss={() => setShowDeletePostPopover(false)}
+                    buttons={[
+                      {
+                        text: "Xóa bài đăng",
+                        icon: trash,
+                        handler: handleDeletePost,
+                      },
+                    ]}
+                  ></IonActionSheet>
                 </IonButtons>
               )}
             </IonToolbar>
@@ -222,6 +242,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
             </IonCard>
 
             <IonList>
+              <IonTitle className="post-comment-title">Bình luận</IonTitle>
               {comments.map((comment: any, index: number) => {
                 return (
                   <div className="post-comment-wrapper" key={index}>
@@ -233,12 +254,34 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                     {comment.author_id === user.uid && (
                       <IonButtons className="post-comment-delete" slot="end">
                         <IonButton
-                          onClick={() =>
-                            handleDeleteComment(comment, postId, index)
-                          }
+                          onClick={() => setShowDeleteCommentPopover(true)}
                         >
-                          <IonIcon color="dark" slot="icon-only" icon={trash} />
+                          <IonIcon
+                            color="dark"
+                            slot="icon-only"
+                            icon={ellipsisHorizontal}
+                          />
                         </IonButton>
+
+                        <IonActionSheet
+                          isOpen={showDeleteCommentPopover}
+                          cssClass="course-detail-modal"
+                          onDidDismiss={() =>
+                            setShowDeleteCommentPopover(false)
+                          }
+                          buttons={[
+                            {
+                              text: "Xóa bình luận",
+                              icon: trash,
+                              handler: () =>
+                                handleConfirmDeleteComment(
+                                  comment,
+                                  postId,
+                                  index
+                                ),
+                            },
+                          ]}
+                        ></IonActionSheet>
                       </IonButtons>
                     )}
                   </div>
@@ -269,17 +312,20 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
           </IonItem>
 
           <IonAlert
-            isOpen={showAlert}
+            isOpen={showDeletePostAlert}
             cssClass="alert"
-            onDidDismiss={() => setShowAlert(false)}
+            onDidDismiss={() => setShowDeletePostAlert(false)}
             header={"Chú ý"}
             message={`Xác nhận xóa bài đăng này ?`}
             buttons={[
               {
+                text: "Hủy",
+              },
+              {
                 text: "Xác nhận",
                 role: "confirm",
                 cssClass: "text--red",
-                handler: handleConfirmDelete,
+                handler: handleConfirmDeletePost,
               },
             ]}
           />

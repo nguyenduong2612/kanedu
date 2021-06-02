@@ -24,6 +24,21 @@ import { signupUser } from "../../helpers/firebaseHelper";
 import { toast } from "../../utils/toast";
 import "./Register.scss";
 
+const monthNames = [
+  "Tháng 1",
+  "Tháng 2",
+  "Tháng 3",
+  "Tháng 4",
+  "Tháng 5",
+  "Tháng 6",
+  "Tháng 7",
+  "Tháng 8",
+  "Tháng 9",
+  "Tháng 10",
+  "Tháng 11",
+  "Tháng 12",
+];
+
 const Register: React.FC = () => {
   const [busy, setBusy] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
@@ -105,10 +120,13 @@ const Register: React.FC = () => {
           <IonItem>
             <IonLabel position="floating">Ngày sinh</IonLabel>
             <IonDatetime
-              displayFormat="MMM D, YYYY"
+              displayFormat="DD MMMM, YYYY"
               min="1930"
               max="2020"
-              placeholder="Select Date"
+              monthNames={monthNames}
+              placeholder="Chọn ngày sinh"
+              doneText="Chọn"
+              cancelText="Hủy"
               value={birthday.substr(0, 10)}
               onIonChange={(e: any) => setBirthday(e.target.value)}
             ></IonDatetime>

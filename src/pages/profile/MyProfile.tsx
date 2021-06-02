@@ -96,6 +96,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
         <IonItemDivider mode="md" />
         <div className="user-data">
           <IonSegment
+            mode="md"
             value={segmentValue}
             color="primary"
             className="part-segment"
