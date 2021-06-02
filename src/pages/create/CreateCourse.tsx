@@ -87,7 +87,7 @@ const CreateCourse: React.FC<CreateCoursePageProps> = () => {
           <IonTitle>Tạo khóa học</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <IonList>
           <IonItem>
             <IonLabel position="floating">Tên khóa học</IonLabel>

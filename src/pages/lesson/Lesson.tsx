@@ -87,7 +87,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
                     <IonCard
                       className="menu-button"
                       button={true}
-                      routerLink={`/courses/${courseId}/${lessonId}/study`}
+                      routerLink={`/courses/${courseId}/lesson/${lessonId}/study`}
                     >
                       <IonCardHeader className="menu-icon">
                         <IonIcon ios={bookOutline} md={book} />
@@ -101,7 +101,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
                     <IonCard
                       className="menu-button"
                       button={true}
-                      routerLink={`/courses/${courseId}/${lessonId}/test`}
+                      routerLink={`/courses/${courseId}/lesson/${lessonId}/test`}
                     >
                       <IonCardHeader className="menu-icon">
                         <IonIcon ios={pencilOutline} md={pencil} />
@@ -115,7 +115,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
                     <IonCard
                       className="menu-button"
                       button={true}
-                      routerLink={`/courses/${courseId}/${lessonId}/match`}
+                      routerLink={`/courses/${courseId}/lesson/${lessonId}/match`}
                     >
                       <IonCardHeader className="menu-icon">
                         <IonIcon

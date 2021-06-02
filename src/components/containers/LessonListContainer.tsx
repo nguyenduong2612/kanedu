@@ -37,7 +37,7 @@ const LessonListContainer: React.FC<LessonListContainerProps> = ({
                 key={index}
                 mode="ios"
                 className="lesson-wrapper"
-                routerLink={`/courses/${courseId}/${lesson.id}`}
+                routerLink={`/courses/${courseId}/lesson/${lesson.id}`}
               >
                 <IonGrid>
                   <IonRow>

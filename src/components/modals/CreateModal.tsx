@@ -28,14 +28,14 @@ const CreateModal: React.FC<CreateModalProps> = ({
         text: 'Tạo khóa học',
         icon: library,
         handler: () => {
-         router.push("/course/create");
+         router.push("/courses/create");
         }
       },
       {
         text: 'Tạo bài học',
         icon: book,
         handler: () => {
-          router.push("/lesson/create");
+          router.push("/courses/choose");
         }
       }
       ]}

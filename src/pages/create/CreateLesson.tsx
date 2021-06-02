@@ -45,7 +45,7 @@ const CreateLesson: React.FC<CreateLessonPageProps> = () => {
               <IonItem
                 key={index}
                 lines="none"
-                routerLink={`/lesson/create/${course.id}`}
+                routerLink={`/courses/${course.id}/lesson/create`}
               >
                 <IonCard style={{ width: "100%" }}>
                   <IonCardHeader>

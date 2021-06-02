@@ -196,7 +196,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
                         text: "Chỉnh sửa",
                         icon: pencil,
                         handler: () => {
-                          router.push(`/edit/${courseId}`)
+                          router.push(`/courses/${courseId}/edit`)
                         },
                       },
                       {

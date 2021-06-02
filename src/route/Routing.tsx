@@ -50,31 +50,31 @@ const Routing: React.FC = () => {
           <Route path="/" render={() => <Redirect to="/home" />} exact />
           <Route path="/login" render={() => <Redirect to="/home" />} exact />
           <Route path="/courses/:id" component={Course} exact />
-          <Route path="/edit/:course_id/" component={CourseEdit} exact />
+          <Route path="/courses/:id/edit" component={CourseEdit} exact />
           <Route
-            path="/courses/:course_id/:lesson_id"
+            path="/courses/:course_id/lesson/:lesson_id"
             component={Lesson}
             exact
           />
           <Route
-            path="/courses/:course_id/:lesson_id/study"
+            path="/courses/:course_id/lesson/:lesson_id/study"
             component={Learning}
             exact
           />
           <Route
-            path="/courses/:course_id/:lesson_id/test"
+            path="/courses/:course_id/lesson/:lesson_id/test"
             component={Testing}
             exact
           />
           <Route
-            path="/courses/:course_id/:lesson_id/match"
+            path="/courses/:course_id/lesson/:lesson_id/match"
             component={Matching}
             exact
           />
-          <Route path="/course/create" component={CreateCourse} exact />
-          <Route path="/lesson/create" component={CreateLesson} exact />
+          <Route path="/courses/create" component={CreateCourse} exact />
+          <Route path="/courses/choose" component={CreateLesson} exact />
           <Route
-            path="/lesson/create/:course_id"
+            path="/courses/:course_id/lesson/create"
             component={CreateCard}
             exact
           />

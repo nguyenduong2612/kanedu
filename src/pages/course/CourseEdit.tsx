@@ -25,11 +25,11 @@ import { database } from "../../config/firebaseConfig";
 interface CourseEditPageProps extends RouteComponentProps<MatchParams> {}
 
 interface MatchParams {
-  course_id: string;
+  id: string;
 }
 
 const CourseEdit: React.FC<CourseEditPageProps> = ({ match }) => {
-  const courseId = match.params.course_id;
+  const courseId = match.params.id;
   const lessons = useAllLessons(courseId);
 
   const handleDeleteLesson = async (lessonId: string) => {
@@ -59,14 +59,19 @@ const CourseEdit: React.FC<CourseEditPageProps> = ({ match }) => {
       <IonContent fullscreen>
         <IonList style={{ height: "85vh" }} className="max-width-700">
           {lessons.isEmpty ? (
-            <ErrorPage>Không có bài học</ErrorPage>
+            <ErrorPage>
+              <p>Không có bài học</p>
+              <IonButton routerLink={`/courses/${courseId}/lesson/create`}>
+                Thêm bài học
+              </IonButton>
+            </ErrorPage>
           ) : (
             <div className="lesson-list-wrapper">
               {lessons.lessonList.map((lesson: any, index: number) => {
                 return (
                   <IonCard mode="md" className="lesson-wrapper" key={index}>
                     <IonCardHeader>
-                      <IonCardTitle>
+                      <IonCardTitle style={{ paddingLeft: 20 }}>
                         <span className="lesson-wrapper__title">
                           {lesson.title}
                         </span>
@@ -91,6 +96,11 @@ const CourseEdit: React.FC<CourseEditPageProps> = ({ match }) => {
                   </IonCard>
                 );
               })}
+              <div style={{ textAlign: "center" }}>
+                <IonButton routerLink={`/courses/${courseId}/lesson/create`}>
+                  Thêm bài học
+                </IonButton>
+              </div>
             </div>
           )}
         </IonList>
