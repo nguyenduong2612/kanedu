@@ -5,14 +5,19 @@ import {
   IonTitle,
   IonToolbar,
   IonMenuButton,
-  IonList,
   IonItemDivider,
   IonLabel,
   IonButton,
   IonIcon,
   IonButtons,
+  IonItem,
+  IonItemGroup,
+  IonProgressBar,
+  IonFab,
+  IonFabButton,
 } from "@ionic/react";
 import {
+  add,
   chevronForward,
   notifications,
   notificationsOutline,
@@ -22,6 +27,7 @@ import { useSelector } from "react-redux";
 import CourseListContainer from "../../components/containers/CourseListContainer";
 import HintContainer from "../../components/containers/HintContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
+import CreateModal from "../../components/modals/CreateModal";
 import NotificationsModal from "../../components/modals/NotificationsModal";
 import Refresher from "../../components/utils/Refresher";
 import "./Home.scss";
@@ -35,12 +41,21 @@ const Home: React.FC = () => {
   const { createdCourses, followingCourses } = useSelector(
     (state: RootState) => state.courses
   );
-  const { isLoggedin } = useSelector((state: RootState) => state.user);
+  const { isLoggedin, user } = useSelector((state: RootState) => state.user);
 
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const [showNotiModal, setShowNotiModal] = useState<boolean>(false);
 
-  const handleCloseModal = () => {
+  const handleCloseNotiModal = () => {
     setShowNotiModal(false);
+  };
+
+  const handleShowModal = () => {
+    setShowCreateModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowCreateModal(false);
   };
 
   return (
@@ -66,7 +81,7 @@ const Home: React.FC = () => {
 
               <NotificationsModal
                 isOpen={showNotiModal}
-                handleCloseModal={handleCloseModal}
+                handleCloseModal={handleCloseNotiModal}
               ></NotificationsModal>
             </IonButtons>
           )}
@@ -74,9 +89,27 @@ const Home: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <Refresher />
-        <IonList className="max-width-700">
+        <div className="max-width-700">
           {createdCourses.length === 0 && followingCourses.length === 0 && (
             <HintContainer />
+          )}
+
+          {user.goal && (
+            <div className="section-wrapper">
+              <IonItemGroup>
+                <IonItem lines="none" style={{ fontSize: 14 }}>
+                  <IonLabel className="goal-label">Mục tiêu hằng ngày</IonLabel>
+                  <IonProgressBar
+                    className="daily-object-bar"
+                    value={
+                      (user.dailyObject ? user.dailyObject : 0 % 100) /
+                      user.goal
+                    }
+                  ></IonProgressBar>
+                  {user.dailyObject ? user.dailyObject : 0}/{user.goal} thẻ
+                </IonItem>
+              </IonItemGroup>
+            </div>
           )}
 
           <div className="section-wrapper">
@@ -134,8 +167,19 @@ const Home: React.FC = () => {
               </div>
             )}
           </div>
-        </IonList>
+        </div>
       </IonContent>
+      {isLoggedin && (
+        <IonFab id="tabbar-fab" vertical="bottom" horizontal="end">
+          <IonFabButton onClick={handleShowModal} id="appFabBtn">
+            <IonIcon icon={add} size="large" />
+          </IonFabButton>
+          <CreateModal
+            isOpen={showCreateModal}
+            handleCloseModal={handleCloseModal}
+          />
+        </IonFab>
+      )}
     </IonPage>
   );
 };

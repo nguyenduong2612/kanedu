@@ -18,7 +18,7 @@ import {
   IonRow,
   IonIcon,
 } from "@ionic/react";
-import { logoFacebook, logoGoogle } from "ionicons/icons";
+import { logoFacebook } from "ionicons/icons";
 import React, { useState } from "react";
 import { signupUser } from "../../helpers/firebaseHelper";
 import { toast } from "../../utils/toast";
@@ -67,11 +67,11 @@ const Register: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonLoading message="Vui lòng đợi" duration={0} isOpen={busy} />
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <IonList className="signup-wrapper">
           <IonLabel className="signup-wrapper__text" color="medium">Đăng nhập sử dụng tài khoản đã có</IonLabel>
           <IonRow>
-            <IonCol size="6">
+            {/* <IonCol size="6">
               <IonCard className="social-login-btn" button={true} mode="md">
                 <IonIcon
                   className="social-login-icon"
@@ -79,7 +79,7 @@ const Register: React.FC = () => {
                 ></IonIcon>
                 <IonTitle>Google</IonTitle>
               </IonCard>
-            </IonCol>
+            </IonCol> */}
             <IonCol size="6">
               <IonCard className="social-login-btn" button={true} mode="md">
                 <IonIcon

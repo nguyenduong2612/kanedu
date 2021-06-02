@@ -3,6 +3,7 @@ import {
   IonInput,
   IonItem,
   IonPopover,
+  IonTitle,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./ForgotPasswordPopup.scss";
@@ -26,7 +27,8 @@ const ForgotPasswordPopup: React.FC<ForgotPasswordPopupProps> = ({
       isOpen={isOpen}
       onDidDismiss={handleCloseModal}
     >
-      <IonItem >
+      <IonTitle>Quên mật khẩu</IonTitle>
+      <IonItem>
         <IonInput
           value={email}
           placeholder="Nhập email của bạn"

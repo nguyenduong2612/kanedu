@@ -1,10 +1,13 @@
 // Imports the Google Cloud client library
+const admin = require('firebase-admin');
 const algoliasearch = require("algoliasearch");
 const functions = require("firebase-functions");
 const vision = require("@google-cloud/vision");
 const { Translate } = require("@google-cloud/translate").v2;
 
 const env = functions.config();
+admin.initializeApp();
+const db = admin.firestore();
 
 const client = algoliasearch(env.algolia.appid, env.algolia.apikey, {
   timeouts: {
@@ -122,4 +125,14 @@ exports.translateText = functions.https.onCall(async (data, _context) => {
 
   let [translation] = await translateClient.translate(text, target);
   return { text, translation };
+});
+
+exports.resetDailyGoal = functions.pubsub.schedule('0 0 * * *')
+  .timeZone('Asia/Ho_Chi_Minh')
+  .onRun(async(context) => {
+    console.log('Reset daily goal');
+    let snap = await db.collection("users").get();
+    snap.docs.map(async(user) => {
+      user.ref.update({dailyObject: 0})
+    })
 });

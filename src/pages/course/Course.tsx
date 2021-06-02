@@ -7,8 +7,6 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
-  IonPopover,
-  IonItem,
   IonList,
   IonLabel,
   IonAlert,
@@ -18,8 +16,18 @@ import {
   IonSegment,
   IonSegmentButton,
   IonRouterLink,
+  IonActionSheet,
+  useIonRouter,
 } from "@ionic/react";
-import { ellipsisVertical, ellipsisVerticalOutline } from "ionicons/icons";
+import {
+  ellipsisVertical,
+  ellipsisVerticalOutline,
+  heart,
+  heartDislike,
+  pencil,
+  share,
+  trash,
+} from "ionicons/icons";
 import React, { useState, lazy, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -68,6 +76,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
 
   const course = courses.filter((course: any) => course.id === courseId)[0];
 
+  const router = useIonRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -160,40 +169,64 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
               />
             </IonButton>
 
-            <IonPopover
+            <IonActionSheet
               isOpen={showPopover}
-              cssClass="course-detail-popup"
+              cssClass="course-detail-modal"
               onDidDismiss={() => setShowPopover(false)}
+              buttons={
+                course.author_id === user.uid
+                  ? [
+                      isFollowed
+                        ? {
+                            text: "Bỏ theo dõi",
+                            icon: heartDislike,
+                            handler: handleUnfollow,
+                          }
+                        : {
+                            text: "Theo dõi",
+                            icon: heart,
+                            handler: handleFollow,
+                          },
+                      {
+                        text: "Chia sẻ",
+                        icon: share,
+                        handler: handleShowShareModal,
+                      },
+                      {
+                        text: "Chỉnh sửa",
+                        icon: pencil,
+                        handler: () => {
+                          router.push(`/edit/${courseId}`)
+                        },
+                      },
+                      {
+                        text: "Xóa khóa học",
+                        role: 'destructive',
+                        icon: trash,
+                        handler: handleDeleteCourse,
+                      },
+                    ]
+                  : [
+                      isFollowed
+                        ? {
+                            text: "Bỏ theo dõi",
+                            icon: heartDislike,
+                            handler: handleUnfollow,
+                          }
+                        : {
+                            text: "Theo dõi",
+                            icon: heart,
+                            handler: handleFollow,
+                          },
+                      {
+                        text: "Chia sẻ",
+                        icon: share,
+                        handler: handleShowShareModal,
+                      },
+                    ]
+              }
             >
-              <IonList>
-                {isFollowed ? (
-                  <IonItem onClick={handleUnfollow} lines="none">
-                    Bỏ theo dõi
-                  </IonItem>
-                ) : (
-                  <IonItem onClick={handleFollow} lines="none">
-                    Theo dõi
-                  </IonItem>
-                )}
-                <IonItem onClick={handleShowShareModal} lines="none">
-                  Chia sẻ
-                </IonItem>
-                {course.author_id === user.uid && (
-                  <>
-                    <IonItem
-                      onClick={() => setShowPopover(false)}
-                      routerLink={`/edit/${courseId}`}
-                      lines="none"
-                    >
-                      Chỉnh sửa
-                    </IonItem>
-                    <IonItem onClick={handleDeleteCourse} lines="none">
-                      <span className="text--red">Xóa khóa học</span>
-                    </IonItem>
-                  </>
-                )}
-              </IonList>
-            </IonPopover>
+            </IonActionSheet>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -222,7 +255,10 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
                 <IonCol size="6">
                   <span className="course-info__text">
                     tạo bởi{" "}
-                    <IonRouterLink color="light" href={`/users/${course.author_id}`}>
+                    <IonRouterLink
+                      color="light"
+                      href={`/users/${course.author_id}`}
+                    >
                       <b>{course.author}</b>
                     </IonRouterLink>
                   </span>
@@ -242,21 +278,21 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
           </div>
         </IonList>
 
+        <IonSegment
+          value={segmentValue}
+          color="light"
+          className="course-segment"
+          onIonChange={(e: any) => setSegmentValue(e.detail.value!)}
+          mode="md"
+        >
+          <IonSegmentButton value="lessons">
+            <IonLabel>Danh sách bài học</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="recommendation">
+            <IonLabel>Khóa học tương tự</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
         <div className="max-width-700">
-          <IonSegment
-            value={segmentValue}
-            color="primary"
-            className="course-segment"
-            onIonChange={(e: any) => setSegmentValue(e.detail.value!)}
-          >
-            <IonSegmentButton value="lessons">
-              <IonLabel>Danh sách bài học</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="recommendation">
-              <IonLabel>Khóa học tương tự</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-
           {segmentValue === "lessons" ? (
             <LessonListContainer author={course.author} courseId={courseId} />
           ) : (

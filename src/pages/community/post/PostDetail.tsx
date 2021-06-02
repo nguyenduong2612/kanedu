@@ -144,8 +144,8 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
               )}
             </IonToolbar>
           </IonHeader>
-          <IonContent fullscreen>
-            <IonCard className="post-wrapper">
+          <IonContent fullscreen className="bg-white">
+            <IonCard className="post-wrapper" mode="ios">
               <IonCardContent>
                 <IonRow className="post-info">
                   <div>
@@ -170,8 +170,8 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                 </IonRow>
                 <IonRow style={{ padding: "10px 0", color: "initial" }}>
                   {post.sharedLink && (
-                    <IonButton href={post.sharedLink} fill="outline">
-                      Tham gia
+                    <IonButton href={post.sharedLink} fill="outline" mode="md">
+                      Tham gia ngay
                     </IonButton>
                   )}
                 </IonRow>

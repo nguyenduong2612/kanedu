@@ -7,11 +7,9 @@ import {
   IonItem,
   IonBackButton,
   IonButtons,
-  IonList,
   IonLabel,
   IonButton,
   IonItemGroup,
-  IonItemDivider,
   IonToggle,
   IonDatetime,
   IonIcon,
@@ -118,8 +116,8 @@ const ReminderSetting: React.FC<ReminderSettingPageProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList className="max-width-700">
-          <IonItemGroup>
+        <div className="max-width-700">
+          <IonItemGroup className="subsection-wrapper">
             {/* <IonItem>
             <IonLabel>Local Notifications</IonLabel>
             <IonButton onClick={setLocalNoti} />
@@ -132,7 +130,6 @@ const ReminderSetting: React.FC<ReminderSettingPageProps> = () => {
                 onIonChange={(e) => setIsTurnOn(e.detail.checked)}
               />
             </IonItem>
-            <IonItemDivider mode="md" />
 
             <IonItem lines="none">
               <IonLabel>Thời gian nhắc nhở</IonLabel>
@@ -142,9 +139,8 @@ const ReminderSetting: React.FC<ReminderSettingPageProps> = () => {
                 onIonChange={(e) => setRemindAt(e.detail.value!)}
               ></IonDatetime>
             </IonItem>
-            <IonItemDivider mode="md" />
           </IonItemGroup>
-        </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );

@@ -19,6 +19,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "../../utils/toast";
 import { setDailyGoal } from "../../redux/user/user.actions";
+import "./GoalSetting.scss";
 
 interface ReminderSettingPageProps {}
 
@@ -61,10 +62,13 @@ const GoalSetting: React.FC<ReminderSettingPageProps> = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonList className="max-width-700">
-          <IonItemGroup>
+          <IonItemGroup className="subsection-wrapper">
             <IonItem lines="none">
-              <IonLabel>Mục tiêu<br />hằng ngày</IonLabel>
+              <IonLabel className="goal-setting_label">
+                Mục tiêu hằng ngày
+              </IonLabel>
               <IonRange
+                className="goal-setting_range"
                 pin={true}
                 value={goal}
                 onIonChange={(e) => setGoal(e.detail.value as number)}
@@ -75,7 +79,6 @@ const GoalSetting: React.FC<ReminderSettingPageProps> = () => {
               />
               {goal} từ
             </IonItem>
-
           </IonItemGroup>
         </IonList>
       </IonContent>

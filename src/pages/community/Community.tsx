@@ -143,8 +143,8 @@ const Community: React.FC<CommunityPageProps> = () => {
           onIonScroll={(e: any) => handleScroll(e)}
         >
           <Refresher />
-          <IonGrid id="post-input-wrapper" className="max-width-700">
-            <IonRow className="row">
+          <IonGrid id="post-input-wrapper">
+            <IonRow className="row max-width-700" >
               <IonCol size="2" className="col">
                 <div className="image-wrapper">
                   <img
@@ -155,28 +155,26 @@ const Community: React.FC<CommunityPageProps> = () => {
                 </div>
               </IonCol>
               <IonCol size="10" className="col">
-                <IonContent>
-                  <IonButton
-                    expand="block"
-                    fill="outline"
-                    color="primary"
-                    size="default"
-                    onClick={() => setShowPopover(true)}
-                  >
-                    <span>Đặt câu hỏi</span>
-                  </IonButton>
+                <IonButton
+                  expand="block"
+                  fill="outline"
+                  color="primary"
+                  size="default"
+                  onClick={() => setShowPopover(true)}
+                >
+                  <span>Đặt câu hỏi</span>
+                </IonButton>
 
-                  <SendQuestionPopup
-                    isOpen={showPopover}
-                    handleCloseModal={() => setShowPopover(false)}
-                    handleSendQuestion={handleSendQuestion}
-                  />
-                </IonContent>
+                <SendQuestionPopup
+                  isOpen={showPopover}
+                  handleCloseModal={() => setShowPopover(false)}
+                  handleSendQuestion={handleSendQuestion}
+                />
               </IonCol>
             </IonRow>
           </IonGrid>
 
-          <div style={{ backgroundColor: "#ddd" }} className="max-width-700">
+          <div className="max-width-700">
             {posts
               .filter((post: any) => post !== undefined)
               .map((post: any, index: number) => {

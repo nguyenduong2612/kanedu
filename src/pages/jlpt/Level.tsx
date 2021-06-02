@@ -9,13 +9,21 @@ import {
   IonLabel,
   IonSegment,
   IonSegmentButton,
-  IonItem,
-  IonList,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonGrid,
+  IonCardContent,
+  IonCol,
+  IonRow,
+  IonIcon,
 } from "@ionic/react";
+import { alarm, cube } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import ErrorPage from "../../components/error_pages/ErrorPage";
 import Spinner from "../../components/utils/Spinner";
 import { database } from "../../config/firebaseConfig";
+import "./Level.scss";
 
 interface LevelPageProps {}
 
@@ -33,8 +41,8 @@ const Level: React.FC<LevelPageProps> = () => {
       } else {
         docs.forEach((doc) => {
           let exam = {
-            title: doc.data().title,
             id: doc.id,
+            ...doc.data(),
           };
           setExams((exams) => [...exams, exam]);
         });
@@ -64,48 +72,73 @@ const Level: React.FC<LevelPageProps> = () => {
           </IonButtons>
           <IonTitle>Thi thử</IonTitle>
         </IonToolbar>
+        <IonToolbar>
+          <IonSegment
+            scrollable
+            value={level}
+            color="light"
+            className="search-segment"
+            onIonChange={(e) => handleChangeLevel(e)}
+          >
+            <IonSegmentButton value="5">
+              <IonLabel>N5</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="4">
+              <IonLabel>N4</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="3">
+              <IonLabel>N3</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="2">
+              <IonLabel>N2</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="1">
+              <IonLabel>N1</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+        </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonSegment
-          scrollable
-          value={level}
-          color="primary"
-          onIonChange={(e) => handleChangeLevel(e)}
-        >
-          <IonSegmentButton value="5">
-            <IonLabel>N5</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="4">
-            <IonLabel>N4</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="3">
-            <IonLabel>N3</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="2">
-            <IonLabel>N2</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="1">
-            <IonLabel>N1</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
-
-        {isLoaded ? (
-          exams.length > 0 ? (
-            exams.map((exam: any, i: number) => {
-              return (
-                <IonList key={i} className="max-width-700">
-                  <IonItem button routerLink={`/jlpt/${exam.id}`}>
-                    <IonTitle>{exam.title}</IonTitle>
-                  </IonItem>
-                </IonList>
-              );
-            })
+        <div className="max-width-700">
+          {isLoaded ? (
+            exams.length > 0 ? (
+              exams.map((exam: any, i: number) => {
+                return (
+                  <IonCard
+                    key={i}
+                    mode="ios"
+                    className="exam-wrapper"
+                    routerLink={`/jlpt/${exam.id}`}
+                  >
+                    <IonGrid>
+                      <IonCardHeader>
+                        <IonCardTitle>
+                          <span className="exam__title">{exam.title}</span>
+                        </IonCardTitle>
+                      </IonCardHeader>
+                      <IonCardContent className="exam__detail">
+                        <IonRow>
+                          <IonCol size="6">
+                            <IonIcon icon={cube}></IonIcon>Số lượng câu hỏi:{" "}
+                            {exam.answer_sheet.length}
+                          </IonCol>
+                          <IonCol size="6">
+                            <IonIcon icon={alarm}></IonIcon>Thời lượng:{" "}
+                            {exam.time} phút
+                          </IonCol>
+                        </IonRow>
+                      </IonCardContent>
+                    </IonGrid>
+                  </IonCard>
+                );
+              })
+            ) : (
+              <ErrorPage>Không có dữ liệu</ErrorPage>
+            )
           ) : (
-            <ErrorPage>Không có dữ liệu</ErrorPage>
-          )
-        ) : (
-          <Spinner />
-        )}
+            <Spinner />
+          )}
+        </div>
       </IonContent>
     </IonPage>
   );

@@ -61,7 +61,7 @@ const Lesson: React.FC<LessonPageProps> = ({ match }) => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <Refresher />
         <div className="cards-preview">
           <CardPreviewContainer

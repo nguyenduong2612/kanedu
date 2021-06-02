@@ -64,7 +64,7 @@ const MyProfile: React.FC<MyProfilePageProps> = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         {isLoading ? (
           <Spinner />
         ) : (

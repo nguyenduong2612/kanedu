@@ -14,30 +14,18 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
-  logOutOutline,
-  homeOutline,
-  personOutline,
-  settingsOutline,
-  peopleOutline,
   home,
   barbell,
-  barbellOutline,
   people,
   person,
   settings,
   logOut,
   language,
-  languageOutline,
-  medalOutline,
   medal,
-  textOutline,
   text,
   search,
-  searchOutline,
   logIn,
-  logInOutline,
   personAdd,
-  personAddOutline,
 } from "ionicons/icons";
 import "./SideMenu.scss";
 import { signOutUser } from "../../redux/user/user.actions";
@@ -49,8 +37,7 @@ interface RootState {
 }
 interface AppPage {
   url: string;
-  iosIcon: string;
-  mdIcon: string;
+  icon: string;
   title: string;
 }
 
@@ -58,50 +45,47 @@ const appPages: AppPage[] = [
   {
     title: "Trang chủ",
     url: "/home",
-    iosIcon: homeOutline,
-    mdIcon: home,
+    icon: home,
+  },
+  {
+    title: "Tìm kiếm",
+    url: "/search",
+    icon: search,
   },
   {
     title: "Hồ sơ",
     url: "/my-profile",
-    iosIcon: personOutline,
-    mdIcon: person,
+    icon: person,
   },
   {
     title: "Thi thử",
     url: "/jlpt",
-    iosIcon: barbellOutline,
-    mdIcon: barbell,
+    icon: barbell,
   },
   {
     title: "Từ điển",
     url: "/dict",
-    iosIcon: languageOutline,
-    mdIcon: language,
+    icon: language,
   },
   {
     title: "Dịch",
     url: "/translate",
-    iosIcon: textOutline,
-    mdIcon: text,
+    icon: text,
   },
   {
     title: "Cộng đồng",
     url: "/community",
-    iosIcon: peopleOutline,
-    mdIcon: people,
+    icon: people,
   },
   {
     title: "Bảng xếp hạng",
     url: "/ranking",
-    iosIcon: medalOutline,
-    mdIcon: medal,
+    icon: medal,
   },
   {
     title: "Cài đặt",
     url: "/settings",
-    iosIcon: settingsOutline,
-    mdIcon: settings,
+    icon: settings,
   },
 ];
 
@@ -109,26 +93,27 @@ const guestPages: AppPage[] = [
   {
     title: "Trang chủ",
     url: "/home",
-    iosIcon: homeOutline,
-    mdIcon: home,
+    icon: home,
   },
   {
     title: "Tìm kiếm",
     url: "/search",
-    iosIcon: searchOutline,
-    mdIcon: search,
+    icon: search,
+  },
+  {
+    title: "Tìm kiếm",
+    url: "/search",
+    icon: search,
   },
   {
     title: "Từ điển",
     url: "/dict",
-    iosIcon: languageOutline,
-    mdIcon: language,
+    icon: language,
   },
   {
     title: "Dịch",
     url: "/translate",
-    iosIcon: textOutline,
-    mdIcon: text,
+    icon: text,
   },
 ];
 
@@ -163,8 +148,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                 >
                   <IonIcon
                     slot="start"
-                    ios={appPage.iosIcon}
-                    md={appPage.mdIcon}
+                    icon={appPage.icon}
                   />
                   <IonLabel className="sidemenu__label" color="light">
                     {appPage.title}
@@ -187,8 +171,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                 <IonIcon
                   color="light"
                   slot="start"
-                  ios={logOutOutline}
-                  md={logOut}
+                  icon={logOut}
                 />
                 <IonLabel className="sidemenu__label" color="light">
                   Đăng xuất
@@ -200,8 +183,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                   <IonIcon
                     color="light"
                     slot="start"
-                    ios={logInOutline}
-                    md={logIn}
+                    icon={logIn}
                   />
                   <IonLabel className="sidemenu__label" color="light">
                     Đăng nhập
@@ -216,8 +198,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                   <IonIcon
                     color="light"
                     slot="start"
-                    ios={personAddOutline}
-                    md={personAdd}
+                    icon={personAdd}
                   />
                   <IonLabel className="sidemenu__label" color="light">
                     Đăng ký

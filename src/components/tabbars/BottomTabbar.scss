@@ -3,8 +3,11 @@
   position: absolute;
   bottom: 0;
   transition: bottom 0.3s;
+  background-color: #fff;
+  display: none;
 
   ion-tab-button {
+    background-color: #fff;
     &.tab-selected {
       ion-label {
         position: relative;
@@ -43,4 +46,10 @@
 #tabbar-fab {
   bottom: 70px;
   right: 5%;
+}
+
+@media screen and (max-width: 991px) {
+  #appTabBar {
+    display: flex;
+  }
 }

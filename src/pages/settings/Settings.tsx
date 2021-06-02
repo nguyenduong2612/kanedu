@@ -8,7 +8,6 @@ import {
   IonList,
   IonLabel,
   IonItemGroup,
-  IonItemDivider,
   IonMenuButton,
 } from "@ionic/react";
 import React from "react";
@@ -36,7 +35,7 @@ const Settings: React.FC<SettingPageProps> = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonList className="max-width-700">
-          <IonItemGroup>
+          <IonItemGroup className="subsection-wrapper">
             {/* <IonItem>
             <IonLabel>Local Notifications</IonLabel>
             <IonButton onClick={setLocalNoti} />
@@ -45,12 +44,10 @@ const Settings: React.FC<SettingPageProps> = () => {
             <IonItem lines="none" routerLink="/settings/goal">
               <IonLabel>Thiết lập mục tiêu</IonLabel>
             </IonItem>
-            <IonItemDivider mode="md" />
 
             <IonItem lines="none" routerLink="/settings/reminder">
               <IonLabel>Thông báo nhắc nhở</IonLabel>
             </IonItem>
-            <IonItemDivider mode="md" />
           </IonItemGroup>
         </IonList>
       </IonContent>

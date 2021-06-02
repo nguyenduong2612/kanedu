@@ -25,7 +25,7 @@ import {
   loginWithFacebook,
 } from "../../helpers/firebaseHelper";
 import { toast } from "../../utils/toast";
-import { logoFacebook, logoGoogle } from "ionicons/icons";
+import { logoFacebook } from "ionicons/icons";
 import ForgotPasswordPopup from "../../components/popups/ForgotPasswordPopup";
 
 const Login: React.FC = () => {
@@ -74,13 +74,13 @@ const Login: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonLoading message="Vui lòng đợi" duration={0} isOpen={busy} />
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <IonList className="login-wrapper">
           <IonLabel className="login-wrapper__text" color="medium">
             Đăng nhập sử dụng tài khoản đã có
           </IonLabel>
           <IonRow>
-            <IonCol size="6">
+            {/* <IonCol size="6">
               <IonCard className="social-login-btn" button={true} mode="md">
                 <IonIcon
                   className="social-login-icon"
@@ -88,7 +88,7 @@ const Login: React.FC = () => {
                 ></IonIcon>
                 <IonTitle>Google</IonTitle>
               </IonCard>
-            </IonCol>
+            </IonCol> */}
             <IonCol size="6">
               <IonCard
                 className="social-login-btn"

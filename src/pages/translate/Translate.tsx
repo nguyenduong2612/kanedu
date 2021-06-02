@@ -86,7 +86,7 @@ const Settings: React.FC<TranslatePageProps> = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <IonList className="max-width-700">
           <IonItem lines="none" className="language-bar">
             <IonGrid>

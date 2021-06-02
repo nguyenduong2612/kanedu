@@ -34,7 +34,7 @@ const Learning: React.FC<LearningPageProps> = ({ match }) => {
           <IonTitle>Học</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <div className="card-list-wrapper">
           <CardListContainer courseId={courseId} lessonId={lessonId} />
         </div>

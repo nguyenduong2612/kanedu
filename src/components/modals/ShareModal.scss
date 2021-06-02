@@ -1,15 +1,7 @@
 .share-modal {
-  --height: 20%;
-  --border-radius: 10px 10px 0 0;
-  .modal-wrapper, .modal-shadow {
-    position: absolute;
-    bottom: 0 !important;
-  }
-  .share-modal-item {
-    width: 100%;
-    padding: 5px;
-    ion-row {
-      width: 100%;
+  .action-sheet-container {
+    button {
+      font-size: 14px;
     }
   }
 }

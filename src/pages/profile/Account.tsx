@@ -6,9 +6,7 @@ import {
   IonToolbar,
   IonItem,
   IonButton,
-  IonList,
   IonLabel,
-  IonItemDivider,
   IonItemGroup,
   IonText,
   IonIcon,
@@ -81,8 +79,8 @@ const Account: React.FC<AccountPageProps> = () => {
 
       <IonContent fullscreen className="account-settings">
         <Refresher />
-        <IonList className="max-width-700">
-          <IonItemGroup>
+        <div className="max-width-700">
+          <IonItemGroup className="subsection-wrapper">
             <div className="avatar-wrapper">
               <img
                 alt="avatar"
@@ -106,10 +104,9 @@ const Account: React.FC<AccountPageProps> = () => {
             <IonItem lines="none">
               <b className="username">{user.name}</b>
             </IonItem>
-            <IonItemDivider mode="md" />
           </IonItemGroup>
 
-          <IonItemGroup>
+          <IonItemGroup className="subsection-wrapper">
             <IonItem lines="none">
               <IonLabel>Email</IonLabel>
               <p style={{ color: "#aaa" }}>{user.email}</p>
@@ -121,10 +118,9 @@ const Account: React.FC<AccountPageProps> = () => {
             <IonItem lines="none" routerLink="/change-password">
               <IonLabel>Thay đổi mật khẩu</IonLabel>
             </IonItem>
-            <IonItemDivider mode="md" />
           </IonItemGroup>
 
-          <IonItemGroup>
+          <IonItemGroup className="subsection-wrapper">
             {user.verified ? (
               <IonItem lines="none">
                 <IonLabel>Xác thực email</IonLabel>
@@ -139,9 +135,8 @@ const Account: React.FC<AccountPageProps> = () => {
                 </IonButton>
               </IonItem>
             )}
-            <IonItemDivider mode="md" />
           </IonItemGroup>
-        </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );

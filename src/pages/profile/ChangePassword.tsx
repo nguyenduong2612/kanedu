@@ -7,11 +7,11 @@ import {
   IonItem,
   IonBackButton,
   IonButtons,
-  IonList,
   IonLabel,
   IonButton,
   IonIcon,
   IonInput,
+  IonItemGroup,
 } from "@ionic/react";
 import { checkmarkOutline, checkmarkSharp } from "ionicons/icons";
 import React, { useState } from "react";
@@ -73,8 +73,8 @@ const ChangePassword: React.FC<ChangePasswordPageProps> = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
-        <IonList style={{ width: "95%", margin: "10px auto" }} className="max-width-700">
+      <IonContent fullscreen className="bg-white">
+        <IonItemGroup style={{ width: "95%", margin: "10px auto" }} className="max-width-700">
           <IonItem>
             <IonLabel position="floating">Mật khẩu hiện tại</IonLabel>
             <IonInput
@@ -101,7 +101,7 @@ const ChangePassword: React.FC<ChangePasswordPageProps> = () => {
               onIonChange={(e: any) => setConfirmPassword(e.target.value)}
             ></IonInput>
           </IonItem>
-        </IonList>
+        </IonItemGroup>
       </IonContent>
     </IonPage>
   );

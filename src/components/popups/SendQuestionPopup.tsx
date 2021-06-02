@@ -4,6 +4,7 @@ import {
   IonItem,
   IonPopover,
   IonTextarea,
+  IonTitle,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./SendQuestionPopup.scss";
@@ -28,6 +29,7 @@ const SendQuestionPopup: React.FC<SendQuestionPopupProps> = ({
       cssClass="send-question-modal"
       onDidDismiss={handleCloseModal}
     >
+      <IonTitle>Đặt câu hỏi</IonTitle>
       <IonItem>
         <IonInput
           value={title}

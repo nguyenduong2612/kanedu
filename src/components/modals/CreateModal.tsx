@@ -1,9 +1,7 @@
-import { IonButton, IonIcon, IonItem, IonLabel, IonModal } from "@ionic/react";
+import { IonActionSheet, useIonRouter } from "@ionic/react";
 import {
-  bookOutline,
-  closeOutline,
-  closeSharp,
-  libraryOutline,
+  book,
+  library,
 } from "ionicons/icons";
 import React from "react";
 import "./CreateModal.scss";
@@ -17,53 +15,32 @@ const CreateModal: React.FC<CreateModalProps> = ({
   isOpen,
   handleCloseModal,
 }) => {
+  const router = useIonRouter();
+
   return (
-    <IonModal
-      swipeToClose={true}
+    <IonActionSheet
       isOpen={isOpen}
       cssClass="create-modal"
       onDidDismiss={handleCloseModal}
-      mode="ios"
+      header="Tạo"
+      mode="md"
+      buttons={[{
+        text: 'Tạo khóa học',
+        icon: library,
+        handler: () => {
+         router.push("/course/create");
+        }
+      },
+      {
+        text: 'Tạo bài học',
+        icon: book,
+        handler: () => {
+          router.push("/lesson/create");
+        }
+      }
+      ]}
     >
-      <div className="create-modal-wrapper">
-        <IonItem className="create-modal-item" lines="none">
-          <b>Tạo</b>
-          <IonButton fill="clear" onClick={handleCloseModal} slot="end">
-            <IonIcon
-              color="dark"
-              slot="icon-only"
-              ios={closeOutline}
-              md={closeSharp}
-            />
-          </IonButton>
-        </IonItem>
-
-        <IonItem
-          className="create-modal-item"
-          lines="none"
-          detail={false}
-          routerLink="/course/create"
-          onClick={() => handleCloseModal()}
-        >
-          <div className="create-modal-item__icon">
-            <IonIcon slot="start" color="primary" icon={libraryOutline} />
-          </div>
-          <IonLabel className="create-modal-item__title">Tạo khóa học</IonLabel>
-        </IonItem>
-        <IonItem
-          className="create-modal-item"
-          lines="none"
-          detail={false}
-          routerLink="/lesson/create"
-          onClick={() => handleCloseModal()}
-        >
-          <div className="create-modal-item__icon">
-            <IonIcon slot="start" color="primary" icon={bookOutline} />
-          </div>
-          <IonLabel className="create-modal-item__title">Tạo bài học</IonLabel>
-        </IonItem>
-      </div>
-    </IonModal>
+    </IonActionSheet>
   );
 };
 

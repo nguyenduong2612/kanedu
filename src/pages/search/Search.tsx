@@ -109,25 +109,28 @@ const Search: React.FC<SearchPageProps> = () => {
             color="light"
           />
         </IonToolbar>
+        <IonToolbar mode="md">
+          <IonSegment
+            className="search-segment"
+            value={searchIndex}
+            color="light"
+            onIonChange={(e: any) => setSearchIndex(e.detail.value!)}
+            mode="md"
+          >
+            <IonSegmentButton value="courses">
+              <IonLabel>Khóa học</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="posts">
+              <IonLabel>Bài đăng</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="users">
+              <IonLabel>Người dùng</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+        </IonToolbar>
       </IonHeader>
 
       <IonContent fullscreen>
-        <IonSegment
-          value={searchIndex}
-          color="primary"
-          onIonChange={(e: any) => setSearchIndex(e.detail.value!)}
-        >
-          <IonSegmentButton value="courses">
-            <IonLabel>Khóa học</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="posts">
-            <IonLabel>Bài đăng</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="users">
-            <IonLabel>Người dùng</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
-
         <SearchResult
           searchTerm={searchTerm}
           searchIndex={searchIndex}

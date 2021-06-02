@@ -202,7 +202,7 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <IonAlert
           isOpen={showAlert}
           cssClass="test-alert"
@@ -223,7 +223,7 @@ const Testing: React.FC<TestingPageProps> = ({ match }) => {
                 {questions.map((item: any, slideIndex: number) => {
                   return (
                     <IonSlide key={slideIndex}>
-                      <IonContent>
+                      <IonContent className="bg-white">
                         <div className="main-wrapper">
                           <div className="question-wrapper">
                             <h2>{item.question.text}</h2>

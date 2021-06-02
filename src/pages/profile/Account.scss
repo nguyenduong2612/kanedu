@@ -41,3 +41,13 @@
     height: 0.1px;
   }
 }
+
+.subsection-wrapper {
+  ion-item {
+    --ion-background-color: #fff;
+    --padding-top: 3px;
+    --padding-bottom: 5px;
+  }
+  background-color: #fff;
+  margin-bottom: 10px;
+}

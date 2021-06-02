@@ -76,7 +76,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
   return (
     <div>
       {post && (
-        <IonCard className="post-wrapper">
+        <IonCard className="post-wrapper" mode="ios">
           <IonCardHeader>
             <IonText style={{ fontSize: 16, color: "black" }}>
               {post.title}
@@ -106,8 +106,8 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
               </IonRow>
               <IonRow>
                 {post.sharedLink && (
-                  <IonButton href={post.sharedLink} fill="outline">
-                    Tham gia
+                  <IonButton href={post.sharedLink} fill="outline" mode="md">
+                    Tham gia ngay
                   </IonButton>
                 )}
               </IonRow>

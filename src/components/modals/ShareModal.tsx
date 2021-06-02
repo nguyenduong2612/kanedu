@@ -1,15 +1,9 @@
 import {
-  IonButton,
-  IonCol,
-  IonIcon,
-  IonItem,
-  IonModal,
-  IonRow,
+  IonActionSheet,
 } from "@ionic/react";
-import { logoFacebook, shareSocial, shareSocialOutline } from "ionicons/icons";
+import { shareSocial,  } from "ionicons/icons";
 import React from "react";
 import "./ShareModal.scss";
-
 interface ShareModalProps {
   isOpen: boolean;
   handleCloseShareModal: () => void;
@@ -22,44 +16,20 @@ const ShareModal: React.FC<ShareModalProps> = ({
   handleShare,
 }) => {
   return (
-    <IonModal
-      swipeToClose={true}
+    <IonActionSheet
       isOpen={isOpen}
       cssClass="share-modal"
+      header="Chia sẻ"
       onDidDismiss={handleCloseShareModal}
-      mode="ios"
-    >
-      <div className="share-modal-wrapper">
-        <IonItem className="share-modal-item" lines="none">
-          Chia sẻ
-        </IonItem>
-        <IonItem className="share-modal-item" lines="none">
-          <IonRow>
-            <IonCol size="2">
-              <IonButton fill="clear" onClick={handleShare}>
-                <IonIcon
-                  color="dark"
-                  slot="icon-only"
-                  size="large"
-                  ios={shareSocialOutline}
-                  md={shareSocial}
-                />
-              </IonButton>
-            </IonCol>
-            <IonCol size="2">
-              <IonButton fill="clear">
-                <IonIcon
-                  color="dark"
-                  slot="icon-only"
-                  size="large"
-                  icon={logoFacebook}
-                />
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonItem>
-      </div>
-    </IonModal>
+      mode="md"
+      buttons={[
+        {
+          text: "Chía sẻ lên Cộng đồng",
+          icon: shareSocial,
+          handler: handleShare,
+        },
+      ]}
+    ></IonActionSheet>
   );
 };
 

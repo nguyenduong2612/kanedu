@@ -100,7 +100,7 @@ const Dict: React.FC<DictPageProps> = () => {
           />
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen className="bg-white">
         <SearchResult searchTerm={searchTerm} searchResult={searchResult} />
       </IonContent>
     </IonPage>
