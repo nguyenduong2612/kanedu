@@ -36,9 +36,7 @@ const Level: React.FC<LevelPageProps> = () => {
     const getExamList = async () => {
       const ref = database.collection("tests").where("level", "==", level);
       const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
+      if (!docs.empty) {
         docs.forEach((doc) => {
           let exam = {
             id: doc.id,

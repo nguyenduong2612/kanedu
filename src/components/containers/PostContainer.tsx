@@ -106,7 +106,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
               </IonRow>
               <IonRow>
                 {post.sharedLink && (
-                  <IonButton href={post.sharedLink} fill="outline" mode="md">
+                  <IonButton routerLink={post.sharedLink} fill="outline" mode="md">
                     Tham gia ngay
                   </IonButton>
                 )}

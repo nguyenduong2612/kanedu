@@ -9,9 +9,7 @@ function useRanking() {
     async function getTopten() {
       const ref = database.collection("users");
       const docs = await ref.orderBy("exp", "desc").limit(10).get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
+      if (!docs.empty) {
         docs.forEach((doc) => {
           let user = {
             uid: doc.id,
@@ -30,7 +28,7 @@ function useRanking() {
   return {
     topten,
     isLoaded,
-    setTopten
+    setTopten,
   };
 }
 

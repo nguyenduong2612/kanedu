@@ -23,9 +23,7 @@ function useCourse(courseId: string) {
     async function getInfo() {
       let ref = database.collection("courses").doc(courseId);
       let doc: any = await ref.get();
-      if (!doc.exists) {
-        console.log("No such document!");
-      } else {
+      if (doc.exists) {
         setName(doc.data().name);
         setAuthor(doc.data().author);
         setAuthorId(doc.data().author_id);
@@ -42,7 +40,7 @@ function useCourse(courseId: string) {
         }
       }
 
-      setIsLoaded(true)
+      setIsLoaded(true);
     }
 
     getInfo();
@@ -62,8 +60,8 @@ function useCourse(courseId: string) {
     setCountFollowers,
     setFollowingCourseIndex,
     setIsFollowed,
-    setIsLoaded
-  }
+    setIsLoaded,
+  };
 }
 
 export default useCourse;

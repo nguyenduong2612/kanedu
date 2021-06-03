@@ -7,8 +7,13 @@ import {
   IonMenuButton,
   IonCol,
   IonRow,
-  IonGrid,
   IonButton,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  IonSegment,
+  IonSegmentButton,
+  useIonRouter,
   //IonInfiniteScroll,
   //IonInfiniteScrollContent,
 } from "@ionic/react";
@@ -22,6 +27,7 @@ import ErrorPage from "../../components/error_pages/ErrorPage";
 import Refresher from "../../components/utils/Refresher";
 import SendQuestionPopup from "../../components/popups/SendQuestionPopup";
 import { savePost } from "../../redux/post/post.actions";
+import { chatbox, heart, home, pencil } from "ionicons/icons";
 
 const PostContainer = lazy(
   () => import("../../components/containers/PostContainer")
@@ -35,6 +41,9 @@ interface RootState {
 
 const Community: React.FC<CommunityPageProps> = () => {
   const dispatch = useDispatch();
+  const router = useIonRouter();
+
+  const [segmentValue, setSegmentValue] = useState<string>("home");
   const [showPopover, setShowPopover] = useState<boolean>(false);
 
   const { user } = useSelector((state: RootState) => state.user);
@@ -132,66 +141,116 @@ const Community: React.FC<CommunityPageProps> = () => {
             className="menu-btn"
             color="light"
           ></IonMenuButton>
-          <IonTitle>Cộng đồng</IonTitle>
+          <IonTitle>
+            {segmentValue === "home"
+              ? "Cộng đồng"
+              : segmentValue === "like"
+              ? "Được yêu thích nhất"
+              : "Được quan tâm nhất"}
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
 
       {user.verified ? (
-        <IonContent
-          fullscreen
-          scrollEvents={true}
-          onIonScroll={(e: any) => handleScroll(e)}
-        >
-          <Refresher />
-          <IonGrid id="post-input-wrapper">
-            <IonRow className="row max-width-700">
+        <>
+          <IonContent
+            fullscreen
+            scrollEvents={true}
+            onIonScroll={(e: any) => handleScroll(e)}
+          >
+            <Refresher />
+            <IonRow id="post-input-wrapper" className="row max-width-700">
               <IonCol size="2" className="col">
                 <div className="image-wrapper">
                   <img
                     alt="user-avatar"
                     id="community-avatar"
                     src={user.profileURL}
+                    onClick={() => router.push("/my-profile") }
                   />
                 </div>
               </IonCol>
               <IonCol size="10" className="col">
-                <IonButton
+                <IonSegment
                   mode="md"
-                  expand="block"
-                  fill="outline"
+                  value={segmentValue}
                   color="primary"
-                  size="default"
-                  onClick={() => setShowPopover(true)}
+                  className="part-segment"
+                  onIonChange={(e: any) => setSegmentValue(e.detail.value!)}
                 >
-                  <span>Đặt câu hỏi</span>
-                </IonButton>
-
-                <SendQuestionPopup
-                  isOpen={showPopover}
-                  handleCloseModal={() => setShowPopover(false)}
-                  handleSendQuestion={handleSendQuestion}
-                />
+                  <IonSegmentButton value="home">
+                    <IonIcon icon={home}></IonIcon>
+                  </IonSegmentButton>
+                  <IonSegmentButton value="like">
+                    <IonIcon icon={heart}></IonIcon>
+                  </IonSegmentButton>
+                  <IonSegmentButton value="comment">
+                    <IonIcon icon={chatbox}></IonIcon>
+                  </IonSegmentButton>
+                </IonSegment>
               </IonCol>
             </IonRow>
-          </IonGrid>
 
-          <div className="max-width-700">
-            {posts
-              .filter((post: any) => post !== undefined)
-              .map((post: any, index: number) => {
-                return (
-                  <PostContainer key={index} post={post} username={user.name} />
-                );
-              })}
+            <div className="max-width-700">
+              {segmentValue === "home"
+                ? posts
+                    .filter((post: any) => post !== undefined)
+                    .map((post: any, index: number) => {
+                      return (
+                        <PostContainer
+                          key={index}
+                          post={post}
+                          username={user.name}
+                        />
+                      );
+                    })
+                : segmentValue === "like"
+                ? posts
+                    .filter((post: any) => post !== undefined)
+                    .sort((a: any, b: any) => b.likes - a.likes)
+                    .map((post: any, index: number) => {
+                      return (
+                        <PostContainer
+                          key={index}
+                          post={post}
+                          username={user.name}
+                        />
+                      );
+                    })
+                : posts
+                    .filter((post: any) => post !== undefined)
+                    .sort((a: any, b: any) => b.comments - a.comments)
+                    .map((post: any, index: number) => {
+                      return (
+                        <PostContainer
+                          key={index}
+                          post={post}
+                          username={user.name}
+                        />
+                      );
+                    })}
 
-            {/* <IonInfiniteScroll
+              {/* <IonInfiniteScroll
               threshold="100px"
               onIonInfinite={(e: CustomEvent<void>) => loadData(e)}
             >
               <IonInfiniteScrollContent loadingText="Đang tải thêm"></IonInfiniteScrollContent>
             </IonInfiniteScroll> */}
-          </div>
-        </IonContent>
+            </div>
+          </IonContent>
+
+          <IonFab id="post-fab" vertical="bottom" horizontal="end">
+            <IonFabButton onClick={() => setShowPopover(true)} id="postFabBtn">
+              <IonIcon icon={pencil} size="default" />
+            </IonFabButton>
+          </IonFab>
+
+          <SendQuestionPopup
+            isOpen={showPopover}
+            handleCloseModal={() => setShowPopover(false)}
+            handleSendQuestion={handleSendQuestion}
+          />
+        </>
       ) : (
         <IonContent>
           <ErrorPage>

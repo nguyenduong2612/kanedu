@@ -40,9 +40,7 @@ export const getCourses = (userId: string) => {
     try {
       const snap = await database.collection("courses").get();
 
-      if (snap.empty) {
-        console.log("No such document");
-      } else {
+      if (!snap.empty) {
         const courses = await Promise.all(
           snap.docs.map(async (course) => ({
             id: course.id,

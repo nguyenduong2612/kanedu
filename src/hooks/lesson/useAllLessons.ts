@@ -15,7 +15,6 @@ function useAllLessons(courseId: string) {
         .collection("lessons");
       const docs = await ref.orderBy("created_at", "asc").get();
       if (docs.empty) {
-        console.log("No such document!");
         setIsEmpty(true);
       } else {
         docs.forEach((doc) => {

@@ -36,9 +36,7 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         .collection("courses")
         .where("author_id", "==", match.params.uid);
       const docs = await ref.get();
-      if (docs.empty) {
-        console.log("No such document!");
-      } else {
+      if (!docs.empty) {
         docs.forEach((doc) => {
           let course: any = {
             id: doc.id,
@@ -54,9 +52,7 @@ const UserProfile: React.FC<UserProfilePageProps> = ({ match }) => {
         .collection("users")
         .doc(match.params.uid)
         .get();
-      if (!doc.exists) {
-        console.log("No such document!");
-      } else {
+      if (doc.exists) {
         let userInfo = {
           uid: doc.id,
           email: doc.data().email,

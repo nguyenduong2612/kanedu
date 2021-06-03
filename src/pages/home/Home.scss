@@ -49,7 +49,7 @@
 .home-segment {
   position: sticky;
   top: 0;
-  z-index: 9;
+  z-index: 2;
   background: #fff;
   ion-label {
     font-weight: bold;
@@ -60,10 +60,51 @@
   }
 }
 
+.backdrop-false {
+  opacity: 0;
+}
+
+.backdrop-true {
+  opacity: 0.85;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  transition: opacity 0.1s linear;
+}
+
+#homeFabBtn, #postFabBtn {
+  width: 56px;
+  height: 56px;
+}
+
+#home-fab, #post-fab {
+  bottom: 70px;
+  right: 5%;
+  .fab-label__course {
+    width: 100px;
+    position: absolute;
+    top: 14px;
+    left: -109px;
+    text-align: right;
+  }
+  .fab-label__lesson {
+    width: 100px;
+    position: absolute;
+    top: 65px;
+    left: -109px;
+    text-align: right;
+  }
+}
+
+
 @media screen and (max-width: 700px) {
   .home-segment {
     transform: rotate(270deg);
-    z-index: 99;
+    z-index: 2;
     position: fixed;
     transform-origin: left top;
     top: 580px;

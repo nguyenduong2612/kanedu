@@ -101,11 +101,6 @@ const guestPages: AppPage[] = [
     icon: search,
   },
   {
-    title: "Tìm kiếm",
-    url: "/search",
-    icon: search,
-  },
-  {
     title: "Từ điển",
     url: "/dict",
     icon: language,

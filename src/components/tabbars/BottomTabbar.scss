@@ -36,18 +36,6 @@
   }
 }
 
-#appFabBtn {
-  width: 56px;
-  height: 56px;
-  transition: width 0.25s;
-  transition: height 0.25s;
-}
-
-#tabbar-fab {
-  bottom: 70px;
-  right: 5%;
-}
-
 @media screen and (max-width: 991px) {
   #appTabBar {
     display: flex;

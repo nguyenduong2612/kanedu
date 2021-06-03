@@ -18,6 +18,7 @@ import {
   IonItem,
   IonAlert,
   IonActionSheet,
+  useIonRouter,
 } from "@ionic/react";
 import {
   chatboxOutline,
@@ -58,6 +59,8 @@ interface MatchParams {
 }
 
 const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
+  const router = useIonRouter();
+
   const postId = match.params.post_id;
   const { user } = useSelector((state: RootState) => state.user);
   const { posts, comments } = useSelector((state: RootState) => state.posts);
@@ -177,6 +180,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                         maxWidth: 50,
                       }}
                       src={post.avatar}
+                      onClick={() => router.push(`/users/${post.author_id}`) }
                     />
                   </div>
                   <div style={{ paddingLeft: 10, color: "initial" }}>

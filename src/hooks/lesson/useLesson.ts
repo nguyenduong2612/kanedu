@@ -22,9 +22,7 @@ function useLesson(courseId: string, lessonId: string) {
         .collection("lessons")
         .doc(lessonId);
       const lesson: any = await lessonRef.get();
-      if (!lesson.exists) {
-        console.log("No such document!");
-      } else {
+      if (lesson.exists) {
         setTitle(lesson.data().title);
         setNumberOfCards(lesson.data().numberOfCards);
 

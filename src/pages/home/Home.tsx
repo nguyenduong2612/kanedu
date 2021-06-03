@@ -16,14 +16,15 @@ import {
   IonFabButton,
   IonSegment,
   IonSegmentButton,
+  IonFabList,
+  useIonRouter,
 } from "@ionic/react";
-import { add, notifications } from "ionicons/icons";
+import { add, notifications, book, library } from "ionicons/icons";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import CourseListContainer from "../../components/containers/CourseListContainer";
 import HintContainer from "../../components/containers/HintContainer";
 import ErrorPage from "../../components/error_pages/ErrorPage";
-import CreateModal from "../../components/modals/CreateModal";
 import NotificationsModal from "../../components/modals/NotificationsModal";
 import Refresher from "../../components/utils/Refresher";
 import "./Home.scss";
@@ -34,13 +35,15 @@ interface RootState {
 }
 
 const Home: React.FC = () => {
+  const router = useIonRouter(); 
+
   const { createdCourses, followingCourses } = useSelector(
     (state: RootState) => state.courses
   );
   const { isLoggedin, user } = useSelector((state: RootState) => state.user);
 
   const [segmentValue, setSegmentValue] = useState<string>("following");
-  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const [showBackdrop, setShowBackdrop] = useState<boolean>(false);
   const [showNotiModal, setShowNotiModal] = useState<boolean>(false);
   const now = new Date();
 
@@ -48,16 +51,29 @@ const Home: React.FC = () => {
     setShowNotiModal(false);
   };
 
-  const handleShowModal = () => {
-    setShowCreateModal(true);
+  const toggleBackdrop = () => {
+    showBackdrop ? setShowBackdrop(false) : setShowBackdrop(true);
   };
 
-  const handleCloseModal = () => {
-    setShowCreateModal(false);
+  const handleClickBackdrop = () => {
+    setShowBackdrop(false);
+    document.getElementById("homeFabBtn")?.click();
   };
+
+  // const handleShowModal = () => {
+  //   setShowCreateModal(true);
+  // };
+
+  // const handleCloseModal = () => {
+  //   setShowCreateModal(false);
+  // };
 
   return (
     <IonPage>
+      <div
+        className={`backdrop-${showBackdrop}`}
+        onClick={() => handleClickBackdrop()}
+      ></div>
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonMenuButton
@@ -104,6 +120,7 @@ const Home: React.FC = () => {
                     alt="avatar"
                     className="user-profile"
                     src={user.profileURL}
+                    onClick={() => router.push("/my-profile") }
                   />
                 </div>
               </IonItemGroup>
@@ -156,7 +173,7 @@ const Home: React.FC = () => {
                   </IonButton>
                 </div>
               ) : (
-                <div className="error-msg">
+                <div className="error-msg course-list-wrapper">
                   <ErrorPage>Bạn chưa theo dõi khóa học nào</ErrorPage>
                 </div>
               )
@@ -173,22 +190,40 @@ const Home: React.FC = () => {
                 </IonButton>
               </div>
             ) : (
-              <div className="error-msg">
+              <div className="error-msg course-list-wrapper">
                 <ErrorPage>Bạn chưa tạo khóa học nào</ErrorPage>
               </div>
             )}
           </div>
         </div>
       </IonContent>
+
       {isLoggedin && (
-        <IonFab id="tabbar-fab" vertical="bottom" horizontal="end">
-          <IonFabButton onClick={handleShowModal} id="appFabBtn">
+        <IonFab id="home-fab" vertical="bottom" horizontal="end">
+          <IonFabButton onClick={() => toggleBackdrop()} id="homeFabBtn">
             <IonIcon icon={add} size="large" />
           </IonFabButton>
-          <CreateModal
+          <IonFabList side="top">
+            <div className="fab-label__lesson">Tạo bài học</div>
+            <IonFabButton
+              routerLink="/courses/choose"
+              onClick={() => setShowBackdrop(false)}
+            >
+              <IonIcon icon={book} />
+            </IonFabButton>
+            <div className="fab-label__course">Tạo khóa học</div>
+            <IonFabButton
+              routerLink="/courses/create"
+              onClick={() => setShowBackdrop(false)}
+            >
+              <IonIcon icon={library} />
+            </IonFabButton>
+          </IonFabList>
+
+          {/* <CreateModal
             isOpen={showCreateModal}
             handleCloseModal={handleCloseModal}
-          />
+          /> */}
         </IonFab>
       )}
     </IonPage>

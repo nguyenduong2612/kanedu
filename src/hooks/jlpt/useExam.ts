@@ -19,17 +19,16 @@ function useExam(examId: string) {
       let ref = database.collection("tests").doc(examId);
       let doc: any = await ref.get();
 
-      if (!doc.exists) {
-        console.log("No such document!");
-      } else {
+      if (doc.exists) {
         setTitle(doc.data().title);
         setAnswerSheet(doc.data().answer_sheet);
         setLevel(doc.data().level);
         setAudioSrc(doc.data().listening_audio);
-        let questions_docs = await ref.collection("questions").orderBy("id", "asc").get();
-        if (questions_docs.empty) {
-          console.log("No such document!");
-        } else {
+        let questions_docs = await ref
+          .collection("questions")
+          .orderBy("id", "asc")
+          .get();
+        if (!questions_docs.empty) {
           questions_docs.forEach((doc) => {
             let ques: Question = {
               id: doc.id,

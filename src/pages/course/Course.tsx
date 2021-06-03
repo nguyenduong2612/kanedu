@@ -257,7 +257,7 @@ const Course: React.FC<CoursePageProps> = ({ match }) => {
                     tạo bởi{" "}
                     <IonRouterLink
                       color="light"
-                      href={`/users/${course.author_id}`}
+                      routerLink={`/users/${course.author_id}`}
                     >
                       <b>{course.author}</b>
                     </IonRouterLink>
