@@ -97,20 +97,34 @@ const Community: React.FC<CommunityPageProps> = () => {
   //   }, 750);
   // };
 
-  async function handleSendQuestion(title: string, content: string) {
+  async function handleSendQuestion(title: string, content: string, image_url?: string) {
     if (title.trim() === "" || content.trim() === "") {
       toast("Hãy nhập tiêu đề và nội dung câu hỏi");
     } else {
-      let postData = {
-        author: user.name,
-        author_id: user.uid,
-        title: title,
-        content: content,
-        likes: 0,
-        comments: 0,
-        created_at: Date.now(),
-      };
-
+      let postData = {}
+      if (image_url) {
+        postData = {
+          author: user.name,
+          author_id: user.uid,
+          title: title,
+          content: content,
+          likes: 0,
+          comments: 0,
+          created_at: Date.now(),
+          image_url: image_url,
+        };
+      } else {
+        postData = {
+          author: user.name,
+          author_id: user.uid,
+          title: title,
+          content: content,
+          likes: 0,
+          comments: 0,
+          created_at: Date.now(),
+        };
+      }
+      
       dispatch(savePost(postData, user.uid));
       toast("Đăng thành công");
       setShowPopover(false);

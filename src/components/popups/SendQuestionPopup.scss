@@ -5,14 +5,27 @@
     padding: 15px;
   }
   .popover-content {
-    padding: 5px 0 15px;
+    padding: 5px 0 10px;
     position: absolute;
-    top: 130px !important;
+    top: 100px !important;
+  }
+  .img-preview {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    .remove-img-btn {
+      position: absolute;
+      top: -20px;
+      right: -34px;
+    }
   }
   .modal-footer {
     margin-top: 15px;
     .send-btn {
       margin-left: 15px;
+    }
+    .upload-img-btn {
+      margin-left: -15px;
     }
   }
 }

@@ -10,5 +10,15 @@
       padding-top: 5px;
       word-break: break-word;
     }
+    .post-thumbnail {
+      width: 100vw;
+      height: 100vw;
+      max-width: 660px;
+      max-height: 660px;
+      margin-top: 10px;
+      .post-img {
+        border-radius: 10px;
+      }
+    }
   }
 }

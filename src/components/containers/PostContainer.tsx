@@ -9,6 +9,7 @@ import {
   IonRow,
   IonCol,
   IonRouterLink,
+  IonThumbnail,
 } from "@ionic/react";
 import { chatboxOutline, heartOutline, heartSharp } from "ionicons/icons";
 import moment from "moment";
@@ -51,7 +52,7 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
       author_id: user.uid,
       content: commentInput,
       created_at: Date.now(),
-    }
+    };
     dispatch(saveComment(comment, postId, posts));
   };
 
@@ -106,11 +107,22 @@ const PostContainer: React.FC<PostContainerProps> = ({ post, username }) => {
               </IonRow>
               <IonRow>
                 {post.sharedLink && (
-                  <IonButton routerLink={post.sharedLink} fill="outline" mode="md">
+                  <IonButton
+                    routerLink={post.sharedLink}
+                    fill="outline"
+                    mode="md"
+                  >
                     Tham gia ngay
                   </IonButton>
                 )}
               </IonRow>
+              {post.image_url && (
+                <IonRow>
+                  <IonThumbnail className="post-thumbnail">
+                    <img alt="post-img" className="post-img" src={post.image_url} />
+                  </IonThumbnail>
+                </IonRow>
+              )}
             </IonRouterLink>
           </IonCardContent>
 

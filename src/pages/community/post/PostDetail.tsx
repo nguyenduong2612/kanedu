@@ -19,6 +19,7 @@ import {
   IonAlert,
   IonActionSheet,
   useIonRouter,
+  IonThumbnail,
 } from "@ionic/react";
 import {
   chatboxOutline,
@@ -167,131 +168,146 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
               )}
             </IonToolbar>
           </IonHeader>
-          <IonContent fullscreen className="bg-white">
-            <IonCard className="post-wrapper" mode="ios">
-              <IonCardContent>
-                <IonRow className="post-info">
-                  <div>
-                    <img
-                      alt="avatar"
-                      style={{
-                        borderRadius: "50%",
-                        width: "95%",
-                        maxWidth: 50,
-                      }}
-                      src={post.avatar}
-                      onClick={() => router.push(`/users/${post.author_id}`) }
-                    />
-                  </div>
-                  <div style={{ paddingLeft: 10, color: "initial" }}>
-                    <p>{post.author}</p>
-                    <p>{moment(post.created_at).locale("vi").fromNow()}</p>
-                  </div>
-                </IonRow>
+          <IonContent fullscreen>
+            <div className="max-width-700">
+              <IonCard className="post-wrapper" mode="ios">
+                <IonCardContent>
+                  <IonRow className="post-info">
+                    <div>
+                      <img
+                        alt="avatar"
+                        style={{
+                          borderRadius: "50%",
+                          width: "95%",
+                          maxWidth: 50,
+                        }}
+                        src={post.avatar}
+                        onClick={() => router.push(`/users/${post.author_id}`)}
+                      />
+                    </div>
+                    <div style={{ paddingLeft: 10, color: "initial" }}>
+                      <p>{post.author}</p>
+                      <p>{moment(post.created_at).locale("vi").fromNow()}</p>
+                    </div>
+                  </IonRow>
 
-                <IonRow style={{ paddingTop: 10, color: "initial" }}>
-                  <p className="post-text">{post.content}</p>
-                </IonRow>
-                <IonRow style={{ padding: "10px 0", color: "initial" }}>
-                  {post.sharedLink && (
-                    <IonButton href={post.sharedLink} fill="outline" mode="md">
-                      Tham gia ngay
-                    </IonButton>
+                  <IonRow style={{ paddingTop: 10, color: "initial" }}>
+                    <p className="post-text">{post.content}</p>
+                  </IonRow>
+
+                  {post.image_url && (
+                    <IonRow>
+                      <IonThumbnail className="post-detail-thumbnail">
+                        <img alt="post-img" className="post-img" src={post.image_url} />
+                      </IonThumbnail>
+                    </IonRow>
                   )}
-                </IonRow>
 
-                <IonRow
-                  style={{ borderTop: "1px solid #bbb", margin: "0 15px" }}
-                >
-                  <IonCol size="6">
-                    <IonButton
-                      size="default"
-                      style={{ width: "100%", fontSize: 12 }}
-                      color="dark"
-                      fill="clear"
-                      onClick={
-                        post.isFavorited ? handleUnlikePost : handleLikePost
-                      }
-                    >
-                      {post.isFavorited ? (
-                        <IonIcon
-                          color="primary"
-                          slot="icon-only"
-                          icon={heartSharp}
-                        />
-                      ) : (
-                        <IonIcon slot="icon-only" icon={heartOutline} />
-                      )}
-                      <IonLabel style={{ paddingLeft: 7, overflow: "unset" }}>
-                        ({post.likes}) Yêu thích
-                      </IonLabel>
-                    </IonButton>
-                  </IonCol>
+                  <IonRow style={{ padding: "10px 0", color: "initial" }}>
+                    {post.sharedLink && (
+                      <IonButton
+                        href={post.sharedLink}
+                        fill="outline"
+                        mode="md"
+                      >
+                        Tham gia ngay
+                      </IonButton>
+                    )}
+                  </IonRow>
 
-                  <IonCol size="6">
-                    <IonButton
-                      size="default"
-                      style={{ width: "100%", fontSize: 12 }}
-                      color="dark"
-                      fill="clear"
-                    >
-                      <IonIcon slot="icon-only" icon={chatboxOutline} />
-                      <IonLabel style={{ paddingLeft: 7, overflow: "unset" }}>
-                        ({post.comments}) Bình luận
-                      </IonLabel>
-                    </IonButton>
-                  </IonCol>
-                </IonRow>
-              </IonCardContent>
-            </IonCard>
+                  <IonRow
+                    style={{ borderTop: "1px solid #bbb", margin: "0 15px" }}
+                  >
+                    <IonCol size="6">
+                      <IonButton
+                        size="default"
+                        style={{ width: "100%", fontSize: 12 }}
+                        color="dark"
+                        fill="clear"
+                        onClick={
+                          post.isFavorited ? handleUnlikePost : handleLikePost
+                        }
+                      >
+                        {post.isFavorited ? (
+                          <IonIcon
+                            color="primary"
+                            slot="icon-only"
+                            icon={heartSharp}
+                          />
+                        ) : (
+                          <IonIcon slot="icon-only" icon={heartOutline} />
+                        )}
+                        <IonLabel style={{ paddingLeft: 7, overflow: "unset" }}>
+                          ({post.likes}) Yêu thích
+                        </IonLabel>
+                      </IonButton>
+                    </IonCol>
 
-            <IonList>
-              <IonTitle className="post-comment-title">Bình luận</IonTitle>
-              {comments.map((comment: any, index: number) => {
-                return (
-                  <div className="post-comment-wrapper" key={index}>
-                    <b>{`${comment.author} | 
+                    <IonCol size="6">
+                      <IonButton
+                        size="default"
+                        style={{ width: "100%", fontSize: 12 }}
+                        color="dark"
+                        fill="clear"
+                      >
+                        <IonIcon slot="icon-only" icon={chatboxOutline} />
+                        <IonLabel style={{ paddingLeft: 7, overflow: "unset" }}>
+                          ({post.comments}) Bình luận
+                        </IonLabel>
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                </IonCardContent>
+              </IonCard>
+
+              <IonList style={{ backgroundColor: "#fff" }}>
+                <IonTitle className="post-comment-title">Bình luận</IonTitle>
+                {comments.map((comment: any, index: number) => {
+                  return (
+                    <div className="post-comment-wrapper" key={index}>
+                      <b>{`${comment.author} | 
                               ${moment(comment.created_at)
                                 .locale("vi")
                                 .fromNow()}`}</b>
-                    <p>{comment.content}</p>
-                    {comment.author_id === user.uid && (
-                      <IonButtons className="post-comment-delete" slot="end">
-                        <IonButton
-                          onClick={() => setShowDeleteCommentPopover(true)}
-                        >
-                          <IonIcon
-                            color="dark"
-                            slot="icon-only"
-                            icon={ellipsisHorizontal}
-                          />
-                        </IonButton>
+                      <p>{comment.content}</p>
+                      {comment.author_id === user.uid && (
+                        <IonButtons className="post-comment-delete" slot="end">
+                          <IonButton
+                            onClick={() => setShowDeleteCommentPopover(true)}
+                          >
+                            <IonIcon
+                              color="dark"
+                              slot="icon-only"
+                              icon={ellipsisHorizontal}
+                            />
+                          </IonButton>
 
-                        <IonActionSheet
-                          isOpen={showDeleteCommentPopover}
-                          cssClass="course-detail-modal"
-                          onDidDismiss={() =>
-                            setShowDeleteCommentPopover(false)
-                          }
-                          buttons={[
-                            {
-                              text: "Xóa bình luận",
-                              icon: trash,
-                              handler: () =>
-                                handleConfirmDeleteComment(
-                                  comment,
-                                  postId,
-                                  index
-                                ),
-                            },
-                          ]}
-                        ></IonActionSheet>
-                      </IonButtons>
-                    )}
-                  </div>
-                );
-              })}
-            </IonList>
+                          <IonActionSheet
+                            isOpen={showDeleteCommentPopover}
+                            cssClass="course-detail-modal"
+                            onDidDismiss={() =>
+                              setShowDeleteCommentPopover(false)
+                            }
+                            buttons={[
+                              {
+                                text: "Xóa bình luận",
+                                icon: trash,
+                                handler: () =>
+                                  handleConfirmDeleteComment(
+                                    comment,
+                                    postId,
+                                    index
+                                  ),
+                              },
+                            ]}
+                          ></IonActionSheet>
+                        </IonButtons>
+                      )}
+                    </div>
+                  );
+                })}
+              </IonList>
+            </div>
           </IonContent>
 
           <IonItem lines="none" className="post-comment-input">
