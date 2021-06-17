@@ -72,7 +72,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                 mode="ios"
                 routerLink="/register"
               >
-                <p className="btn-text">ĐĂNG KÝ MIỄN PHÍ</p>
+                ĐĂNG KÝ MIỄN PHÍ
               </IonButton>
               <IonButton
                 style={{ marginTop: 5 }}
@@ -82,7 +82,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                 fill="clear"
                 routerLink="/login"
               >
-                <p className="btn-text">ĐĂNG NHẬP</p>
+                ĐĂNG NHẬP
               </IonButton>
               <IonButton
                 size="small"
@@ -91,9 +91,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
                 fill="clear"
                 routerLink="/home"
               >
-                <p className="btn-text" style={{ fontSize: 13 }}>
-                  Không phải bây giờ
-                </p>
+                <span style={{ fontSize: "13px" }}>Không phải bây giờ</span>
               </IonButton>
             </IonList>
           </div>
