@@ -7,6 +7,7 @@ import {
   SET_CARD_STATUS_SUCCESS,
   SET_REMINDER_SUCCESS,
   SET_GOAL_SUCCESS,
+  CHANGE_USERNAME_SUCCESS,
 } from "./user.types";
 
 const initialState = {
@@ -39,6 +40,10 @@ export const userReducer = (state = initialState, action: any) => {
         isLoading: false,
         isLoggedin: false,
       };
+
+    case CHANGE_USERNAME_SUCCESS:
+      newState.user.name = action.payload;
+      return newState;
 
     case UPDATE_CARD_STATUS_SUCCESS:
       newState.user.cardStatus[action.payload].status = action.status;

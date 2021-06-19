@@ -2,6 +2,7 @@ import { database } from "../../config/firebaseConfig";
 import { signoutUser } from "../../helpers/firebaseHelper";
 import { store } from "../store";
 import {
+  CHANGE_USERNAME_SUCCESS,
   SET_CARD_STATUS_SUCCESS,
   SET_CURRENT_USER_FAILED,
   SET_CURRENT_USER_STARTED,
@@ -24,6 +25,24 @@ export const setCurrentUserSuccess = (currentUser: any) => ({
 export const setCurrentUserFailed = () => ({
   type: SET_CURRENT_USER_FAILED,
 });
+
+export const changeUsername = (userId: string, name: string) => {
+  const changeUsernameSuccess = (name: string) => ({
+    type: CHANGE_USERNAME_SUCCESS,
+    payload: name
+  });
+
+  return async (dispatch: typeof store.dispatch) => {
+    try {
+      let ref: any = database.collection("users").doc(userId);
+      await ref.set({ name }, { merge: true });
+
+      dispatch(changeUsernameSuccess(name));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
 
 export const signOutUser = () => {
   const signOutUserSuccess = () => ({

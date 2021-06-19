@@ -40,6 +40,18 @@
     width: 0.1px;
     height: 0.1px;
   }
+
+  .username-wrapper {
+    position: relative;
+    width: fit-content;
+    padding: 10px 0 15px;
+    margin: auto;
+    ion-button {
+      position: absolute;
+      top: -2px;
+      font-size: 12px;
+    }
+  }
 }
 
 .subsection-wrapper {

@@ -13,15 +13,17 @@ import {
   IonBackButton,
   IonButtons,
 } from "@ionic/react";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./Account.scss";
 import { database, storage } from "../../config/firebaseConfig";
 import { toast } from "../../utils/toast";
-import { camera } from "ionicons/icons";
+import { camera, createOutline } from "ionicons/icons";
 import Refresher from "../../components/utils/Refresher";
 import { addAchievement } from "../../helpers/achievementHelper";
 import { verifyEmail } from "../../helpers/firebaseHelper";
+import ChangeNamePopup from "../../components/popups/ChangeNamePopup";
+import { changeUsername } from "../../redux/user/user.actions";
 
 interface AccountPageProps {}
 interface RootState {
@@ -30,6 +32,9 @@ interface RootState {
 
 const Account: React.FC<AccountPageProps> = () => {
   const { user } = useSelector((state: RootState) => state.user);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
 
   async function verifyUser() {
     const res = await verifyEmail();
@@ -57,13 +62,20 @@ const Account: React.FC<AccountPageProps> = () => {
           .doc(user.uid)
           .update({ profileURL: await fileRef.getDownloadURL() });
 
-        if (!await addAchievement(user, "RjNEtQwBqgVHWdihJO9h", "reload")) window.location.reload();
+        if (!(await addAchievement(user, "RjNEtQwBqgVHWdihJO9h", "reload")))
+          window.location.reload();
 
         //window.location.reload();
       } catch (err) {
         console.error(err);
       }
     }
+  };
+
+  const handleChangeName = (name: string) => {
+    setIsModalOpen(false);
+    dispatch(changeUsername(user.uid, name));
+    toast("Thay đổi tên hiển thị thành công");
   };
 
   return (
@@ -101,9 +113,16 @@ const Account: React.FC<AccountPageProps> = () => {
               onChange={(e: any) => uploadAvatar(e.target.files[0])}
             />
 
-            <IonItem lines="none">
+            <div className="username-wrapper">
               <b className="username">{user.name}</b>
-            </IonItem>
+              <IonButton fill="clear" mode="md" onClick={() => setIsModalOpen(true)}>
+                <IonIcon
+                  slot="icon-only"
+                  color="dark"
+                  icon={createOutline}
+                ></IonIcon>
+              </IonButton>
+            </div>
           </IonItemGroup>
 
           <IonItemGroup className="subsection-wrapper">
@@ -137,6 +156,13 @@ const Account: React.FC<AccountPageProps> = () => {
             )}
           </IonItemGroup>
         </div>
+
+        <ChangeNamePopup
+          isOpen={isModalOpen}
+          username={user.name}
+          handleCloseModal={() => setIsModalOpen(false)}
+          handleChangeName={handleChangeName}
+        />
       </IonContent>
     </IonPage>
   );
