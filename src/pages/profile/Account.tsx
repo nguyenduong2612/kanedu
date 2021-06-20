@@ -83,7 +83,7 @@ const Account: React.FC<AccountPageProps> = () => {
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonButtons slot="start">
-            <IonBackButton color="light" text="" defaultHref="/my-profile" />
+            <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonTitle>Tài khoản</IonTitle>
         </IonToolbar>

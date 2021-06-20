@@ -26,6 +26,8 @@ import {
   search,
   logIn,
   personAdd,
+  idCard,
+  reader,
 } from "ionicons/icons";
 import "./SideMenu.scss";
 import { signOutUser } from "../../redux/user/user.actions";
@@ -89,6 +91,24 @@ const appPages: AppPage[] = [
   },
 ];
 
+const adminPages: AppPage[] = [
+  {
+    title: "Quản lý người dùng",
+    url: "/admin/user-manage",
+    icon: idCard,
+  },
+  {
+    title: "Quản lý bài đăng",
+    url: "/admin/post-manage",
+    icon: reader,
+  },
+  {
+    title: "Cài đặt",
+    url: "/account-settings",
+    icon: settings
+  }
+];
+
 const guestPages: AppPage[] = [
   {
     title: "Trang chủ",
@@ -119,7 +139,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
 
   const signout = () => {
     dispatch(signOutUser());
-    dispatch({type: "RESET_DATA"});
+    dispatch({ type: "RESET_DATA" });
   };
 
   return (
@@ -127,31 +147,32 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
       <IonContent>
         <IonList id="inbox-list">
           <IonListHeader>Xin chào, {user ? user.name : "Khách"}</IonListHeader>
-          <IonNote>{user ? user.email : "Đăng nhập để sử dụng nhiều tính năng hơn"}</IonNote>
-          {(user ? appPages : guestPages).map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem
-                  button
-                  className={
-                    location.pathname === appPage.url ? "selected" : ""
-                  }
-                  routerLink={appPage.url}
-                  routerDirection="none"
-                  lines="none"
-                  detail={false}
-                >
-                  <IonIcon
-                    slot="start"
-                    icon={appPage.icon}
-                  />
-                  <IonLabel className="sidemenu__label" color="light">
-                    {appPage.title}
-                  </IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
+          <IonNote>
+            {user ? user.email : "Đăng nhập để sử dụng nhiều tính năng hơn"}
+          </IonNote>
+          {(user ? (user.is_admin ? adminPages : appPages) : guestPages).map(
+            (appPage, index) => {
+              return (
+                <IonMenuToggle key={index} autoHide={false}>
+                  <IonItem
+                    button
+                    className={
+                      location.pathname === appPage.url ? "selected" : ""
+                    }
+                    routerLink={appPage.url}
+                    routerDirection="none"
+                    lines="none"
+                    detail={false}
+                  >
+                    <IonIcon slot="start" icon={appPage.icon} />
+                    <IonLabel className="sidemenu__label" color="light">
+                      {appPage.title}
+                    </IonLabel>
+                  </IonItem>
+                </IonMenuToggle>
+              );
+            }
+          )}
           <IonMenuToggle autoHide={false}>
             <IonItem />
             {user ? (
@@ -163,11 +184,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                 detail={false}
                 routerLink="/welcome"
               >
-                <IonIcon
-                  color="light"
-                  slot="start"
-                  icon={logOut}
-                />
+                <IonIcon color="light" slot="start" icon={logOut} />
                 <IonLabel className="sidemenu__label" color="light">
                   Đăng xuất
                 </IonLabel>
@@ -175,11 +192,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
             ) : (
               <>
                 <IonItem button lines="none" detail={false} routerLink="/login">
-                  <IonIcon
-                    color="light"
-                    slot="start"
-                    icon={logIn}
-                  />
+                  <IonIcon color="light" slot="start" icon={logIn} />
                   <IonLabel className="sidemenu__label" color="light">
                     Đăng nhập
                   </IonLabel>
@@ -190,11 +203,7 @@ const SideMenu: React.FC<SidemenuContainerProps> = () => {
                   detail={false}
                   routerLink="/register"
                 >
-                  <IonIcon
-                    color="light"
-                    slot="start"
-                    icon={personAdd}
-                  />
+                  <IonIcon color="light" slot="start" icon={personAdd} />
                   <IonLabel className="sidemenu__label" color="light">
                     Đăng ký
                   </IonLabel>

@@ -142,7 +142,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                 <IonBackButton color="light" text="" defaultHref="/community" />
               </IonButtons>
               <IonTitle>{post.title}</IonTitle>
-              {post.author_id === user.uid && (
+              {(post.author_id === user.uid || user.is_admin ) && (
                 <IonButtons slot="end">
                   <IonButton onClick={() => setShowDeletePostPopover(true)}>
                     <IonIcon
@@ -270,7 +270,7 @@ const PostContainer: React.FC<PostDetailProps> = ({ match }) => {
                                 .locale("vi")
                                 .fromNow()}`}</b>
                       <p>{comment.content}</p>
-                      {comment.author_id === user.uid && (
+                      {(comment.author_id === user.uid || user.is_admin) && (
                         <IonButtons className="post-comment-delete" slot="end">
                           <IonButton
                             onClick={() => setShowDeleteCommentPopover(true)}

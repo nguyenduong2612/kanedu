@@ -97,11 +97,15 @@ const Community: React.FC<CommunityPageProps> = () => {
   //   }, 750);
   // };
 
-  async function handleSendQuestion(title: string, content: string, image_url?: string) {
+  async function handleSendQuestion(
+    title: string,
+    content: string,
+    image_url?: string
+  ) {
     if (title.trim() === "" || content.trim() === "") {
       toast("Hãy nhập tiêu đề và nội dung câu hỏi");
     } else {
-      let postData = {}
+      let postData = {};
       if (image_url) {
         postData = {
           author: user.name,
@@ -124,7 +128,7 @@ const Community: React.FC<CommunityPageProps> = () => {
           created_at: Date.now(),
         };
       }
-      
+
       dispatch(savePost(postData, user.uid));
       toast("Đăng thành công");
       setShowPopover(false);
@@ -156,11 +160,13 @@ const Community: React.FC<CommunityPageProps> = () => {
             color="light"
           ></IonMenuButton>
           <IonTitle>
-            {segmentValue === "home"
-              ? "Cộng đồng"
-              : segmentValue === "like"
-              ? "Được yêu thích nhất"
-              : "Được quan tâm nhất"}
+            {!user.is_admin
+              ? segmentValue === "home"
+                ? "Cộng đồng"
+                : segmentValue === "like"
+                ? "Được yêu thích nhất"
+                : "Được quan tâm nhất"
+              : "Quản lý bài đăng"}
           </IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -180,7 +186,7 @@ const Community: React.FC<CommunityPageProps> = () => {
                     alt="user-avatar"
                     id="community-avatar"
                     src={user.profileURL}
-                    onClick={() => router.push("/my-profile") }
+                    onClick={() => !user.is_admin && router.push("/my-profile")}
                   />
                 </div>
               </IonCol>

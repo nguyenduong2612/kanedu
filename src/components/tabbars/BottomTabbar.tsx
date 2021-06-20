@@ -6,13 +6,8 @@ import {
   IonTabButton,
   IonTabs,
 } from "@ionic/react";
-import React, {  } from "react";
-import {
-  home,
-  search,
-  people,
-  language,
-} from "ionicons/icons";
+import React from "react";
+import { home, search, people, language, idCard, reader } from "ionicons/icons";
 import Routing from "../../route/Routing";
 import "./BottomTabbar.scss";
 import { useSelector } from "react-redux";
@@ -25,7 +20,7 @@ interface RootState {
 }
 
 const BottomTabbar: React.FC<BottomTabbarContainerProps> = () => {
-  const { isLoggedin } = useSelector((state: RootState) => state.user);
+  const { isLoggedin, user } = useSelector((state: RootState) => state.user);
 
   // useEffect(() => {
   //   if (Capacitor.isPluginAvailable("Keyboard")) {
@@ -46,26 +41,40 @@ const BottomTabbar: React.FC<BottomTabbarContainerProps> = () => {
           <Routing />
         </IonRouterOutlet>
 
-        <IonTabBar mode="md" slot="bottom" id="appTabBar">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon icon={home} />
-            <IonLabel>Trang chủ</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="search" href="/search">
-            <IonIcon icon={search} />
-            <IonLabel>Tìm kiếm</IonLabel>
-          </IonTabButton>
+        {user.is_admin ? (
+          <IonTabBar mode="md" slot="bottom" id="appTabBar">
+            <IonTabButton tab="user-manage" href="/admin/user-manage">
+              <IonIcon icon={idCard} />
+              <IonLabel>Quản lý người dùng</IonLabel>
+            </IonTabButton>
 
-          <IonTabButton tab="community" href="/community">
-            <IonIcon icon={people} />
-            <IonLabel>Cộng đồng</IonLabel>
-          </IonTabButton>
+            <IonTabButton tab="post-manage" href="/admin/post-manage">
+              <IonIcon icon={reader} />
+              <IonLabel>Quản lý bài đăng</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        ) : (
+          <IonTabBar mode="md" slot="bottom" id="appTabBar">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon icon={home} />
+              <IonLabel>Trang chủ</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="search" href="/search">
+              <IonIcon icon={search} />
+              <IonLabel>Tìm kiếm</IonLabel>
+            </IonTabButton>
 
-          <IonTabButton tab="dict" href="/dict">
-            <IonIcon icon={language} />
-            <IonLabel>Từ điển</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
+            <IonTabButton tab="community" href="/community">
+              <IonIcon icon={people} />
+              <IonLabel>Cộng đồng</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab="dict" href="/dict">
+              <IonIcon icon={language} />
+              <IonLabel>Từ điển</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        )}
       </IonTabs>
     </>
   ) : (

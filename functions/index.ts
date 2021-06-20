@@ -1,5 +1,5 @@
 // Imports the Google Cloud client library
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 const algoliasearch = require("algoliasearch");
 const functions = require("firebase-functions");
 const vision = require("@google-cloud/vision");
@@ -127,12 +127,48 @@ exports.translateText = functions.https.onCall(async (data, _context) => {
   return { text, translation };
 });
 
-exports.resetDailyGoal = functions.pubsub.schedule('0 0 * * *')
-  .timeZone('Asia/Ho_Chi_Minh')
-  .onRun(async(context) => {
-    console.log('Reset daily goal');
+exports.resetDailyGoal = functions.pubsub
+  .schedule("0 0 * * *")
+  .timeZone("Asia/Ho_Chi_Minh")
+  .onRun(async (context) => {
+    console.log("Reset daily goal");
     let snap = await db.collection("users").get();
-    snap.docs.map(async(user) => {
-      user.ref.update({dailyObject: 0})
+    snap.docs.map(async (user) => {
+      user.ref.update({ dailyObject: 0 });
+    });
+  });
+
+exports.listAllUsers = functions.https.onCall(async (data, _context) => {
+  // List batch of users, 1000 at a time.
+  //ar allUsers = [];
+
+  return admin
+    .auth()
+    .listUsers(1000)
+    .then((listUsersResult) => {
+      listUsersResult.users.forEach((userRecord) => {
+        // For each user
+        var userData = userRecord.toJSON();
+        console.log(console.log('user', userRecord.toJSON()))
+        //allUsers.push(userData);
+      });
+      //console.log(allUsers)
+      return
     })
+    .catch(function (error) {
+      console.log("Error listing users:", error);
+    });
+});
+
+exports.deleteUser = functions.https.onCall(async (data, _context) => {
+  return admin
+    .auth()
+    .deleteUser(data.uid)
+    .then(() => {
+      console.log("Successfully deleted user");
+      return
+    })
+    .catch((error) => {
+      console.log("Error deleting user:", error);
+    });
 });
