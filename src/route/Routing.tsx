@@ -57,6 +57,7 @@ const Routing: React.FC = () => {
             <Route path="/admin/user-manage" component={UserManage} exact />
             <Route path="/admin/post-manage" component={Community} exact />
             <Route path="/community/:post_id" component={PostDetail} exact />
+            <Route path="/change-password" component={ChangePassword} exact />
             <Route
               path="/account-settings"
               component={Account}

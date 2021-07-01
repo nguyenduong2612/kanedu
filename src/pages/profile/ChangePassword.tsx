@@ -58,7 +58,7 @@ const ChangePassword: React.FC<ChangePasswordPageProps> = () => {
       <IonHeader>
         <IonToolbar className="toolbar">
           <IonButtons slot="start">
-            <IonBackButton color="light" text="" defaultHref="/account" />
+            <IonBackButton color="light" text="" defaultHref="/" />
           </IonButtons>
           <IonTitle>Thay đổi mật khẩu</IonTitle>
           <IonButtons slot="end">
