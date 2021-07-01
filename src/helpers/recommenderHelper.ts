@@ -36,15 +36,16 @@ const calcDotProduct = (
 
 const calcCosSimilarity = (source: any, des: any): number => {
   const weight: any = {
-    level: 0.4,
+    title: 0.3,
+    description: 0.1,
+    level: 0.2,
     skill: 0.2,
     category: 0.2,
-    description: 0.2,
   };
   let cosSimilarity = 0;
 
   for (const prop of Object.keys(source)) {
-    if (prop === "description") continue;
+    if (prop === "description" || prop === "title") continue;
     let propSim =
       calcDotProduct(source[prop], des[prop]) /
       calcLengthProduct(source[prop], des[prop]);
@@ -53,9 +54,10 @@ const calcCosSimilarity = (source: any, des: any): number => {
   }
 
   let descriptionSim = distance(source["description"], des["description"]);
+  let titleSim = distance(source["title"], des["title"]);
 
-  //console.log("descriptionSim: ", descriptionSim);
   cosSimilarity += descriptionSim * weight["description"];
+  cosSimilarity += titleSim * weight["title"];
 
   return cosSimilarity;
 };
@@ -101,6 +103,7 @@ export function createVector(courseData: any) {
   ];
 
   let description = courseData.description;
+  let title = courseData.name;
 
-  return { level, skill, category, description };
+  return { level, skill, category, description, title };
 }
